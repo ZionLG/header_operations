@@ -98,10 +98,10 @@
    # Updated for engine 1.171 by Kalarhan for use with VC mods
    # https://raw.githubusercontent.com/KalarhanWB/VC_Tweaks_Tool/master/app/header_operations.py
    # https://github.com/KalarhanWB/VC_Tweaks_Tool/blob/master/app/header_operations.py
-  
+
    # Additional credits (in no particular order) go to
    # K700, Vetrogor, Burspa, Winter, fisheye, Hellequin, Veni Vidi Vici
-  
+
    # Special thanks (in no particular order) to the Mount&Blade modding wiki [https://mbcommands.fandom.com/] contributors
    # Vetrogor, Dalion, Sionfel, Erundil and Swyter, and any others!
 
@@ -791,11 +791,13 @@ troops_can_join                       =  105                 # (troops_can_join,
 troops_can_join_as_prisoner           =  106                 # (troops_can_join_as_prisoner, <value>),
                                                              # Checks if player party has enough space for provided number of prisoners..
 party_can_join_party                  =  107                 # (party_can_join_party, <joiner_party_id>, <host_party_id>, [flip_prisoners]),
-                                                             # Checks if first party can join second party (enough space for both troops and prisoners). If flip_prisoners flag is 1, then members and prisoners in the joining party are flipped.
+                                                             # Checks if first party can join second party (enough space for both troops and prisoners).
+                                                             # If flip_prisoners flag is 1, then members and prisoners in the joining party are flipped.
 main_party_has_troop                  =  110                 # (main_party_has_troop, <troop_id>),
                                                              # Checks if player party has specified troop.
 party_is_in_town                      =  130                 # (party_is_in_town, <party_id>, <town_party_id>),
-                                                             # Checks that the party has successfully reached its destination (after being set to ai_bhvr_travel_to_party) and that its destination is actually the referenced town_party_id.
+                                                             # Checks that the party has successfully reached its destination (after being set to ai_bhvr_travel_to_party)
+                                                             # and that its destination is actually the referenced town_party_id.
 party_is_in_any_town                  =  131                 # (party_is_in_any_town, <party_id>),
                                                              # Checks that the party has successfully reached its destination (after being set to ai_bhvr_travel_to_party).
 party_is_active                       =  132                 # (party_is_active, <party_id>),
@@ -918,6 +920,7 @@ store01_random_parties_in_range       = 2255  # (store01_random_parties_in_range
                                               # Returned values are not sorted (either reg0 or reg1 could be bigger than the other).
                                               # If range is too short to draw 2 unique numbers from it, then both reg0 and reg1 will equal lower_bound.
 store_random_in_range_to_reg0_reg1    = store01_random_parties_in_range # (store_random_parties_in_range, <lower_bound>, <upper_bound>),
+store_random_parties_in_range         = store01_random_parties_in_range # Compatibility alias...
 store_distance_to_party_from_party    = 2281  # (store_distance_to_party_from_party, <destination>, <party_id_1>, <party_id_2>),
                                               # Retrieves distance between two parties on the global map.
                                               # Extremely unprecise as it does not use a fixed point multiplier at all and 1 distance unit is quite a noticeable distance on the map.
@@ -929,7 +932,8 @@ store_distance_to_party_from_party    = 2281  # (store_distance_to_party_from_pa
 store_num_parties_of_template         = 2310  # (store_num_parties_of_template, <destination>, <party_template_id>),
                                               # Stores number of active parties which were created using specified party template.
 store_random_party_of_template        = 2311  # (store_random_party_of_template, <destination>, <party_template_id>),
-                                              # Retrieves one random party which was created using specified party template. Fails if no party exists with provided template. (expensive) 
+                                              # Retrieves one random party which was created using specified party template.
+                                              # Fails if no party exists with provided template. (expensive)
 
 store_num_parties_created             = 2300  # (store_num_parties_created, <destination>, <party_template_id>),
                                               # Stores the total number of created parties of specified type. Not used in Native.
@@ -939,9 +943,11 @@ store_num_parties_destroyed_by_player = 2302  # (store_num_parties_destroyed_by_
                                               # Stores the total number of parties of specified type which have been destroyed by player.
 
 party_get_morale                      = 1671  # (party_get_morale, <destination>, <party_id>),
-                                              # Returns a value in the range of 0..100. Party morale does not affect party behavior on the map, but will be taken in account if the party is engaged in battle (except auto-calc).
+                                              # Returns a value in the range of 0..100.
+                                              # Party morale does not affect party behavior on the map, but will be taken in account if the party is engaged in battle (except auto-calc).
 party_set_morale                      = 1672  # (party_set_morale, <party_id>, <value>),
-                                              # Value should be in the range of 0..100. Party morale does not affect party behavior on the map, but will be taken in account if the party is engaged in battle (except auto-calc).
+                                              # Value should be in the range of 0..100.
+                                              # Party morale does not affect party behavior on the map, but will be taken in account if the party is engaged in battle (except auto-calc).
 
 # Party members manipulation
 
@@ -956,7 +962,8 @@ troop_join_as_prisoner                = 1204  # (troop_join_as_prisoner, <troop_
 add_companion_party                   = 1233  # (add_companion_party, <troop_id_hero>),
                                               # Creates a new empty party with specified hero as party leader and the only member.
                                               # Party is spawned at the position of player's party
-                                              # and according to Earendil’s MaBLED pf_limit_members gets set for it automatically
+                                              # and according to (Earendil’s MaBLED)[https://earendil_ardamire.gitlab.io/modding-guide/Subpages/Documentation_Module_System/Module_Parties.html]
+                                              # pf_limit_members gets set for it automatically
                                               # which in Native is only given to player party.
                                               # The limitation is that unlike spawn_around_party it doesn't return the ID (reg0), making further manipulation complicated.
                                               # You can replace it by spawn_around_party with template=0, then party_add_members on reg0.
@@ -1196,17 +1203,22 @@ party_get_ignore_with_player_party    = 1649  # (party_get_ignore_with_player_pa
 troop_has_item_equipped                  =  151  # (troop_has_item_equipped, <troop_id>, <item_id>),
                                                  # Checks that the troop has this item equipped (worn or wielded).
 troop_is_mounted                         =  152  # (troop_is_mounted, <troop_id>),
-                                                 # Checks the troop for tf_mounted flag (see header_troops.py). Does NOT check that the troop has a horse.
+                                                 # Checks the troop for tf_mounted flag (see header_troops.py).
+                                                 # Does NOT check that the troop has a horse.
 troop_is_guarantee_ranged                =  153  # (troop_is_guarantee_ranged, <troop_id>),
-                                                 # Checks the troop for tf_guarantee_ranged flag (see header_troops.py). Does not check that troop actually has some ranged weapon.
+                                                 # Checks the troop for tf_guarantee_ranged flag (see header_troops.py).
+                                                 # Does not check that troop actually has some ranged weapon.
 troop_is_guarantee_horse                 =  154  # (troop_is_guarantee_horse, <troop_id>),
-                                                 # Checks the troop for tf_guarantee_horse flag (see header_troops.py). Does not check that troop actually has some horse.
+                                                 # Checks the troop for tf_guarantee_horse flag (see header_troops.py).
+                                                 # Does not check that troop actually has some horse.
 troop_is_hero                            = 1507  # (troop_is_hero, <troop_id>),
-                                                 # Checks the troop for tf_hero flag (see header_troops.py). Hero troops are actual characters and do not stack in party window.
+                                                 # Checks the troop for tf_hero flag (see header_troops.py).
+                                                 # Hero troops are actual characters and do not stack in party window.
 troop_is_wounded                         = 1508  # (troop_is_wounded, <troop_id>),
                                                  # Checks that the troop is wounded. Only works for hero troops.
 player_has_item                          =  150  # (player_has_item, <item_id>),
-                                                 # Checks that trp_player has the specified item. Doesn't change behavior when different troop is assigned to player with (set_player_troop).
+                                                 # Checks that trp_player has the specified item.
+                                                 # Doesn't change behavior when different troop is assigned to player with (set_player_troop).
 
 # Slot operations for troops
 # Slots numbers start from 0 and end at maximum 1,048,575 (0xFFFFF). Any other slot will return 0 as value.
@@ -1219,15 +1231,19 @@ troop_slot_lt                            =  neg|troop_slot_ge  # (troop_slot_lt,
 # Troop attributes and skills
 
 troop_set_type                           = 1505  # (troop_set_type, <troop_id>, <skin>),
-                                                 # Changes the troop skin. There are two skins in Native: male and female, so in effect this operation sets troop gender. However mods may declare other skins.
+                                                 # Changes the troop skin.
+                                                 # There are two skins in Native: male and female, so in effect this operation sets troop gender.
+                                                 # However mods may declare other skins.
 troop_get_type                           = 1506  # (troop_get_type, <destination>, <troop_id>),
                                                  # Returns troop current skin (i.e. gender).
 troop_set_class                          = 1517  # (troop_set_class, <troop_id>, <value>),
-                                                 # Sets troop class which produces the same result as manually setting troop class in party window. Accepts values in range 0..8.
+                                                 # Sets troop class which produces the same result as manually setting troop class in party window.
+                                                 # Accepts values in range 0..8.
                                                  # See header_mission_templates.py for grc_* definitions.
                                                  # Changes to troop classes (made both by this operation and by player in party window) are stored in the save file.
 troop_get_class                          = 1516  # (troop_get_class, <destination>, <troop_id>),
-                                                 # Retrieves troop class, which is what you can see and set in party window (Infantry, Archers, Cavalry etc.). Returns values in range 0..8.
+                                                 # Retrieves troop class, which is what you can see and set in party window (Infantry, Archers, Cavalry etc.).
+                                                 # Returns values in range 0..8.
                                                  # See header_mission_templates.py for grc_* definitions.
                                                  # It has nothing to do with agent class, but agent's division is inherited from this value.
                                                  # For non-hero troops initial values are divined by the engine based on the following rules:
@@ -1237,25 +1253,38 @@ troop_get_class                          = 1516  # (troop_get_class, <destinatio
                                                  # 4research: what are initial values for hero troops? For player it's always Infantry.
 class_set_name                           = 1837  # (class_set_name, <sub_class>, <string_id>),
                                                  # Sets a new name for troop class (aka "Infantry", "Cavalry", "Custom Group 3"...).
-                                                 # While manually you can rename class only up to 28 characters via in-game button, the operation is able to assign any string or quick string and even supports multi-line with ^ symbol.
-                                                 # However, the game seems to be able to display only up to 291 characters from the feed message, and long class names aren't readable or viable but are definitely possible.
+                                                 # While manually you can rename class only up to 28 characters via in-game button,
+                                                 # the operation is able to assign any string or quick string and even supports multi-line with ^ symbol.
+                                                 # However, the game seems to be able to display only up to 291 characters from the feed message, and
+                                                 # long class names aren't readable or viable but are definitely possible.
                                                  # Keep in mind that 10 characters are required for ", hear me!" to show up so the actual max length for class name is 281.
                                                  # Names get stored in the savefile.
 add_xp_to_troop                          = 1062  # (add_xp_to_troop, <value>, [troop_id]),
-                                                 # Adds xp points to troop. Default troop_id is trp_player. Amount of xp can be only positive. Troop can be hero or regular.
+                                                 # Adds xp points to troop.
+                                                 # Default troop_id is trp_player.
+                                                 # Amount of xp can be only positive.
+                                                 # Troop can be hero or regular.
                                                  # Doesn't change behavior when different troop is assigned to player with (set_player_troop).
 add_xp_as_reward                         = 1064  # (add_xp_as_reward, <value>),
-                                                 # Adds the specified amount of xp points to the player troop. If (set_player_troop) was used, uses that troop instead of trp_player. Typically used as a quest reward operation.
+                                                 # Adds the specified amount of xp points to the player troop.
+                                                 # If (set_player_troop) was used, uses that troop instead of trp_player.
+                                                 # Typically used as a quest reward operation.
 troop_get_xp                             = 1515  # (troop_get_xp, <destination>, <troop_id>),
                                                  # Retrieves total amount of xp specified troop has.
 store_attribute_level                    = 2172  # (store_attribute_level, <destination>, <troop_id>, <attribute_id>),
                                                  # Stores current value of troop attribute. See ca_* constants in header_troops.py for reference.
 troop_raise_attribute                    = 1520  # (troop_raise_attribute, <troop_id>, <attribute_id>, <value>),
-                                                 # Increases troop attribute by the specified amount. See ca_* constants in header_troops.py for reference. Use negative values to reduce attributes. When used on non-hero troop, will affect all instances of that troop.
+                                                 # Increases troop attribute by the specified amount.
+                                                 # See ca_* constants in header_troops.py for reference.
+                                                 # Use negative values to reduce attributes.
+                                                 # When used on non-hero troop, will affect all instances of that troop.
 store_skill_level                        = 2170  # (store_skill_level, <destination>, <skill_id>, [troop_id]),
                                                  # Stores current value of troop skill. See header_skills.py for reference.
 troop_raise_skill                        = 1521  # (troop_raise_skill, <troop_id>, <skill_id>, <value>),
-                                                 # Increases troop skill by the specified value. Value can be negative. See header_skills.py for reference. When used on non-hero troop, will affect all instances of that troop.
+                                                 # Increases troop skill by the specified value.
+                                                 # Value can be negative.
+                                                 # See header_skills.py for reference.
+                                                 # When used on non-hero troop, will affect all instances of that troop.
 store_proficiency_level                  = 2176  # (store_proficiency_level, <destination>, <troop_id>, <proficiency_no>),
                                                  # Stores current value of troop weapon proficiency. See wpt_* constants in header_troops.py for reference.
 troop_raise_proficiency                  = 1522  # (troop_raise_proficiency, <troop_id>, <proficiency_no>, <value>),
@@ -1266,8 +1295,12 @@ troop_raise_proficiency_linear           = 1523  # (troop_raise_proficiency_line
                                                  # Will accept and handle negative values as well.
 troop_add_proficiency_points             = 1525  # (troop_add_proficiency_points, <troop_id>, <value>),                    
                                                  # Adds some proficiency points to a hero troop which can later be distributed by player.
-store_troop_health                       = 2175  # (store_troop_health, <destination>, <troop_id>, [absolute]), # set absolute to 1 to get actual health; otherwise this will return percentage health in range (0-100)
-                                                 # Retrieves current troop health. Use absolute = 1 to retrieve actual number of hp points left, use absolute = 0 to retrieve a value in 0..100 range (percentage).
+store_troop_health                       = 2175  # (store_troop_health, <destination>, <troop_id>, [absolute]),
+                                                 # Set absolute to 1 to get actual health.
+                                                 # Otherwise this will return percentage health in range (0-100).
+                                                 # Retrieves current troop health.
+                                                 # Use absolute = 1 to retrieve actual number of hp points left.
+                                                 # Use absolute = 0 to retrieve a value in 0..100 range (percentage).
 troop_set_health                         = 1560  # (troop_set_health, <troop_id>, <relative health (0-100)>),
                                                  # Sets troop health. Accepts value in range 0..100 (percentage).
 troop_get_upgrade_troop                  = 1561  # (troop_get_upgrade_troop, <destination>, <troop_id>, <upgrade_path>),
@@ -1276,7 +1309,8 @@ troop_get_upgrade_troop                  = 1561  # (troop_get_upgrade_troop, <de
 store_character_level                    = 2171  # (store_character_level, <destination>, [troop_id]),
                                                  # Retrieves character level of the troop. Default troop is trp_player. Doesn't change behavior when different troop is assigned to player with (set_player_troop).
 get_level_boundary                       =  991  # (get_level_boundary, <destination>, <level_no>),
-                                                 # Returns the amount of experience points required to reach the specified level (will return 0 for 1st level). Maximum possible level in the game is 63.
+                                                 # Returns the amount of experience points required to reach the specified level (will return 0 for 1st level).
+                                                 # Maximum possible level in the game is 63.
 add_gold_as_xp                           = 1063  # (add_gold_as_xp, <value>, [troop_id]),
                                                  # Adds a certain amount of experience points to the specified troop, depending on the amount of gold specified.
                                                  # Default troop is trp_player, unless a different troop was specified with (set_player_troop), in which case that troop gets xp instead.
@@ -1285,44 +1319,67 @@ add_gold_as_xp                           = 1063  # (add_gold_as_xp, <value>, [tr
 # Troop equipment handling
 
 troop_set_auto_equip                     = 1509  # (troop_set_auto_equip, <troop_id>, <value>),
-                                                 # Sets (value = 1) or disables (value = 0) auto-equipping the troop with any items added to its inventory or purchased. Similar to tf_is_merchant flag.
+                                                 # Sets (value = 1) or disables (value = 0) auto-equipping the troop with any items added to its inventory or purchased. 
+                                                 # Similar to tf_is_merchant flag.
 troop_ensure_inventory_space             = 1510  # (troop_ensure_inventory_space, <troop_id>, <value>),
-                                                 # Removes items from troop inventory until troop has specified number of free inventory slots. Will free inventory slots starting from the end (items at the bottom of inventory will be removed first if there's not enough free space).
+                                                 # Removes items from troop inventory until troop has specified number of free inventory slots.
+                                                 # Will free inventory slots starting from the end.
+                                                 # Items at the bottom of inventory will be removed first if there's not enough free space.
 troop_sort_inventory                     = 1511  # (troop_sort_inventory, <troop_id>),
                                                  # Sorts items in troop inventory by their price (expensive first).
 troop_add_item                           = 1530  # (troop_add_item, <troop_id>, <item_id>, [modifier]),
                                                  # Adds an item to the troop, optionally with a modifier (see imod_* constants in header_item_modifiers.py).
 troop_remove_item                        = 1531  # (troop_remove_item, <troop_id>, <item_id>),
-                                                 # Removes an item from the troop equipment or inventory. Operation will remove first matching item it finds.
+                                                 # Removes an item from the troop equipment or inventory. 
+                                                 # Operation will remove first matching item it finds.
 troop_clear_inventory                    = 1532  # (troop_clear_inventory, <troop_id>),
-                                                 # Clears entire troop inventory. Does not affect equipped items.
+                                                 # Clears entire troop inventory. 
+                                                 # Does not affect equipped items.
 troop_equip_items                        = 1533  # (troop_equip_items, <troop_id>),
-                                                 # Makes the troop reconsider its equipment. If troop has better stuff in its inventory, he will equip it.
+                                                 # Makes the troop reconsider its equipment. 
+                                                 # If troop has better stuff in its inventory, he will equip it.
                                                  # Note this operation sucks with weapons and may force the troop to equip himself with 4 two-handed swords.
 troop_inventory_slot_set_item_amount     = 1534  # (troop_inventory_slot_set_item_amount, <troop_id>, <inventory_slot_no>, <value>),
-                                                 # Sets the stack size for a specified equipment or inventory slot. Only makes sense for items like ammo or food (which show stuff like "23/50" in inventory). Equipment slots are in range 0..9, see ek_* constants in header_items.py for reference.
+                                                 # Sets the stack size for a specified equipment or inventory slot.
+                                                 # Only makes sense for items like ammo or food (which show stuff like "23/50" in inventory).
+                                                 # Equipment slots are in range 0..9, see ek_* constants in header_items.py for reference.
 troop_inventory_slot_get_item_amount     = 1537  # (troop_inventory_slot_get_item_amount, <destination>, <troop_id>, <inventory_slot_no>),
-                                                 # Retrieves the stack size for a specified equipment or inventory slot (if some Bread is 23/50, this operation will return 23).
+                                                 # Retrieves the stack size for a specified equipment or inventory slot.
+                                                 # If some Bread is 23/50, this operation will return 23.
 troop_inventory_slot_get_item_max_amount = 1538  # (troop_inventory_slot_get_item_max_amount, <destination>, <troop_id>, <inventory_slot_no>),
-                                                 # Retrieves the maximum possible stack size for a specified equipment or inventory slot (if some Bread is 23/50, this operation will return 50).
+                                                 # Retrieves the maximum possible stack size for a specified equipment or inventory slot.
+                                                 # Exmaple: If some Bread is 23/50, this operation will return 50.
 troop_add_items                          = 1535  # (troop_add_items, <troop_id>, <item_id>, <number>),
                                                  # Adds multiple items of specified type to the troop.
 troop_remove_items                       = 1536  # (troop_remove_items, <troop_id>, <item_id>, <number>),
-                                                 # Removes multiple items of specified type from the troop. Total price of actually removed items will be stored in reg0. Doesn't take item modifiers into account. Will not fail if <troop_id> does not have the required items.
+                                                 # Removes multiple items of specified type from the troop.
+                                                 # Total price of actually removed items will be stored in reg0.
+                                                 # Doesn't take item modifiers into account.
+                                                 # Will not fail if <troop_id> does not have the required items.
 troop_loot_troop                         = 1539  # (troop_loot_troop, <target_troop>, <source_troop_id>, <probability>), 
-                                                 # Adds to target_troop's inventory some items from source_troop's equipment and inventory with some probability. (If an item is added to the target troop, it is given a random modifier from the item's imod list.) Does not actually remove items from source_troop. Commonly used in Native to generate random loot after the battle.
+                                                 # Adds to target_troop's inventory some items from source_troop's equipment and inventory with some probability.
+                                                 # If an item is added to the target troop, it is given a random modifier from the item's imod list.
+                                                 # Does not actually remove items from source_troop.
+                                                 # Commonly used in Native to generate random loot after the battle.
 troop_get_inventory_capacity             = 1540  # (troop_get_inventory_capacity, <destination>, <troop_id>),
-                                                 # Returns the total inventory capacity (number of inventory slots) for the specified troop. Note that this number will include equipment slots as well. Substract num_equipment_kinds (see header_items.py) to get the number of actual *inventory* slots.
+                                                 # Returns the total inventory capacity (number of inventory slots) for the specified troop.
+                                                 # Note that this number will include equipment slots as well.
+                                                 # Substract num_equipment_kinds (see header_items.py) to get the number of actual *inventory* slots.
 troop_get_inventory_slot                 = 1541  # (troop_get_inventory_slot, <destination>, <troop_id>, <inventory_slot_no>),
-                                                 # Retrieves the item_id of a specified equipment or inventory slot. Returns -1 when there's nothing there.
+                                                 # Retrieves the item_id of a specified equipment or inventory slot. 
+                                                 # Returns -1 when there's nothing there.
 troop_get_inventory_slot_modifier        = 1542  # (troop_get_inventory_slot_modifier, <destination>, <troop_id>, <inventory_slot_no>),
-                                                 # Retrieves the modifier value (see imod_* constants in header_items.py) for an item in the specified equipment or inventory slot. Returns 0 when there's nothing there, or if item does not have any modifiers.
+                                                 # Retrieves the modifier value (see imod_* constants in header_items.py) for an item in the specified equipment or inventory slot.
+                                                 # Returns 0 when there's nothing there, or if item does not have any modifiers.
 troop_set_inventory_slot                 = 1543  # (troop_set_inventory_slot, <troop_id>, <inventory_slot_no>, <item_id>),
-                                                 # Puts the specified item into troop's equipment or inventory slot. Be careful with setting equipment slots this way.
+                                                 # Puts the specified item into troop's equipment or inventory slot. 
+                                                 # Be careful with setting equipment slots this way.
 troop_set_inventory_slot_modifier        = 1544  # (troop_set_inventory_slot_modifier, <troop_id>, <inventory_slot_no>, <imod_value>),
-                                                 # Sets the modifier for the item in the troop's equipment or inventory slot. See imod_* constants in header_items.py for reference.
+                                                 # Sets the modifier for the item in the troop's equipment or inventory slot. 
+                                                 # See imod_* constants in header_items.py for reference.
 store_item_kind_count                    = 2165  # (store_item_kind_count, <destination>, <item_id>, [troop_id]),
-                                                 # Calculates total number of items of specified type that the troop has. Default troop is trp_player.
+                                                 # Calculates total number of items of specified type that the troop has.
+                                                 # Default troop is trp_player.
                                                  # Doesn't change behavior when different troop is assigned to player with (set_player_troop).
 store_free_inventory_capacity            = 2167  # (store_free_inventory_capacity, <destination>, [troop_id]),
                                                  # Calculates total number of free inventory slots that the troop has. Default troop is trp_player.
@@ -1333,22 +1390,28 @@ store_free_inventory_capacity            = 2167  # (store_free_inventory_capacit
 reset_price_rates                   = 1170  # (reset_price_rates),
                                             # Resets customized price rates for merchants.
 set_price_rate_for_item             = 1171  # (set_price_rate_for_item, <item_id>, <value_percentage>),
-                                            # Sets individual price rate for a single item type. Normal price rate is 100. Deprecated, as Warband uses (game_get_item_[buy/sell]_price_factor) scripts instead.
+                                            # Sets individual price rate for a single item type. Normal price rate is 100.
+                                            # Deprecated, as Warband uses (game_get_item_[buy/sell]_price_factor) scripts instead.
 set_price_rate_for_item_type        = 1172  # (set_price_rate_for_item_type, <item_type_id>, <value_percentage>),
-                                            # Sets individual price rate for entire item class (see header_items.py for itp_type_* constants). Normal price rate is 100. Deprecated, as Warband uses (game_get_item_[buy/sell]_price_factor) scripts instead.
+                                            # Sets individual price rate for entire item class (see header_items.py for itp_type_* constants).
+                                            # Normal price rate is 100. Deprecated, as Warband uses (game_get_item_[buy/sell]_price_factor) scripts instead.
 set_merchandise_modifier_quality    = 1490  # (set_merchandise_modifier_quality, <value>),
-                                            # Affects the probability of items with quality modifiers appearing in merchandise. Value is percentage, standard value is 100.
+                                            # Affects the probability of items with quality modifiers appearing in merchandise.
+                                            # Value is percentage, standard value is 100.
                                             # 100 gives completely random items, <100 gives more items with bad imods, and >100 gives more items with good imods.
 set_merchandise_max_value           = 1491  # (set_merchandise_max_value, <value>),
                                             # Not used in Native. Apparently prevents items with price higher than listed from being generated as merchandise.
 reset_item_probabilities            = 1492  # (reset_item_probabilities, <value>),
-                                            # Sets all items probability of being generated as merchandise to the provided value. Use zero with subsequent calls to (set_item_probability_in_merchandise) to only allow generation of certain items.
+                                            # Sets all items probability of being generated as merchandise to the provided value.
+                                            # Use zero with subsequent calls to (set_item_probability_in_merchandise) to only allow generation of certain items.
 set_item_probability_in_merchandise = 1493  # (set_item_probability_in_merchandise, <item_id>, <value>),
                                             # Sets item probability of being generated as merchandise to the provided value.
 troop_add_merchandise               = 1512  # (troop_add_merchandise, <troop_id>, <item_type_id>, <value>),
-                                            # Adds a specified number of random items of certain type (see itp_type_* constants in header_items.py) to troop inventory. Only adds items with itp_merchandise flags.
-troop_add_merchandise_with_faction  = 1513  # (troop_add_merchandise_with_faction, <troop_id>, <faction_id>, <item_type_id>, <value>), #faction_id is given to check if troop is eligible to produce that item
-                                            # Same as (troop_add_merchandise), but with additional filter: only adds items which belong to specified faction, or without any factions at all.
+                                            # Adds a specified number of random items of certain type (see itp_type_* constants in header_items.py) to troop inventory.
+                                            # Only adds items with itp_merchandise flags.
+troop_add_merchandise_with_faction  = 1513  # (troop_add_merchandise_with_faction, <troop_id>, <faction_id>, <item_type_id>, <value>),
+                                            # faction_id is given to check if troop is eligible to produce that itemSame as (troop_add_merchandise), but with additional filter.
+                                            # Only adds items which belong to specified faction, or without any factions at all.
 
 # Miscellaneous troop information
 
@@ -1375,9 +1438,13 @@ store_troop_faction                      = 2173  # (store_troop_faction, <destin
 store_faction_of_troop                   = 2173  # (store_faction_of_troop, <destination>, <troop_id>),
                                                  # Alternative spelling of the above operation.
 troop_set_age                            = 1555  # (troop_set_age, <troop_id>, <age_slider_pos>),
-                                                 # Defines a new age for the troop (will be used by the game engine to generate appropriately aged face). Age is in range 0.100. {slot_troop_age} and {slot_troop_age_appearance} will not be set.
+                                                 # Defines a new age for the troop (will be used by the game engine to generate appropriately aged face).
+                                                 # Age is in range 0.100.
+                                                 # {slot_troop_age} and {slot_troop_age_appearance} will not be set.
 store_troop_value                        = 2231  # (store_troop_value, <destination>, <troop_id>),
-                                                 # Stores some value which is apparently related to troop's overall fighting value. Swadian infantry line troops from Native produced values 24, 47, 80, 133, 188. Calling on player produced 0.
+                                                 # Stores some value which is apparently related to troop's overall fighting value.
+                                                 # Swadian infantry line troops from Native produced values 24, 47, 80, 133, 188.
+                                                 # Calling on player produced 0.
 
 # Troop face code handling
 
@@ -1390,9 +1457,9 @@ str_store_player_face_keys               = 2747  # (str_store_player_face_keys, 
 player_set_face_keys                     = 2748  # (player_set_face_keys, <player_id>, <string_no>),
                                                  # Version 1.161+. Sets player's face keys from string.
 str_store_troop_face_keys                = 2750  # (str_store_troop_face_keys, <string_no>, <troop_no>, [<alt>]),
-                                                 # Version 1.161+. Stores specified troop's face keys into string register. Use optional <alt> parameter to determine
-                                                 # which one of the face keys to retrieve: 0 for the primary and 1 for the secondary (two of them only for regular
-                                                 # troop face randomization and not hero troops).
+                                                 # Version 1.161+. Stores specified troop's face keys into string register.
+                                                 # Use optional <alt> parameter to determine which one of the face keys to retrieve:
+                                                 # 0 for the primary and 1 for the secondary (two of them only for regular troop face randomization and not hero troops).
 troop_set_face_keys                      = 2751  # (troop_set_face_keys, <troop_no>, <string_no>, [<alt>]),
                                                  # Version 1.161+. Sets troop face keys from string. Use optional <alt> parameter to determine what face keys to update:
                                                  # 0 for the primary and 1 for the secondary.
@@ -1405,8 +1472,9 @@ face_keys_set_hair                       = 2753  # (face_keys_set_hair, <string_
 face_keys_get_beard                      = 2754  # (face_keys_get_beard, <destination>, <string_no>),
                                                  # Version 1.161+. Unpacks the current beard mesh from a string containing troop/player face keys into <destination>.
 face_keys_set_beard                      = 2755  # (face_keys_set_beard, <string_no>, <value>),
-                                                 # Version 1.161+. Updates face keys string with a new beard value. Beard meshes associated with skin (as defined in module_skins)
-                                                 # are numbered from 1. Use 0 for no beard. See <face_keys_set_hair> above. Range is 0-63.
+                                                 # Version 1.161+. Updates face keys string with a new beard value.
+                                                 # Beard meshes associated with skin (as defined in module_skins) are numbered from 1.
+                                                 # Use 0 for no beard. See <face_keys_set_hair> above. Range is 0-63.
 face_keys_get_face_texture               = 2756  # (face_keys_get_face_texture, <destination>, <string_no>),
                                                  # Version 1.161+. Unpacks the active skin (i.e. what originally was <face_texture> in earlier/beta game versions)
                                                  # index from the string containing troop/player face keys into <destination>. 
