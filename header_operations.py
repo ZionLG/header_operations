@@ -43,67 +43,67 @@
 ################################################################################
 # [ Z00 ] INTRODUCTION AND CREDITS
 ################################################################################
-   # Everyone who has ever tried to mod Mount&Blade games knows perfectly well,
-   # that the documentation for its Module System is severely lacking. Warband
-   # Module System, while introducing many new and useful operations, did not
-   # improve considerably in the way of documentation. What's worse, a number of
-   # outright errors and inconsistencies appeared between what was documented in
-   # the comments to the header_operations.py file (which was the root source of
-   # all Warband scripting documentation, whether you like it or not), and what
-   # was actually implemented in the game engine.
+  # Everyone who has ever tried to mod Mount&Blade games knows perfectly well,
+  # that the documentation for its Module System is severely lacking. Warband
+  # Module System, while introducing many new and useful operations, did not
+  # improve considerably in the way of documentation. What's worse, a number of
+  # outright errors and inconsistencies appeared between what was documented in
+  # the comments to the header_operations.py file (which was the root source of
+  # all Warband scripting documentation, whether you like it or not), and what
+  # was actually implemented in the game engine.
 
-   # Sooner or later someone was bound to dedicate some time and effort to fix
-   # this problem by properly documenting the file. It just so happened that I
-   # was the first person crazy enough to accept the challenge.
+  # Sooner or later someone was bound to dedicate some time and effort to fix
+  # this problem by properly documenting the file. It just so happened that I
+  # was the first person crazy enough to accept the challenge.
 
-   # I have tried to make this file a self-sufficient source of information on
-   # every operation that the Warband scripting engine knows of. Naturally I
-   # failed - there are still many operations for which there is simply not
-   # enough information, or operations with effects that have not yet been
-   # thoroughly tested and confirmed. But as far as I know, there is currently
-   # no other reference more exhaustive than this. I tried to make the file
-   # useful to both seasoned scripters and complete newbies, and to a certain
-   # degree this file can even serve as a tutorial into Warband scripting -
-   # though it still won't replace the wealth of tutorials produced by the
-   # Warband modding community.
+  # I have tried to make this file a self-sufficient source of information on
+  # every operation that the Warband scripting engine knows of. Naturally I
+  # failed - there are still many operations for which there is simply not
+  # enough information, or operations with effects that have not yet been
+  # thoroughly tested and confirmed. But as far as I know, there is currently
+  # no other reference more exhaustive than this. I tried to make the file
+  # useful to both seasoned scripters and complete newbies, and to a certain
+  # degree this file can even serve as a tutorial into Warband scripting -
+  # though it still won't replace the wealth of tutorials produced by the
+  # Warband modding community.
 
-   # I really hope you will find it useful as well.
+  # I really hope you will find it useful as well.
 
-   #                                    Alexander Lomski AKA Lav. Jan 18th, 2012.
+  #                                    Alexander Lomski AKA Lav. Jan 18th, 2012.
 
-   # And the credits.
+  # And the credits.
 
-   # First of all, I should credit Taleworlds for the creation of this game and
-   # its Module System. Without them, I wouldn't be able to work on this file
-   # so even though I'm often sceptical about their programming style and quality
-   # of their code, they still did a damn good job delivering this game to all
-   # of us.
+  # First of all, I should credit Taleworlds for the creation of this game and
+  # its Module System. Without them, I wouldn't be able to work on this file
+  # so even though I'm often sceptical about their programming style and quality
+  # of their code, they still did a damn good job delivering this game to all
+  # of us.
 
-   # And then I should credit many members from the Warband modding community
-   # who have shared their knowledge and helped me clear out many uncertainties
-   # and inconsistencies. Special credits (in no particular order) go to
-   # cmpxchg8b, Caba'drin, SonKidd, MadVader, dunde, Ikaguia, MadocComadrin,
-   # Cjkjvfnby, shokkueibu, Dalion, Dj_FRedy, Vetrogor, VonDegurechaff.
+  # And then I should credit many members from the Warband modding community
+  # who have shared their knowledge and helped me clear out many uncertainties
+  # and inconsistencies. Special credits (in no particular order) go to
+  # cmpxchg8b, Caba'drin, SonKidd, MadVader, dunde, Ikaguia, MadocComadrin,
+  # Cjkjvfnby, shokkueibu, Dalion, Dj_FRedy, Vetrogor, VonDegurechaff.
 
-   # Original work by Lav for version 1.166 of the game (published in 2015)
-   # https://forums.taleworlds.com/index.php?threads/warband-module-system-1-166-with-tweaks-and-giggles.324874/
-   #
-   # Updated by Zion
-   # [System Overhaul Redux Forum link]
-   # https://github.com/ZionLG/Project-Overhaul-Redux
-   #
-   # Updated by Vetrogor
-   # https://forums.taleworlds.com/index.php?threads/better-ms-scripting-reference-header_operations-expanded.213060/page-3#post-9410628
-   #
-   # Updated for engine 1.171 by Kalarhan for use with VC mods
-   # https://raw.githubusercontent.com/KalarhanWB/VC_Tweaks_Tool/master/app/header_operations.py
-   # https://github.com/KalarhanWB/VC_Tweaks_Tool/blob/master/app/header_operations.py
-
-   # Additional credits (in no particular order) go to
-   # K700, Vetrogor, Burspa, Winter, fisheye, Hellequin, Veni Vidi Vici
-
-   # Special thanks (in no particular order) to the Mount&Blade modding wiki [https://mbcommands.fandom.com/] contributors
-   # Vetrogor, Dalion, Sionfel, Erundil and Swyter, and any others!
+  # Original work by Lav for version 1.166 of the game (published in 2015)
+  # https://forums.taleworlds.com/index.php?threads/warband-module-system-1-166-with-tweaks-and-giggles.324874/
+  #
+  # Updated by Zion
+  # [System Overhaul Redux Forum link]
+  # https://github.com/ZionLG/Project-Overhaul-Redux
+  #
+  # Updated by Vetrogor
+  # https://forums.taleworlds.com/index.php?threads/better-ms-scripting-reference-header_operations-expanded.213060/page-3#post-9410628
+  #
+  # Updated for engine 1.171 by Kalarhan for use with VC mods
+  # https://raw.githubusercontent.com/KalarhanWB/VC_Tweaks_Tool/master/app/header_operations.py
+  # https://github.com/KalarhanWB/VC_Tweaks_Tool/blob/master/app/header_operations.py
+  
+  # Additional credits (in no particular order) go to
+  # K700, Vetrogor, Burspa, Winter, fisheye, Hellequin, Veni Vidi Vici
+  
+  # Special thanks (in no particular order) to the Mount&Blade modding wiki [https://mbcommands.fandom.com/] contributors
+  # Vetrogor, Dalion, Sionfel, Erundil and Swyter, and any others!
 
 ################################################################################
 # [ Z01 ] OPERATION MODIFIERS
@@ -692,10 +692,11 @@ get_player_agent_own_troop_kill_count = 1705  # (get_player_agent_own_troop_kill
 
 # Slot operations for factions
 
-faction_set_slot                =  502  # (faction_set_slot, <faction_id>, <slot_no>, <value>),
-faction_get_slot                =  522  # (faction_get_slot, <destination>, <faction_id>, <slot_no>),
-faction_slot_eq                 =  542  # (faction_slot_eq, <faction_id>, <slot_no>, <value>),
-faction_slot_ge                 =  562  # (faction_slot_ge, <faction_id>, <slot_no>, <value>),
+faction_set_slot                =  502                  # (faction_set_slot, <faction_id>, <slot_no>, <value>),
+faction_get_slot                =  522                  # (faction_get_slot, <destination>, <faction_id>, <slot_no>),
+faction_slot_eq                 =  542                  # (faction_slot_eq, <faction_id>, <slot_no>, <value>),
+faction_slot_ge                 =  562                  # (faction_slot_ge, <faction_id>, <slot_no>, <value>),
+faction_slot_lt                 =  neg|faction_slot_ge  # (faction_slot_lt, <faction_id>, <slot_no>, <value>),
 
 # Generic operations
 
@@ -749,40 +750,43 @@ faction_get_color               = 1277  # (faction_get_color, <destination>, <fa
 
 # Conditional operations
 
-hero_can_join                         =  101  # (hero_can_join, [party_id]),
-                                              # Checks if party can accept one hero troop. Player's party is default value.
-hero_can_join_as_prisoner             =  102  # (hero_can_join_as_prisoner, [party_id]),
-                                              # Checks if party can accept one hero prisoner troop. Player's party is default value.
-party_can_join                        =  103  # (party_can_join),
-                                              # During encounter dialog, checks if encountered party can join player's party.
-party_can_join_as_prisoner            =  104  # (party_can_join_as_prisoner),
-                                              # During encounter dialog, checks if encountered party can join player's party as prisoners.
-troops_can_join                       =  105  # (troops_can_join, <value>),
-                                              # Checks if player party has enough space for provided number of troops.
-troops_can_join_as_prisoner           =  106  # (troops_can_join_as_prisoner, <value>),
-                                              # Checks if player party has enough space for provided number of prisoners..
-party_can_join_party                  =  107  # (party_can_join_party, <joiner_party_id>, <host_party_id>, [flip_prisoners]),
-                                              # Checks if first party can join second party (enough space for both troops and prisoners). If flip_prisoners flag is 1, then members and prisoners in the joining party are flipped.
-main_party_has_troop                  =  110  # (main_party_has_troop, <troop_id>),
-                                              # Checks if player party has specified troop.
-party_is_in_town                      =  130  # (party_is_in_town, <party_id>, <town_party_id>),
-                                              # Checks that the party has successfully reached its destination (after being set to ai_bhvr_travel_to_party) and that its destination is actually the referenced town_party_id.
-party_is_in_any_town                  =  131  # (party_is_in_any_town, <party_id>),
-                                              # Checks that the party has successfully reached its destination (after being set to ai_bhvr_travel_to_party).
-party_is_active                       =  132  # (party_is_active, <party_id>),
-                                              # Checks that <party_id> is valid and not disabled.
+hero_can_join                         =  101                 # (hero_can_join, [party_id]),
+                                                             # Checks if party can accept one hero troop. Player's party is default value.
+hero_can_join_as_prisoner             =  102                 # (hero_can_join_as_prisoner, [party_id]),
+                                                             # Checks if party can accept one hero prisoner troop. Player's party is default value.
+party_can_join                        =  103                 # (party_can_join),
+                                                             # During encounter dialog, checks if encountered party can join player's party.
+party_can_join_as_prisoner            =  104                 # (party_can_join_as_prisoner),
+                                                             # During encounter dialog, checks if encountered party can join player's party as prisoners.
+troops_can_join                       =  105                 # (troops_can_join, <value>),
+                                                             # Checks if player party has enough space for provided number of troops.
+troops_can_join_as_prisoner           =  106                 # (troops_can_join_as_prisoner, <value>),
+                                                             # Checks if player party has enough space for provided number of prisoners..
+party_can_join_party                  =  107                 # (party_can_join_party, <joiner_party_id>, <host_party_id>, [flip_prisoners]),
+                                                             # Checks if first party can join second party (enough space for both troops and prisoners). If flip_prisoners flag is 1, then members and prisoners in the joining party are flipped.
+main_party_has_troop                  =  110                 # (main_party_has_troop, <troop_id>),
+                                                             # Checks if player party has specified troop.
+party_is_in_town                      =  130                 # (party_is_in_town, <party_id>, <town_party_id>),
+                                                             # Checks that the party has successfully reached its destination (after being set to ai_bhvr_travel_to_party) and that its destination is actually the referenced town_party_id.
+party_is_in_any_town                  =  131                 # (party_is_in_any_town, <party_id>),
+                                                             # Checks that the party has successfully reached its destination (after being set to ai_bhvr_travel_to_party).
+party_is_active                       =  132                 # (party_is_active, <party_id>),
+                                                             # Checks that <party_id> is valid and not disabled.
+party_is_dead                         =  neg|party_is_active # (party_is_dead, <party_id>),
 
 # Slot operations for parties and party templates
 
-party_template_set_slot               =  504  # (party_template_set_slot, <party_template_id>, <slot_no>, <value>),
-party_template_get_slot               =  524  # (party_template_get_slot, <destination>, <party_template_id>, <slot_no>),
-party_template_slot_eq                =  544  # (party_template_slot_eq, <party_template_id>, <slot_no>, <value>),
-party_template_slot_ge                =  564  # (party_template_slot_ge, <party_template_id>, <slot_no>, <value>),
+party_template_set_slot               =  504                         # (party_template_set_slot, <party_template_id>, <slot_no>, <value>),
+party_template_get_slot               =  524                         # (party_template_get_slot, <destination>, <party_template_id>, <slot_no>),
+party_template_slot_eq                =  544                         # (party_template_slot_eq, <party_template_id>, <slot_no>, <value>),
+party_template_slot_ge                =  564                         # (party_template_slot_ge, <party_template_id>, <slot_no>, <value>),
+party_template_slot_lt                =  neg|party_template_slot_ge  # (party_template_slot_lt, <party_template_id>, <slot_no>, <value>),
 
-party_set_slot                        =  501  # (party_set_slot, <party_id>, <slot_no>, <value>),
-party_get_slot                        =  521  # (party_get_slot, <destination>, <party_id>, <slot_no>),
-party_slot_eq                         =  541  # (party_slot_eq, <party_id>, <slot_no>, <value>),
-party_slot_ge                         =  561  # (party_slot_ge, <party_id>, <slot_no>, <value>),
+party_set_slot                        =  501                         # (party_set_slot, <party_id>, <slot_no>, <value>),
+party_get_slot                        =  521                         # (party_get_slot, <destination>, <party_id>, <slot_no>),
+party_slot_eq                         =  541                         # (party_slot_eq, <party_id>, <slot_no>, <value>),
+party_slot_ge                         =  561                         # (party_slot_ge, <party_id>, <slot_no>, <value>),
+party_slot_lt                         =  neg|party_slot_ge           # (party_slot_lt, <party_id>, <slot_no>, <value>),
 
 # Generic operations
 
@@ -1153,10 +1157,11 @@ player_has_item                          =  150  # (player_has_item, <item_id>),
 
 # Slot operations for troops
 # Slots numbers start from 0 and end at maximum 1,048,575 (0xFFFFF). Any other slot will return 0 as value.
-troop_set_slot                           =  500  # (troop_set_slot, <troop_id>, <slot_no>, <value>),
-troop_get_slot                           =  520  # (troop_get_slot, <destination>, <troop_id>, <slot_no>),
-troop_slot_eq                            =  540  # (troop_slot_eq, <troop_id>, <slot_no>, <value>),
-troop_slot_ge                            =  560  # (troop_slot_ge, <troop_id>, <slot_no>, <value>),
+troop_set_slot                           =  500                # (troop_set_slot, <troop_id>, <slot_no>, <value>),
+troop_get_slot                           =  520                # (troop_get_slot, <destination>, <troop_id>, <slot_no>),
+troop_slot_eq                            =  540                # (troop_slot_eq, <troop_id>, <slot_no>, <value>),
+troop_slot_ge                            =  560                # (troop_slot_ge, <troop_id>, <slot_no>, <value>),
+troop_slot_lt                            =  neg|troop_slot_ge  # (troop_slot_lt, <troop_id>, <slot_no>, <value>),
 
 # Troop attributes and skills
 
@@ -1453,10 +1458,11 @@ check_quest_concluded         =  204  # (check_quest_concluded, <quest_id>),
 
 # Slot operations for quests
 
-quest_set_slot                =  506  # (quest_set_slot, <quest_id>, <slot_no>, <value>),
-quest_get_slot                =  526  # (quest_get_slot, <destination>, <quest_id>, <slot_no>),
-quest_slot_eq                 =  546  # (quest_slot_eq, <quest_id>, <slot_no>, <value>),
-quest_slot_ge                 =  566  # (quest_slot_ge, <quest_id>, <slot_no>, <value>),
+quest_set_slot                =  506                # (quest_set_slot, <quest_id>, <slot_no>, <value>),
+quest_get_slot                =  526                # (quest_get_slot, <destination>, <quest_id>, <slot_no>),
+quest_slot_eq                 =  546                # (quest_slot_eq, <quest_id>, <slot_no>, <value>),
+quest_slot_ge                 =  566                # (quest_slot_ge, <quest_id>, <slot_no>, <value>),
+quest_slot_lt                 =  neg|quest_slot_ge  # (quest_slot_lt, <quest_id>, <slot_no>, <value>),
 
 # Quest management
 
@@ -1576,10 +1582,11 @@ item_has_faction                    = 2726  # (item_has_faction, <item_kind_no>,
 
 # Item slot operations
 
-item_set_slot                       =  507  # (item_set_slot, <item_id>, <slot_no>, <value>),
-item_get_slot                       =  527  # (item_get_slot, <destination>, <item_id>, <slot_no>),
-item_slot_eq                        =  547  # (item_slot_eq, <item_id>, <slot_no>, <value>),
-item_slot_ge                        =  567  # (item_slot_ge, <item_id>, <slot_no>, <value>),
+item_set_slot                       =  507               # (item_set_slot, <item_id>, <slot_no>, <value>),
+item_get_slot                       =  527               # (item_get_slot, <destination>, <item_id>, <slot_no>),
+item_slot_eq                        =  547               # (item_slot_eq, <item_id>, <slot_no>, <value>),
+item_slot_ge                        =  567               # (item_slot_ge, <item_id>, <slot_no>, <value>),
+item_slot_lt                        =  neg|item_slot_ge  # (item_slot_lt, <item_id>, <slot_no>, <value>),
 
 # Generic item operations
 
@@ -2297,26 +2304,31 @@ talk_info_set_line                    = 2022  # (talk_info_set_line, <line_no>, 
 
 # Conditional operations
 
-all_enemies_defeated                  = 1003  # (all_enemies_defeated, [time-value]),
-                                              # Checks if all agents from the enemy are defeated. When a time value x (in seconds) is given the operation only succeeds if the last status change (dead, alive, wounded...) happened more than (or exactly) x seconds ago.
-race_completed_by_player              = 1004  # (race_completed_by_player),
-                                              # Not documented. Not used in Native. Apparently deprecated, doesn't do anything, only returns true.
-num_active_teams_le                   = 1005  # (num_active_teams_le, <value>),
-                                              # Checks that the number of active teams (i.e. teams with at least one active agent) is less than or equal to given value.
-main_hero_fallen                      = 1006  # (main_hero_fallen),
-                                              # Checks that the player has been knocked out.
-scene_allows_mounted_units            = 1834  # (scene_allows_mounted_units),
-                                              # Checks if scene entry has the flag sf_no_horses.
-is_zoom_disabled                      = 2222  # (is_zoom_disabled),
-                                              # Version 1.153+. Checks that the zoom is currently disabled in the module.ini by setting the parameter disable_zoom = 1.
-mission_tpl_are_all_agents_spawned    = 1943  # (mission_tpl_are_all_agents_spawned), #agents >300 may keep spawning after ti_after_mission_start (still fires .1 second too early) 
+all_enemies_defeated                  = 1003                     # (all_enemies_defeated, [time-value]),
+                                                                 # Checks if all agents from the enemy are defeated. When a time value x (in seconds) is given the operation only succeeds if the last status change (dead, alive, wounded...) happened more than (or exactly) x seconds ago.
+race_completed_by_player              = 1004                     # (race_completed_by_player),
+                                                                 # Not documented. Not used in Native. Apparently deprecated, doesn't do anything, only returns true.
+num_active_teams_le                   = 1005                     # (num_active_teams_le, <value>),
+                                                                 # Checks that the number of active teams (i.e. teams with at least one active agent) is less than or equal to given value.
+num_active_teams_gt                   = neg|num_active_teams_le  # (num_active_teams_gt, <value>),
+                                                                 # Checks if the number of active teams is bigger than given value.
+main_hero_fallen                      = 1006                     # (main_hero_fallen),
+                                                                 # Checks that the player has been knocked out.
+main_hero_alive                       = neg|main_hero_fallen     # (main_hero_alive),
+                                                                 # Checks if the player is alive and not knocked out.
+scene_allows_mounted_units            = 1834                     # (scene_allows_mounted_units),
+                                                                 # Checks if scene entry has the flag sf_no_horses.
+is_zoom_disabled                      = 2222                     # (is_zoom_disabled),
+                                                                 # Version 1.153+. Checks that the zoom is currently disabled in the module.ini by setting the parameter disable_zoom = 1.
+mission_tpl_are_all_agents_spawned    = 1943                     # (mission_tpl_are_all_agents_spawned), #agents >300 may keep spawning after ti_after_mission_start (still fires .1 second too early) 
 
 # Scene slot operations
 
-scene_set_slot                               =  503  # (scene_set_slot, <scene_id>, <slot_no>, <value>),
-scene_get_slot                               =  523  # (scene_get_slot, <destination>, <scene_id>, <slot_no>),
-scene_slot_eq                                =  543  # (scene_slot_eq, <scene_id>, <slot_no>, <value>),
-scene_slot_ge                                =  563  # (scene_slot_ge, <scene_id>, <slot_no>, <value>),
+scene_set_slot                               =  503                # (scene_set_slot, <scene_id>, <slot_no>, <value>),
+scene_get_slot                               =  523                # (scene_get_slot, <destination>, <scene_id>, <slot_no>),
+scene_slot_eq                                =  543                # (scene_slot_eq, <scene_id>, <slot_no>, <value>),
+scene_slot_ge                                =  563                # (scene_slot_ge, <scene_id>, <slot_no>, <value>),
+scene_slot_lt                                =  neg|scene_slot_ge  # (scene_slot_lt, <scene_id>, <slot_no>, <value>),
 
 # Scene visitors handling operations
 
@@ -2756,54 +2768,69 @@ prop_instance_stop_all_particle_systems     = 1887  # (prop_instance_stop_all_pa
 
 # Conditional operations
 
-agent_is_in_special_mode                 = 1693  # (agent_is_in_special_mode, <agent_no>),
-                                                 # Checks that the agent is currently in scripted mode.
-                                                 # It's set after executing agent_set_scripted_destination or agent_set_scripted_destination_no_attack and is cleared with agent_clear_scripted_mode.
-agent_is_routed                          = 1699  # (agent_is_routed, <agent_no>),
-                                                 # Checks that the agent has fled from the map (i.e. reached the edge of the map in fleeing mode and then faded).
-agent_is_alive                           = 1702  # (agent_is_alive, <agent_no>),
-                                                 # Checks that the agent is alive. This will fail for dead or retreated agents (retreating counts from starting to fade out).
-agent_is_wounded                         = 1703  # (agent_is_wounded, <agent_no>),
-                                                 # Checks that the agent has been knocked unconscious. Alive agents return 0 even with zero hit points.
-agent_is_human                           = 1704  # (agent_is_human, <agent_no>),
-                                                 # Checks that the agent is human (i.e. not horse).
-agent_is_ally                            = 1706  # (agent_is_ally, <agent_no>),
-                                                 # Checks that the agent is allied to the player (belongs to player's party or allied party in current encounter).
-                                                 # Fails if player agent hasn't spawned yet.
-agent_is_non_player                      = 1707  # (agent_is_non_player, <agent_no>),
-                                                 # Checks that the agent is not a player.
-agent_is_defender                        = 1708  # (agent_is_defender, <agent_no>),
-                                                 # Checks that the agent belongs to the defending side (see encounter operations for details).
-agent_is_active                          = 1712  # (agent_is_active, <agent_no>),
-                                                 # Checks that the <agent_no> reference is active i.e. agent is valid (inc. dead or routed agents). This will always succeed inside try_for_agents loop.
-                                                 # Engine will delete agent reference aproximatly 30 sec after his death.
-agent_has_item_equipped                  = 1729  # (agent_has_item_equipped, <agent_no>, <item_id>),
-                                                 # Checks that the agent has a specific item equipped.
-agent_is_in_parried_animation            = 1769  # (agent_is_in_parried_animation, <agent_no>),
-                                                 # Checks that the agent is currently in parrying animation (defending from some attack).
-agent_is_alarmed                         = 1806  # (agent_is_alarmed, <agent_no>),
-                                                 # Checks that the agent is alarmed (in combat mode with weapon drawn).
-class_is_listening_order                 = 1775  # (class_is_listening_order, <team_no>, <division>),
+agent_is_in_special_mode                 = 1693                     # (agent_is_in_special_mode, <agent_no>),
+                                                                    # Checks that the agent is currently in scripted mode.
+                                                                    # It's set after executing agent_set_scripted_destination or agent_set_scripted_destination_no_attack and is cleared with agent_clear_scripted_mode.
+agent_is_routed                          = 1699                     # (agent_is_routed, <agent_no>),
+                                                                    # Checks that the agent has fled from the map (i.e. reached the edge of the map in fleeing mode and then faded).
+agent_is_alive                           = 1702                     # (agent_is_alive, <agent_no>),
+                                                                    # Checks that the agent is alive.
+                                                                    # This will fail for dead or retreated agents (retreating counts from starting to fade out).
+agent_is_wounded                         = 1703                     # (agent_is_wounded, <agent_no>),
+                                                                    # Checks that the agent has been knocked unconscious.
+                                                                    # Alive agents return 0 even with zero hit points.
+agent_is_down                            = neg|agent_is_alive       # (agent_is_down, <agent_id>),
+                                                                    # Checks if the agent is dead or unconscious.
+agent_is_human                           = 1704                     # (agent_is_human, <agent_no>),
+                                                                    # Checks that the agent is human (i.e. not horse).
+agent_is_horse                           = neg|agent_is_human       # (agent_is_horse, <agent_id>),
+                                                                    # Checks if the agent is a horse.
+agent_is_ally                            = 1706                     # (agent_is_ally, <agent_no>),
+                                                                    # Checks that the agent is allied to the player (belongs to player's party or allied party in current encounter).
+                                                                    # Fails if player agent hasn't spawned yet.
+agent_is_enemy                           = neg|agent_is_ally        # (agent_is_enemy, <agent_id>),
+                                                                    # Checks if the agent is hostile to the player.
+agent_is_non_player                      = 1707                     # (agent_is_non_player, <agent_no>),
+                                                                    # Checks that the agent is not a player.
+agent_is_defender                        = 1708                     # (agent_is_defender, <agent_no>),
+                                                                    # Checks that the agent belongs to the defending side (see encounter operations for details).
+agent_is_attacker                        = neg|agent_is_defender    # (agent_is_attacker, <agent_id>),
+                                                                    # Checks if the agent belongs to the attacking side.
+agent_is_active                          = 1712                     # (agent_is_active, <agent_no>),
+                                                                    # Checks that the <agent_no> reference is active i.e. agent is valid (inc. dead or routed agents).
+                                                                    # This will always succeed inside try_for_agents loop.
+                                                                    # Engine will delete agent reference aproximatly 30 sec after his death.
+agent_has_item_equipped                  = 1729                     # (agent_has_item_equipped, <agent_no>, <item_id>),
+                                                                    # Checks that the agent has a specific item equipped.
+agent_is_in_parried_animation            = 1769                     # (agent_is_in_parried_animation, <agent_no>),
+                                                                    # Checks that the agent is currently in parrying animation (defending from some attack).
+agent_is_alarmed                         = 1806                     # (agent_is_alarmed, <agent_no>),
+                                                                    # Checks that the agent is alarmed (in combat mode with weapon drawn).
+class_is_listening_order                 = 1775                     # (class_is_listening_order, <team_no>, <division>),
+                                                                    # Checks that the specified division of specified team is listening to player's orders.
+                                                                    # Despite the name doesn't check for agent class, but agent division.
 division_is_listening_order              = class_is_listening_order # (division_is_listening_order, <team_no>, <division>),
-                                                 # Checks that the specified division of specified team is listening to player's orders. Despite the name doesn't check for agent class, but agent division.
-teams_are_enemies                        = 1788  # (teams_are_enemies, <team_no>, <team_no_2>), 
-                                                 # Checks that the two teams are hostile to each other.
-agent_is_in_line_of_sight                = 1826  # (agent_is_in_line_of_sight, <agent_no>, <position_no>),
-                                                 # Version 1.153+. Checks that the agent can be seen from specified position. Rotation of position register is not used
-                                                 # (i.e. agent will be seen even if position is "looking" the other way).
-                                                 # Is more expensive in performance than (position_has_line_of_sight_to_position).
+teams_are_enemies                        = 1788                     # (teams_are_enemies, <team_no>, <team_no_2>), 
+                                                                    # Checks that the two teams are hostile to each other.
+agent_is_in_line_of_sight                = 1826                     # (agent_is_in_line_of_sight, <agent_no>, <position_no>),
+                                                                    # Version 1.153+. Checks that the agent can be seen from specified position.
+                                                                    # Rotation of position register is not used
+                                                                    # (i.e. agent will be seen even if position is "looking" the other way).
+                                                                    # Is more expensive in performance than (position_has_line_of_sight_to_position).
 
 # Team and agent slot operations - Team and agent slots reset every mission.
 
-team_set_slot                            =  509  # (team_set_slot, <team_id>, <slot_no>, <value>),
-team_get_slot                            =  529  # (team_get_slot, <destination>, <player_id>, <slot_no>),
-team_slot_eq                             =  549  # (team_slot_eq, <team_id>, <slot_no>, <value>),
-team_slot_ge                             =  569  # (team_slot_ge, <team_id>, <slot_no>, <value>),
+team_set_slot                            =  509                # (team_set_slot, <team_id>, <slot_no>, <value>),
+team_get_slot                            =  529                # (team_get_slot, <destination>, <player_id>, <slot_no>),
+team_slot_eq                             =  549                # (team_slot_eq, <team_id>, <slot_no>, <value>),
+team_slot_ge                             =  569                # (team_slot_ge, <team_id>, <slot_no>, <value>),
+team_slot_lt                             =  neg|team_slot_ge   # (team_slot_lt, <team_id>, <slot_no>, <value>),
 
-agent_set_slot                           =  505  # (agent_set_slot, <agent_id>, <slot_no>, <value>),
-agent_get_slot                           =  525  # (agent_get_slot, <destination>, <agent_id>, <slot_no>),
-agent_slot_eq                            =  545  # (agent_slot_eq, <agent_id>, <slot_no>, <value>),
-agent_slot_ge                            =  565  # (agent_slot_ge, <agent_id>, <slot_no>, <value>),
+agent_set_slot                           =  505                # (agent_set_slot, <agent_id>, <slot_no>, <value>),
+agent_get_slot                           =  525                # (agent_get_slot, <destination>, <agent_id>, <slot_no>),
+agent_slot_eq                            =  545                # (agent_slot_eq, <agent_id>, <slot_no>, <value>),
+agent_slot_ge                            =  565                # (agent_slot_ge, <agent_id>, <slot_no>, <value>),
+agent_slot_lt                            =  neg|agent_slot_ge  # (agent_slot_lt, <agent_id>, <slot_no>, <value>),
 
 # Agent spawning, removal and general operations
 
@@ -3537,7 +3564,7 @@ ban_player_using_saved_ban_info              =  468  # (ban_player_using_saved_b
 
 server_add_message_to_log                    =  473  # (server_add_message_to_log, <string_id>),
 
-                                                     # server_get_renaming_server_allowed, server_get_changing_game_type_allowed - Both of these get the values for dedicated servers which have commands to run on the console to (dis)allowing them                                                                                                
+                                                     # server_get_renaming_server_allowed, server_get_changing_game_type_allowed - Both of these get the values for dedicated servers which have commands to run on the console to (dis)allowing them																																																
 server_get_renaming_server_allowed           =  475  # (server_get_renaming_server_allowed, <destination>),
                                                      # Official docs: 0-1
 server_get_changing_game_type_allowed        =  476  # (server_get_changing_game_type_allowed, <destination>),
@@ -3546,8 +3573,8 @@ server_get_combat_speed                      =  478  # (server_get_combat_speed,
                                                      # Official docs: 0-2
 server_set_combat_speed                      =  479  # (server_set_combat_speed, <value>),
                                                      # Official docs: 0-2
-                                                     # Unofficial: <value> is actually 0-4, going from slowest to fastest, you can see its used in module_presentations from 0 to 4    
-                                                     # Sets the combat speed at the server.            
+												                             # Unofficial: <value> is actually 0-4, going from slowest to fastest, you can see its used in module_presentations from 0 to 4		
+                                                     # Sets the combat speed at the server.						
 server_get_friendly_fire                     =  480  # (server_get_friendly_fire, <destination>),
                                                      # Gets if friendly fire is enabled (1) or not (0).
 server_set_friendly_fire                     =  481  # (server_set_friendly_fire, <value>),
@@ -4365,14 +4392,15 @@ can_fail_operations = [
     agent_has_item_equipped,          agent_is_ally,           agent_is_in_parried_animation,        agent_is_wounded,                                        
     agent_is_active,                  agent_is_defender,       agent_is_in_special_mode,             agent_slot_eq,                               
     agent_is_alarmed,                 agent_is_human,          agent_is_non_player,                  agent_slot_ge,                        
-    all_enemies_defeated,
+    all_enemies_defeated,             agent_is_attacker,       agent_is_enemy,                       agent_is_horse,
+    agent_is_down,                    agent_slot_lt,
 
     cast_ray,                         check_quest_concluded,   check_quest_finished,               class_is_listening_order,      division_is_listening_order,                      
     check_quest_active,               check_quest_failed,      check_quest_succeeded,              conversation_screen_is_active,                                   
 
     encountered_party_is_attacker,    entering_town,            entry_point_is_auto_generated,      eq,
 
-    faction_slot_eq,                  faction_slot_ge,
+    faction_slot_eq,                  faction_slot_ge,          faction_slot_lt,
 
     game_in_multiplayer_mode,         game_key_clicked,         game_key_is_down,         ge,       gt,
 
@@ -4380,7 +4408,7 @@ can_fail_operations = [
 
     in_meta_mission,                  is_currently_night,             is_trial_version,            item_has_faction,           item_slot_eq,              
     is_between,                       is_edit_mode_enabled,           is_zoom_disabled,            item_has_modifier,          item_slot_ge,                
-    is_cheat_mode_enabled,            is_presentation_active,         item_has_capability,         item_has_property,                                    
+    is_cheat_mode_enabled,            is_presentation_active,         item_has_capability,         item_has_property,          item_slot_lt,                                 
 
     key_clicked,
     key_is_down,
@@ -4390,19 +4418,21 @@ can_fail_operations = [
 
     main_hero_fallen,                  map_get_land_position_around_position,             multiplayer_is_dedicated_server,          
     main_party_has_troop,              map_get_water_position_around_position,            multiplayer_is_server,                  
-    map_free,                          mission_tpl_are_all_agents_spawned,                            
+    map_free,                          mission_tpl_are_all_agents_spawned,                main_hero_alive,            
 
     neq,
     num_active_teams_le,
+    num_active_teams_gt,
 
     party_can_join,                     party_is_in_any_town,              party_template_slot_eq,              player_is_admin,                         player_slot_ge,                                                
     party_can_join_as_prisoner,         party_is_in_town,                  party_template_slot_ge,              player_is_busy_with_menus,               position_has_line_of_sight_to_position,                                                          
     party_can_join_party,               party_slot_eq,                     player_has_item,                     player_item_slot_is_picked_up,           position_is_behind_position,                                                  
     party_is_active,                    party_slot_ge,                     player_is_active,                    player_slot_eq,                          prop_instance_intersects_with_prop_instance,                                      
-    prop_instance_is_valid,
+    prop_instance_is_valid,             party_is_dead,                     party_template_slot_lt,              party_slot_lt,
 
     quest_slot_eq,
     quest_slot_ge,
+    quest_slot_lt,
 
     race_completed_by_player,
 
@@ -4410,12 +4440,13 @@ can_fail_operations = [
     scene_item_get_instance,                      scene_slot_eq,      
     scene_prop_get_instance,                      scene_slot_ge,  
     scene_prop_has_agent_on_it,                   store_random_party_of_template,      
-    scene_prop_slot_eq,                           str_is_empty,        
+    scene_prop_slot_eq,                           str_is_empty,   
+    scene_slot_lt,     
     
     team_slot_eq,                        troop_has_item_equipped,             troop_is_hero,                   troop_slot_eq,                                                     
     team_slot_ge,                        troop_is_guarantee_horse,            troop_is_mounted,                troop_slot_ge,                                                         
     teams_are_enemies,                   troop_is_guarantee_ranged,           troop_is_wounded,                troops_can_join,                                                               
-    troops_can_join_as_prisoner,
+    troops_can_join_as_prisoner,         troop_slot_lt,                       team_slot_lt,
 ]
 
 depth_operations = [try_begin, try_for_range, try_for_range_backwards, try_for_parties, try_for_agents, try_for_prop_instances, try_for_players, try_for_dict_keys]
