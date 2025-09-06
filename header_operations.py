@@ -590,7 +590,8 @@ rest_for_hours_interactive = 1031  # (rest_for_hours_interactive, <rest_time_in_
 # Conditional operations
 
 is_trial_version                      =  250  # (is_trial_version),
-                                              # Checks if the game is in trial mode (has not been purchased). Player cannot get higher than level 6 in this mode.
+                                              # Checks if the game is in trial mode (has not been purchased).
+                                              # Player cannot get higher than level 6 in this mode.
 is_edit_mode_enabled                  =  255  # (is_edit_mode_enabled),
                                               # Version 1.153+. Checks if Edit Mode is currently enabled in the game.
                                               # Useful for making additions to the default UI.
@@ -604,24 +605,26 @@ get_operation_set_version             =   55  # (get_operation_set_version, <des
                                               # In practice this was used by VC to gate engine workarounds, later deprecated by constants in module_constants.py.
                                               # Testing indicates WB v1.174 always returns 9999 (ignoring module.ini operation_set_version), effectively passing any version checks.
 set_player_troop                      =   47  # (set_player_troop, <troop_id>),
-                                              # Changes the troop player controls. Generally used in quick-battle scenarios to give player a predefined character.
+                                              # Changes the troop player controls.
+                                              # Generally used in quick-battle scenarios to give player a predefined character.
                                               # Can be used in single-player too, but is best used for the duration of a mission, not as a permanent solution,
                                               # because the character screen name-change functionality targets trp_player and fails if the troop being operated on is not trp_player.
                                               # Other hardcoded menus (inventory/character) generally show data of the currently selected troop.
                                               # Another potential bug can happen if this is called before the first hardcoded character screen (the one that forces point spending on stats):
-                                              # the newly selected troop may have no points to spend, leaving the player stuck. In practice, don't use this until player reaches mnu_start_phase_2
-                                              # (you can gate with a global set there).
+                                              # the newly selected troop may have no points to spend, leaving the player stuck.
+                                              # In practice, don't use this until player reaches mnu_start_phase_2 (you can gate with a global set there).
                                               #
                                               # Effects on related operations:
-                                              #  Honors set_player_troop when <troop_id> is omitted: (add_gold_as_xp), (add_xp_as_reward) → operate on the currently selected player troop.
+                                              #  Honors set_player_troop when <troop_id> is omitted: (add_gold_as_xp), (add_xp_as_reward) -> operate on the currently selected player troop.
                                               #  Ignores set_player_troop (hardcodes trp_player) if <troop_id> is omitted: (add_xp_to_troop), (player_has_item), (store_character_level),
-                                              #    (store_free_inventory_capacity), (store_item_kind_count).
+                                              #    (store_free_inventory_capacity), (store_item_kind_count), (troop_add_gold), (troop_remove_gold).
                                               #  Notes on gold popups/SFX with trp_player:
                                               #    - (troop_add_gold) keeps playing sounds/pop notifications when used on trp_player, regardless of set_player_troop.
                                               #    - (troop_remove_gold) on trp_player with a positive value does not play sounds/popups (so you can silently remove money by temporarily
                                               #      setting player troop to something else), but a negative value cannot be used to silently add money.
 show_object_details_overlay           =  960  # (show_object_details_overlay, <value>),
-                                              # Turns various popup tooltips on (value = 1) and off (value = 0). This includes agent names and dropped item names during missions, item stats in inventory on mouse over, etc.
+                                              # Turns various popup tooltips on (value = 1) and off (value = 0).
+                                              # This includes agent names and dropped item names during missions, item stats in inventory on mouse over, etc.
 auto_save                             =  985  # (auto_save),
                                               # Version 1.161+. Saves the game to the current save slot.
 allow_ironman                         =  988  # (allow_ironman, <value>), 
@@ -652,17 +655,24 @@ options_get_combat_speed              =  268  # (options_get_combat_speed, <dest
 options_set_combat_speed              =  269  # (options_set_combat_speed, <value>),
                                               # 0 = slowest, 1 = slower, 2 = normal, 3 = faster, 4 = fastest
 options_get_battle_size               =  270  # (options_get_battle_size, <destination>),
-                                              # Version 1.161+. Retrieves current battle size slider value (in the range of 0..1000). Note that this is the absolute UI slider position, not the battle size itself.
+                                              # Version 1.161+. Retrieves current battle size slider value (in the range of 0..1000).
+                                              # Note that this is the absolute UI slider position, not the battle size itself.
 options_set_battle_size               =  271  # (options_set_battle_size, <value>),
-                                              # Version 1.161+. Sets battle size slider to provided value (in the range of 0..1000). Note that this is the absolute UI slider position, not the battle size itself.
+                                              # Version 1.161+. Sets battle size slider to provided value (in the range of 0..1000).
+                                              # Note that this is the absolute UI slider position, not the battle size itself.
                                               # The battle size slider range multiplier starts at x1.25 and ends at x5.25 (WSE2 extends the upper bound to x6.25).
-                                              # To change the real battlesize the entry string at the begining of the mission templates needs to get changed. Multiplier start from 1.25 to 5.25 according to options slider.
-                                              # (1, mtef_team_0|mtef_defenders, 0, aif_start_alarmed, 40, []),
-                                              # Battle reinforcements are half of the start:
-                                              #     (store_normalized_team_count, ":num_defenders", 0),
+                                              # To change the real battle-size in a mission you need to edit the fifth element in the agent entry point spawn records, at the beginning of your mission template.
+                                              # Example: Using the lead_charge mission.
+                                              # Read more about how entry point spawn records work by reading the initial module_mission_templates.py file comments from TaleWorlds.
+                                              # Here the number of agents/troops to spawn (in entry point 1) is technically 40, at the minimum of x1.25.
+                                              #     (1, mtef_team_0|mtef_defenders, 0, aif_start_alarmed, 40, []),
+                                              # To make it so that battle reinforcements are always half of the battle start team size,
+                                              # we will do this through (store_normalized_team_count) in a mission trigger:
+                                              #     (store_normalized_team_count, ":num_defenders", 0), # swy: get the relative amount of active agents for team 0, 40 would be still being at 100%.
                                               #     (lt, ":num_defenders", 20),                         # if less than 20/40=50%
                                               #     (add_reinforcements_to_entry, 4, 20),               # add new wave 20/40=50%
-                                              # To let options show the rigth battle size values change the entries in module.ini accordingly:
+                                              # To make the in-game options show the actual battle-size troop values that we are are working with in our example,
+                                              # we need to change a few module.ini lines as follows, at 40 agents per team/side it would be:
                                               #     battle_size_min = 100 # (40+40)*1.25
                                               #     battle_size_max = 420 # (40+40)*5.25
                                               # The battle advantage for player is limited by the game engine. The player can only dominate with 2:1 ratio at max.
