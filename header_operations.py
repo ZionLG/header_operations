@@ -2114,50 +2114,93 @@ troop_set_note_available        = 1095 # (troop_set_note_available, <troop_id>, 
 add_troop_note_tableau_mesh     = 1108 # (add_troop_note_tableau_mesh, <troop_id>, <tableau_material_id>),
                                        # Adds graphical elements to the troop's information page (usually banner and portrait).
 add_troop_note_from_dialog      = 1114 # (add_troop_note_from_dialog, <troop_id>, <note_slot_no>, <expires_with_time>),
-                                       # Adds current dialog text to troop notes. Each troop has 16 note slots. Last parameter is used to mark the note as time-dependent, if its value is 1, then the note will be marked ("Report is current") and will be updated appropriately as the game progresses ("Report is X days old").
-                                      # Official: (add_troop_note_from_dialog,<troop_id>,<note_slot_no>, <value>), There are maximum of 8 slots. value = 1 -> shows when the note is added
+                                       # Adds current dialog text to troop notes. Each troop has 16 note slots.
+                                       # Last parameter is used to mark the note as time-dependent, if its value is 1, then the note will be marked ("Report is current")
+                                       # and will be updated appropriately as the game progresses ("Report is X days old").
+                                       # Official:
+                                       # (add_troop_note_from_dialog,<troop_id>,<note_slot_no>, <value>),
+                                       # There are maximum of 8 slots. value = 1 -> shows when the note is added
 add_troop_note_from_sreg        = 1117 # (add_troop_note_from_sreg, <troop_id>, <note_slot_no>, <string_id>, <expires_with_time>),
-                                       # Adds any text stored in string register to troop notes. Each troop has 16 note slots. Last parameter is used to mark the note as time-dependent, if its value is 1, then the note will be marked ("Report is current") and will be updated appropriately as the game progresses ("Report is X days old").
-                                       # Official: (add_troop_note_from_sreg,<troop_id>,<note_slot_no>,<string_id>, <value>), There are maximum of 8 slots value = 1 -> shows when the note is added
+                                       # Adds any text stored in string register to troop notes. Each troop has 16 note slots.
+                                       # Last parameter is used to mark the note as time-dependent, if its value is 1, then the note will be marked ("Report is current")
+                                       # and will be updated appropriately as the game progresses ("Report is X days old").
+                                       # Official:
+                                       # (add_troop_note_from_sreg,<troop_id>,<note_slot_no>,<string_id>, <value>),
+                                       # There are maximum of 8 slots value = 1 -> shows when the note is added
+
 faction_set_note_available      = 1096 # (faction_set_note_available, <faction_id>, <value>), #1 = available, 0 = not available
                                        # Enables (value = 1) or disables (value = 0) faction's page in the Notes / Characters section.
 add_faction_note_tableau_mesh   = 1109 # (add_faction_note_tableau_mesh, <faction_id>, <tableau_material_id>),
                                        # Adds graphical elements to the faction's information page (usually graphical collage).
 add_faction_note_from_dialog    = 1115 # (add_faction_note_from_dialog, <faction_id>, <note_slot_no>, <expires_with_time>),
-                                       # Adds current dialog text to faction notes. Each faction has 16 note slots. Last parameter is used to mark the note as time-dependent, if its value is 1, then the note will be marked ("Report is current") and will be updated appropriately as the game progresses ("Report is X days old").
-                                      # Official: (add_faction_note_from_dialog,<faction_id>,<note_slot_no>, <value>), There are maximum of 8 slots value = 1 -> shows when the note is added
+                                       # Adds current dialog text to faction notes. Each faction has 16 note slots.
+                                       # Last parameter is used to mark the note as time-dependent, if its value is 1, then the note will be marked ("Report is current")
+                                       # and will be updated appropriately as the game progresses ("Report is X days old").
+                                       # Official:
+                                       # (add_faction_note_from_dialog,<faction_id>,<note_slot_no>, <value>),
+                                       # There are maximum of 8 slots value = 1 -> shows when the note is added
 add_faction_note_from_sreg      = 1118 # (add_faction_note_from_sreg, <faction_id>, <note_slot_no>, <string_id>, <expires_with_time>),
-                                       # Adds any text stored in string register to faction notes. Each faction has 16 note slots. Last parameter is used to mark the note as time-dependent, if its value is 1, then the note will be marked ("Report is current") and will be updated appropriately as the game progresses ("Report is X days old").
-                                       # Official: (add_faction_note_from_sreg,<faction_id>,<note_slot_no>,<string_id>, <value>), #There are maximum of 8 slots value = 1 -> shows when the note is added
+                                       # Adds any text stored in string register to faction notes. Each faction has 16 note slots.
+                                       # Last parameter is used to mark the note as time-dependent, if its value is 1, then the note will be marked ("Report is current")
+                                       # and will be updated appropriately as the game progresses ("Report is X days old").
+                                       # Official:
+                                       # (add_faction_note_from_sreg,<faction_id>,<note_slot_no>,<string_id>, <value>),
+                                       # There are maximum of 8 slots value = 1 -> shows when the note is added
+
 party_set_note_available        = 1097 # (party_set_note_available, <party_id>, <value>), #1 = available, 0 = not available
                                        # Enables (value = 1) or disables (value = 0) party's page in the Notes / Characters section.
 add_party_note_tableau_mesh     = 1110 # (add_party_note_tableau_mesh, <party_id>, <tableau_material_id>),
                                        # Adds graphical elements to the party's information page (usually map icon).
 add_party_note_from_dialog      = 1116 # (add_party_note_from_dialog, <party_id>, <note_slot_no>, <expires_with_time>),
-                                       # Adds current dialog text to party notes. Each party has 16 note slots. Last parameter is used to mark the note as time-dependent, if its value is 1, then the note will be marked ("Report is current") and will be updated appropriately as the game progresses ("Report is X days old").
-                                       # Official: (add_party_note_from_dialog,<party_id>,<note_slot_no>, <value>), #There are maximum of 8 slots value = 1 -> shows when the note is added
+                                       # Adds current dialog text to party notes. Each party has 16 note slots.
+                                       # Last parameter is used to mark the note as time-dependent, if its value is 1, then the note will be marked ("Report is current")
+                                       # and will be updated appropriately as the game progresses ("Report is X days old").
+                                       # Official:
+                                       # (add_party_note_from_dialog,<party_id>,<note_slot_no>, <value>),
+                                       # #There are maximum of 8 slots value = 1 -> shows when the note is added
 add_party_note_from_sreg        = 1119 # (add_party_note_from_sreg, <party_id>, <note_slot_no>, <string_id>, <expires_with_time>),
-                                       # Adds any text stored in string register to party notes. Each party has 16 note slots. Last parameter is used to mark the note as time-dependent, if its value is 1, then the note will be marked ("Report is current") and will be updated appropriately as the game progresses ("Report is X days old").
-                                       # Official: (add_party_note_from_sreg,<party_id>,<note_slot_no>,<string_id>, <value>), #There are maximum of 8 slots value = 1 -> shows when the note is added
+                                       # Adds any text stored in string register to party notes. Each party has 16 note slots.
+                                       # Last parameter is used to mark the note as time-dependent, if its value is 1, then the note will be marked ("Report is current")
+                                       # and will be updated appropriately as the game progresses ("Report is X days old").
+                                       # Official:
+                                       # (add_party_note_from_sreg,<party_id>,<note_slot_no>,<string_id>, <value>),
+                                       # #There are maximum of 8 slots value = 1 -> shows when the note is added
+
 quest_set_note_available        = 1098 # (quest_set_note_available, <quest_id>, <value>), #1 = available, 0 = not available
                                        # Enables (value = 1) or disables (value = 0) quest's page in the Notes / Characters section.
 add_quest_note_tableau_mesh     = 1111 # (add_quest_note_tableau_mesh, <quest_id>, <tableau_material_id>),
                                        # Adds graphical elements to the quest's information page (not used in Native).
 add_quest_note_from_dialog      = 1112 # (add_quest_note_from_dialog, <quest_id>, <note_slot_no>, <expires_with_time>),
-                                       # Adds current dialog text to quest notes. Each quest has 16 note slots. Last parameter is used to mark the note as time-dependent, if its value is 1, then the note will be marked ("Report is current") and will be updated appropriately as the game progresses ("Report is X days old").
-                                       # Official: (add_quest_note_from_dialog,<quest_id>,<note_slot_no>, <value>), #There are maximum of 8 slots value = 1 -> shows when the note is added
+                                       # Adds current dialog text to quest notes. Each quest has 16 note slots.
+                                       # Last parameter is used to mark the note as time-dependent, if its value is 1, then the note will be marked ("Report is current")
+                                       # and will be updated appropriately as the game progresses ("Report is X days old").
+                                       # Official:
+                                       # (add_quest_note_from_dialog,<quest_id>,<note_slot_no>, <value>),
+                                       # #There are maximum of 8 slots value = 1 -> shows when the note is added
 add_quest_note_from_sreg        = 1113 # (add_quest_note_from_sreg, <quest_id>, <note_slot_no>, <string_id>, <expires_with_time>),
-                                       # Adds any text stored in string register to quest notes. Each quest has 16 note slots. Last parameter is used to mark the note as time-dependent, if its value is 1, then the note will be marked ("Report is current") and will be updated appropriately as the game progresses ("Report is X days old").
-                                       # Official: (add_quest_note_from_sreg,<quest_id>,<note_slot_no>,<string_id>, <value>), #There are maximum of 8 slots value = 1 -> shows when the note is added
+                                       # Adds any text stored in string register to quest notes. Each quest has 16 note slots.
+                                       # Last parameter is used to mark the note as time-dependent, if its value is 1, then the note will be marked ("Report is current")
+                                       # and will be updated appropriately as the game progresses ("Report is X days old").
+                                       # Official:
+                                       # (add_quest_note_from_sreg,<quest_id>,<note_slot_no>,<string_id>, <value>),
+                                       # #There are maximum of 8 slots value = 1 -> shows when the note is added
 
 add_info_page_note_tableau_mesh = 1090 # (add_info_page_note_tableau_mesh, <info_page_id>, <tableau_material_id>),
                                        # Adds graphical elements to the info page (not used in Native).
 add_info_page_note_from_dialog  = 1091 # (add_info_page_note_from_dialog, <info_page_id>, <note_slot_no>, <expires_with_time>),
-                                       # Adds current dialog text to info page notes. Each info page has 16 note slots. Last parameter is used to mark the note as time-dependent, if its value is 1, then the note will be marked ("Report is current") and will be updated appropriately as the game progresses ("Report is X days old").
-                                       # Official: (add_info_page_note_from_dialog,<info_page_id>,<note_slot_no>, <value>), #There are maximum of 8 slots value = 1 -> shows when the note is added
+                                       # Adds current dialog text to info page notes. Each info page has 16 note slots.
+                                       # Last parameter is used to mark the note as time-dependent, if its value is 1, then the note will be marked ("Report is current")
+                                       # and will be updated appropriately as the game progresses ("Report is X days old").
+                                       # Official:
+                                       # (add_info_page_note_from_dialog,<info_page_id>,<note_slot_no>, <value>),
+                                       # #There are maximum of 8 slots value = 1 -> shows when the note is added
 add_info_page_note_from_sreg    = 1092 # (add_info_page_note_from_sreg, <info_page_id>, <note_slot_no>, <string_id>, <expires_with_time>),
-                                       # Adds any text stored in string register to info page notes. Each info page has 16 note slots. Last parameter is used to mark the note as time-dependent, if its value is 1, then the note will be marked ("Report is current") and will be updated appropriately as the game progresses ("Report is X days old").
-                                      # Official: (add_info_page_note_from_sreg,<info_page_id>,<note_slot_no>,<string_id>, <value>), #There are maximum of 8 slots value = 1 -> shows when the note is added
+                                       # Adds any text stored in string register to info page notes. Each info page has 16 note slots.
+                                       # Last parameter is used to mark the note as time-dependent, if its value is 1, then the note will be marked ("Report is current")
+                                       # and will be updated appropriately as the game progresses ("Report is X days old").
+                                       # Official:
+                                       # (add_info_page_note_from_sreg,<info_page_id>,<note_slot_no>,<string_id>, <value>),
+                                       # #There are maximum of 8 slots value = 1 -> shows when the note is added
 
 ################################################################################
 # [ Z16 ] TABLEAUS AND HERALDICS
@@ -2166,10 +2209,11 @@ add_info_page_note_from_sreg    = 1092 # (add_info_page_note_from_sreg, <info_pa
   # Tableaus are the tool that gives you limited access to the game graphical
   # renderer. If you know 3D graphics, you know that all 3D objects consist of
   # a mesh (which defines its form) and the material (which defines how this
-  # mesh is "painted"). With tableau functions you can do two things. First, you
-  # can replace or alter the materials used to render the game objects (with
+  # mesh is "painted"). With tableau functions you can do two things.
+  # First, you can replace or alter the materials used to render the game objects (with
   # many restrictions). If this sounds esoteric to you, have a look at the game
-  # heraldry - it is implemented using tableaus. Second, you can render images
+  # heraldry - it is implemented using tableaus.
+  # Second, you can render images
   # of various game objects and place them on the game menus, presentations and
   # so on. For example, if you open the game Inventory window, you can see your
   # character in his current equipment. This character is rendered using tableau
@@ -2178,18 +2222,32 @@ add_info_page_note_from_sreg    = 1092 # (add_info_page_note_from_sreg, <info_pa
   # face and banner are drawn using tableaus.
 
 cur_item_set_tableau_material                    = 1981  # (cur_item_set_tableu_material, <tableau_material_id>, <instance_code>),
-                                                         # Can only be used inside ti_on_init_item trigger in module_items.py. Assigns tableau to the item instance. Value of <instance_code> will be passed to tableau code. Commonly used for heraldic armors and shields.
+                                                         # Can only be used inside ti_on_init_item trigger in module_items.py.
+                                                         # Assigns tableau to the item instance.
+                                                         # Value of <instance_code> will be passed to tableau code.
+                                                         # Commonly used for heraldic armors and shields.
 cur_scene_prop_set_tableau_material              = 1982  # (cur_scene_prop_set_tableau_material, <tableau_material_id>, <instance_code>),
-                                                         # Can only be used inside ti_on_init_scene_prop trigger in module_scene_props.py. Assigns tableau to the scene prop instance. Value of <instance_code> will be passed to tableau code. Commonly used for static banners.
+                                                         # Can only be used inside ti_on_init_scene_prop trigger in module_scene_props.py.
+                                                         # Assigns tableau to the scene prop instance.
+                                                         # Value of <instance_code> will be passed to tableau code.
+                                                         # Commonly used for static banners.
 cur_map_icon_set_tableau_material                = 1983  # (cur_map_icon_set_tableau_material, <tableau_material_id>, <instance_code>),
-                                                         # Can only be used inside ti_on_init_map_icon trigger in module_map_icons.py. Assigns tableau to the icon prop instance. Value of <instance_code> will be passed to tableau code. Commonly used for player/lord party banners.
+                                                         # Can only be used inside ti_on_init_map_icon trigger in module_map_icons.py.
+                                                         # Assigns tableau to the icon prop instance.
+                                                         # Value of <instance_code> will be passed to tableau code.
+                                                         # Commonly used for player/lord party banners.
+
 cur_agent_set_banner_tableau_material            = 1986  # (cur_agent_set_banner_tableau_material, <tableau_material_id>),
-                                                         # Can only be used inside ti_on_agent_spawn trigger in module_mission_templates. Assigns heraldry.
+                                                         # Can only be used inside ti_on_agent_spawn trigger in module_mission_templates.
+                                                         # Assigns heraldry.
 
 # Operations used in module_tableau_materials.py module
 
 cur_tableau_add_tableau_mesh                     = 1980  # (cur_tableau_add_tableau_mesh, <tableau_material_id>, <value>, <position_register_no>),
-                                                         # Used in module_tableau_materials.py to add one tableau to another. Value parameter is passed to tableau_material as is.
+                                                         # Used in module_tableau_materials.py to add one tableau to another.
+                                                         # Value parameter is passed to tableau_material as is.
+                                                         # 4research: possibly takes another 2 optional parameters (those being <scale_fixed_point> and <alpha_fixed_point>).
+
 cur_tableau_render_as_alpha_mask                 = 1984  # (cur_tableau_render_as_alpha_mask)
                                                          # Tells the engine to treat the tableau as an alpha (transparency) mask.
 cur_tableau_set_background_color                 = 1985  # (cur_tableau_set_background_color, <value>),
@@ -2199,25 +2257,36 @@ cur_tableau_set_ambient_light                    = 1987  # (cur_tableau_set_ambi
 cur_tableau_set_camera_position                  = 1988  # (cur_tableau_set_camera_position, <position>),
                                                          # Not documented. Used for tableaus rendered from 3D objects to position camera as necessary (usually with a perspective camera).
 cur_tableau_set_camera_parameters                = 1989  # (cur_tableau_set_camera_parameters, <is_perspective>, <camera_width_times_fixed_point>, <camera_height_times_fixed_point>, <camera_near_times_fixed_point>, <camera_far_times_fixed_point>),
-                                                         # Not documented. Used to define camera parameters for tableau rendering. Perspective camera is generally used to render 3D objects for tableaus, while non-perspective camera is used to modify tableau texture meshes.
+                                                         # Not documented. Used to define camera parameters for tableau rendering.
+                                                         # Perspective camera is generally used to render 3D objects for tableaus,
+                                                         # while non-perspective camera is used to modify tableau texture meshes.
 cur_tableau_add_point_light                      = 1990  # (cur_tableau_add_point_light, <position>, <red_fixed_point>, <green_fixed_point>, <blue_fixed_point>),
                                                          # Not documented. Typically used for tableaus rendered from 3D objects to add a point light source.
 cur_tableau_add_sun_light                        = 1991  # (cur_tableau_add_sun_light, <position>, <red_fixed_point>, <green_fixed_point>, <blue_fixed_point>),
-                                                         # Not documented. Typically used for tableaus rendered from 3D objects to add a directional light source. Note that position coordinates do not matter, only rotation (i.e. light rays direction) does.
-cur_tableau_add_mesh                             = 1992  # (cur_tableau_add_mesh, <mesh_id>, <position>, <value_fixed_point>, <value_fixed_point>),
-                                                         # Adds a static mesh to the tableau with specified offset, scale and alpha. First value fixed point is the scale factor, second value fixed point is alpha. use 0 for default values.
-cur_tableau_add_mesh_with_vertex_color           = 1993  # (cur_tableau_add_mesh_with_vertex_color, <mesh_id>, <position>, <value_fixed_point>, <value_fixed_point>, <value>),
-                                                         # Adds a static mesh to the tableau with specified offset, scale, alpha and vertex color. First value fixed point is the scale factor, second value fixed point is alpha. Value is vertex color.
+                                                         # Not documented. Typically used for tableaus rendered from 3D objects to add a directional light source.
+                                                         # Note that position coordinates do not matter, only rotation (i.e. light rays direction) does.
+cur_tableau_add_mesh                             = 1992  # (cur_tableau_add_mesh, <mesh_id>, <position>, [<scale_fixed_point>], [<alpha_fixed_point>]),
+                                                         # Adds a static mesh to the tableau with specified offset, scale and alpha.
+                                                         # Scale and alpha are optional, skip them or pass 0 to use default values.
+
+cur_tableau_add_mesh_with_vertex_color           = 1993  # (cur_tableau_add_mesh_with_vertex_color, <mesh_id>, <position>, <scale_fixed_point>, <alpha_fixed_point>, <color>),
+                                                         # Adds a static mesh to the tableau with specified offset, scale, alpha and vertex color.
+                                                         # Color must be provided with alpha channel (0xAARRGGBB), providing just RGB (0xRRGGBB) will not apply the color.
+
 cur_tableau_add_mesh_with_scale_and_vertex_color = 2000  # (cur_tableau_add_mesh_with_scale_and_vertex_color, <mesh_id>, <position>, <scale_position>, <value_fixed_point>, <value>),
-                                                         # Similar to (cur_tableau_add_mesh_with_vertex_color), but allows non-uniform scaling. Scale factors are stored as (x,y,z) position properties with fixed point values.
-cur_tableau_add_map_icon                         = 1994  # (cur_tableau_add_map_icon, <map_icon_id>, <position>, <value_fixed_point>),
-                                                         # Adds a rendered image of a map icon to current tableau. Last parameter is the scale factor for the model.
+                                                         # Similar to (cur_tableau_add_mesh_with_vertex_color), but allows non-uniform scaling.
+                                                         # Scale factors are stored as (x,y,z) position properties with fixed point values.
+cur_tableau_add_map_icon                         = 1994  # (cur_tableau_add_map_icon, <map_icon_id>, <position>, [<scale_fixed_point>]),
+                                                         # Adds a rendered image of a map icon to current tableau.
+                                                         # Last parameter is the scale factor for the model.
 cur_tableau_add_troop                            = 1995  # (cur_tableau_add_troop, <troop_id>, <position>, <animation_id>, <instance_no>),
-                                                         # Adds a rendered image of the troop in a specified animation to current tableau. If instance_no is 0 or less, then the face is not generated randomly (important for heroes).
+                                                         # Adds a rendered image of the troop in a specified animation to current tableau.
+                                                         # If instance_no is 0 or less, then the face is not generated randomly (important for heroes).
 cur_tableau_add_horse                            = 1996  # (cur_tableau_add_horse, <item_id>, <position>, <animation_id>),
                                                          # Adds a rendered image of a horse in a specified animation to current tableau.
 cur_tableau_set_override_flags                   = 1997  # (cur_tableau_set_override_flags, <value>),
-                                                         # When creating a troop image for current tableau, this operation allows to override troop's inventory partially or completely. See af_* flags in header_mission_templates.py for reference.
+                                                         # When creating a troop image for current tableau, this operation allows to override troop's inventory partially or completely.
+                                                         # See af_* flags in header_mission_templates.py for reference.
 cur_tableau_clear_override_items                 = 1998  # (cur_tableau_clear_override_items),
                                                          # Removes and previously defined equipment overrides for the troop, allowing to start from scratch.
 cur_tableau_add_override_item                    = 1999  # (cur_tableau_add_override_item, <item_kind_id>),
