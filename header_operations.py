@@ -2400,18 +2400,47 @@ str_encode_url                  = 2355  # (str_encode_url, <string_register>),
   # (displayed as a chat-like series of text strings in the bottom-left part of
   # the screen), while most others will be displaying various types of dialog
   # boxes. You can also ask a question to player using these operations.
-  # You can clear message list in right bottom corner by dislpaing an empty string. Also when spaming messages shut down the display log it will be visible again.
+  #
+  # You can clear the message list in the bottom-right corner by displaying an empty string.
+  # Also, when the log stops updating after being overwhelmed by
+  # the message rate, doing this will make it visible again:
   # (display_message, "@{!}"),
-  # This will create a quick string. Another approach is to display an empty string register.
+  # This method would still create a dummy quick string. Another approach is to display an empty string register:
   # (str_clear, s0), (display_message),
-  # (display_message), without parameters displays the s0 string register. It should be initialisized, i.e. it is necessary to (str_clear, s0), even at the begining of the game.
+  # (display_message), without parameters displays the s0 string register. It
+  # should be initialized, i.e. it is necessary to (str_clear, s0), even at the
+  # beginning of the game. This method doesn't work in WSE2.
+  #
+  # @ - creates quick string. The file quick_strings.txt should be deleted
+  # before release. As variables.txt. When you add new quick_string/variable it
+  # will be attached to the end of the txt file for save compatibility. And
+  # deleted quick_string/variable will still be there.
+  # {!} - don't create text for translation
+  # {reg0?One of your prisoners, :} - If reg0=1 then add text "One of your
+  # prisoners, :"
+  #
+  # Formatter
+  # There exist a few undocumented formatter tokens that only work when the
+  # game is set to Turkish (tr language code). They are used in the official
+  # Turkish translation (search for {.nin} or {.i} in the .csv files) to handle
+  # the complex suffixes of the language dynamically, probably. The accepted
+  # ones are as follows: .dirler .siniz .iz .dir .sin .im .leri .niz .miz .si
+  # .n .m .le .ce .ler .nin .den .de .e .i
+  # WSE2 currently does not support them.
 
 display_debug_message               = 1104  # (display_debug_message, <string_id>, [hex_colour_code]),
-                                            # Displays a string message, but only in debug mode, using provided color (hex-coded 0xRRGGBB). The message is additionally written to rgl_log.txt file in both release and debug modes when edit mode is enabled.
+                                            # Displays a string message, but only in debug mode, using provided color (hex-coded 0xRRGGBB).
+                                            # The message is additionally written to rgl_log.txt file in both release and debug modes when Edit Mode is enabled.
+                                            # (As of 2025.06.04, v1.174, I - Erundil - have failed to achieve any results with display_debug_message -
+                                            # there is no such thing as "debug mode", so I tested all possibilities, but with and without Edit Mode it didn't write to rgl_log.txt,
+                                            # Recent Messages, Game Log, nor popped a notification in bottom left corner of the screen.)
 display_log_message                 = 1105  # (display_log_message, <string_id>, [hex_colour_code]),
-                                            # Display a string message using provided color (hex-coded 0xRRGGBB). The message will also be written to game log (accessible through Notes / Game Log), and will persist between sessions (i.e. it will be stored as part of the savegame).
+                                            # Same as display_message, but also writes to Notes\Game Log. Messages written to Game Log are stored in the save file.
 display_message                     = 1106  # (display_message, <string_id>,[hex_colour_code]),
-                                            # Display a string message using provided color (hex-coded 0xRRGGBB).
+                                            # Pops up a provided line of text as a notification in bottom left corner of the screen.
+                                            # The notification's color is white by default, but can be set to something else with the optional color parameter (hex-coded 0xRRGGBB or 0xAARRGGBB).
+                                            # Additionally writes the same text (without color) to Notes\Recent Messages. Recent Messages are not stored in the save file.
+                                            # If Edit Mode is enabled, also writes to rgl_log.txt.
 set_show_messages                   = 1107  # (set_show_messages, <value>),
                                             # Suppresses (value = 0) or enables (value = 1) game messages, including those generated by the game engine.
 tutorial_box                        = 1120  # (tutorial_box, <string_id>, <string_id>),
@@ -2419,10 +2448,14 @@ tutorial_box                        = 1120  # (tutorial_box, <string_id>, <strin
 dialog_box                          = 1120  # (dialog_box, <text_string_id>, [title_string_id]),
                                             # Displays a popup window with the text message and an optional caption.
 question_box                        = 1121  # (question_box, <string_id>, [<yes_string_id>], [<no_string_id>]),
-                                            # Displays a popup window with the text of the question and two buttons (Yes and No by default, but can be overridden). When the player selects one of possible responses, a ti_question_answered trigger will be executed.
+                                            # Displays a popup window with the text of the question and two buttons (Yes and No by default, but can be overridden).
+                                            # When the player selects one of possible responses, a ti_question_answered trigger will be executed.
                                             # Works inside a mission template and in the map window, presentations cannot be used at the same time.
 tutorial_message                    = 1122  # (tutorial_message, <string_id>, [color], [auto_close_time]),
-                                            # Displays a popup window with tutorial text stored in referenced string or string register. Use -1 to close any currently open tutorial box. Optional parameters allow you to define text color and time period after which the tutorial box will close automatically. Works also at the world map.
+                                            # Displays a popup window with tutorial text stored in referenced string or string register.
+                                            # Use -1 to close any currently open tutorial box.
+                                            # Optional parameters allow you to define text color and time period after which the tutorial box will close automatically.
+                                            # Works also at the world map.
 tutorial_message_set_position       = 1123  # (tutorial_message_set_position, <position_x>, <position_y>), 
                                             # Defines screen position for the tutorial box. Assumes screen size is 1000*750.
 tutorial_message_set_size           = 1124  # (tutorial_message_set_size, <size_x>, <size_y>), 
