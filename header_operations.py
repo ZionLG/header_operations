@@ -152,8 +152,8 @@ try_for_parties         =   11  # (try_for_parties, <destination>),
 try_for_agents          =   12  # (try_for_agents, <agent_no>, [<position_no>, <radius_fixed_point>]), 
                                 # Runs a cycle, iterating all active agents on the scene.
                                 # Iteration works for active agents alive and dead
-                                # The reference <agent_no> is active until the next mission or scene is loaded. So don't check agent_is_active.
-                                # It will always return true.
+                                # The reference <agent_no> is active until the next mission or scene is loaded.
+                                # So don't check agent_is_active. It will always return true.
                                 # Optional parameters allow to check agents only within specific radius around certain position.
                                 # Radius is fixed point value so you need to specify fixed_point_multiplier before using this operator.
                                 # Avoid using pos0. This will pass zero to the second argument and radius and position will be skipped.
@@ -279,14 +279,17 @@ val_mod                    = 2109    # (val_mod, <destination>, <value>),
 val_min                    = 2110    # (val_min, <destination>, <value>),
                                      # Picks the minimum of two numbers and saves it in the first argument;
                                      # by setting <destination> to <value> if it's smaller than the contents of <destination>.
-                                     # Equivalent to dest = min(dest, val)
+                                     # Assigns <destination> := MIN (<destination>, <value>)
 val_max                    = 2111    # (val_max, <destination>, <value>),
                                      # Picks the maximum of two numbers and saves it in the first argument;
                                      # by setting <destination> to <value> if it's bigger than the contents of <destination>.
-                                     # Equivalent to dest = max(dest, val)
+                                     # Assigns <destination> := MAX (<destination>, <value>)
 
 val_clamp                  = 2112    # (val_clamp, <destination>, <lower_bound>, <upper_bound>),
                                      # Limit the numeric range, also known as clamping.
+                                     # Instead of maintaining careful "data range integrity" throughout a series of operations,
+                                     # reasoning out by what means it could escape its expected bounds and covering those individually,
+                                     # you can insert this operation and ensure that it will produce an answer within the range you are looking for.
                                      # Enforces the <destination> value to be within the <lower_bound>..<upper_bound>-1 range.
                                      # Equivalent to dest = min(max(lower, dest), upper - 1).
                                      # e.g. To make sure our local variable ":i" (which may hold a -4) fits into the 0 to 10 range,
@@ -294,7 +297,7 @@ val_clamp                  = 2112    # (val_clamp, <destination>, <lower_bound>,
                                      # which is our smallest valid value here.
 val_abs                    = 2113    # (val_abs, <destination>),
                                      # Get the absolute value; make a number positive if it was negative, flipping the sign.
-                                     # Assigns <destination> = abs(<destination>)
+                                     # Assigns <destination> := ABS (<destination>)
 
 store_sqrt                 = 2125    # (store_sqrt, <destination_fixed_point>, <value_fixed_point>),
                                      # Square root. Assigns dest := SQRT (value)
@@ -510,6 +513,7 @@ omit_key_once                   = 77  # (omit_key_once, <key_code>),
                                       # key_mouse_scroll_up, key_mouse_scroll_down, key_space, key_pad or key_xbox (from 0xF0 to 0xFF - possible works for all),
                                       # You can bypass F1-F8 menu with the operation (close_order_menu),
 clear_omitted_keys              = 78  # (clear_omitted_keys),
+                                      # Clear all omitted keys.
                                       # Commonly called when exiting from a presentation which made any calls to (omit_key_once).
                                       # However, the effects of those calls disappear by the next frame, so apparently usage of this operation is not necessary.
                                       # It is still recommended to be on the safe side though.
@@ -580,9 +584,10 @@ rest_for_hours_interactive = 1031  # (rest_for_hours_interactive, <rest_time_in_
 is_trial_version                      =  250  # (is_trial_version),
                                               # Checks if the game is in trial mode (has not been purchased). Player cannot get higher than level 6 in this mode.
 is_edit_mode_enabled                  =  255  # (is_edit_mode_enabled),
-                                              # Version 1.153+. Checks that Edit Mode is currently enabled in the game.
+                                              # Version 1.153+. Checks if Edit Mode is currently enabled in the game.
+                                              # Useful for making additions to the default UI.
 is_cheat_mode_enabled                 =   53  # (is_cheat_mode_enabled),
-                                              #  Checks if Cheat Mode is currently enabled in the game i.e. "Enable Cheats" is ticked on in the launcher.
+                                              # Checks if Cheat Mode is currently enabled in the game i.e. "Enable Cheats" is ticked on in the launcher.
 
 # Generic operations
 
