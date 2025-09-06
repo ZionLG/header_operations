@@ -1564,20 +1564,31 @@ face_keys_set_morph_key                  = 2767  # (face_keys_set_morph_key, <st
 # Quests go over a few stages:
 #  1) Initially the quest is inactive and not in player’s quest log.
 #  2) Our quest gets started with (start_quest), which makes the quest active (turns on the appropriate quest state flag), and as a result the quest appears in the quest log.
-#  3) Our quest eventually reaches its conclusion, ending up a success (indicated to game engine with (succeed_quest), which toggles the succeeded flag and concluded flag), failure (with (fail_quest), which toggles failed and concluded) or somewhere in-between ( (conclude_quest) which only toggles the concluded flag). Counterintuitively, these 3 states are not mutually exclusive and don’t cancel each other out –it’s on the modder to prevent situations where quests are marked as both failed and succeeded. At this point the quest still remains in the quest log, usually waiting for the player to report back to quest giver.
-#  4) Finally, our quest ends (indicated to game engine with (complete_quest)). At this point the quest disappears from the quest log. From the game engine point of view, what really happens depends on whether the quest has qf_random_quest flag or not.
-#     4.1) If it does, it’s repeatable – the engine will clear all quest state flags (active, concluded, succeeded, failed), and as a result the quest will disappear from the quest log, ready to be taken again some other time (it does not clear the quest slots, so it’s on the modder to clear them when the quest is taken again).
-#     4.2) If it doesn’t, then it can only be done once –the engine will only clear the active flag, but leave the concluded/succeeded/failed flags at their final state. As a result the quest will disappear from the quest log, but taking it again will not be possible. (Why? Will (start_quest) not work? Or will it just instantly complete, because the state flags are already set?)
-#  5) Additionally, anytime the quest is active, it can be cancelled with (cancel_quest). This turns off all the quest state flags (active/concluded/succeeded/failed) –as a result removes it from the quest log, and leaves it ready to be taken again, even if it’s not repeatable (doesn’t have the qf_random_quest flag).
+#  3) Our quest eventually reaches its conclusion, ending up a success (indicated to game engine with (succeed_quest), which toggles the succeeded flag and concluded flag), 
+#     failure (with (fail_quest), which toggles failed and concluded) or somewhere in-between ( (conclude_quest) which only toggles the concluded flag).
+#     Counterintuitively, these 3 states are not mutually exclusive and don’t cancel each other out –it’s on the modder to prevent situations where quests are marked as both failed and succeeded.
+#     At this point the quest still remains in the quest log, usually waiting for the player to report back to quest giver.
+#  4) Finally, our quest ends (indicated to game engine with (complete_quest)). At this point the quest disappears from the quest log.
+#     From the game engine point of view, what really happens depends on whether the quest has qf_random_quest flag or not.
+#     4.1) If it does, it’s repeatable – the engine will clear all quest state flags (active, concluded, succeeded, failed), 
+#          and as a result the quest will disappear from the quest log, ready to be taken again some other time (it does not clear the quest slots, 
+#          so it’s on the modder to clear them when the quest is taken again).
+#     4.2) If it doesn’t, then it can only be done once –the engine will only clear the active flag, but leave the concluded/succeeded/failed flags at their final state. 
+#          As a result the quest will disappear from the quest log, but taking it again will not be possible.
+#     (Why? Will (start_quest) not work? Or will it just instantly complete, because the state flags are already set?)
+#  5) Additionally, anytime the quest is active, it can be cancelled with (cancel_quest). 
+#     This turns off all the quest state flags (active/concluded/succeeded/failed) –as a result removes it from the quest log, 
+#     and leaves it ready to be taken again, even if it’s not repeatable (doesn’t have the qf_random_quest flag).
 
-# The quests themselves need to be coded manually, weaved into dialog, menus and triggers;
+# The quests themselves need to be coded manually, weaved into dialog, menus and triggers; 
 # these operations just handle the user-facing state, log messages, completion sounds and UI.
 # They also have their own notes and slots, useful to store your own related information and progress.
 
 # Conditional operations
 
 check_quest_active            =  200  # (check_quest_active, <quest_id>),
-                                      # Checks that the quest has been started but not yet cancelled or completed. Will not fail for concluded, failed or succeeded quests for as long as they have not yet been completed/cancelled.
+                                      # Checks that the quest has been started but not yet cancelled or completed.
+                                      # Will not fail for concluded, failed or succeeded quests for as long as they have not yet been completed/cancelled.
                                       # Internally it only checks against the active flag in the quest's progression field, see below.
 check_quest_finished          =  201  # (check_quest_finished, <quest_id>),
                                       # Checks that the quest has been completed (result does not matter) and not taken again yet.
@@ -1613,18 +1624,21 @@ succeed_quest                 = 1282  # (succeed_quest, <quest_id>), #also concl
                                       # Sets quest status as successful, but at this point it generally remains in the list
                                       # (player must visit quest giver to complete it before he can get another quest of the same type).
                                       # Only toggles on the succeeded and concluded flags and shows a ui_quest_succeeded_value message.
-                                      # Keep in mind that this operation does not clear any previously-set failed flag, they aren't mutually exclusive. So both can end up toggled on at the same time. Both (check_quest_succeeded), and (check_quest_failed), would return true for this quest.
+                                      # Keep in mind that this operation does not clear any previously-set failed flag, they aren't mutually exclusive.
+                                      # So both can end up toggled on at the same time. Both (check_quest_succeeded), and (check_quest_failed), would return true for this quest.
 fail_quest                    = 1283  # (fail_quest, <quest_id>), #also concludes the quest
                                       # Sets quest status as failed, at this point it generally remains in the list
                                       # (player must visit quest giver to complete it before he can get another quest of the same type).
                                       # Only toggles on the failed and concluded flags and shows a ui_quest_failed_value message.
-                                      # Keep in mind that this operation does not clear any previously-set succeeded flag, they aren't mutually exclusive. So both can end up toggled on at the same time. Both (check_quest_succeeded), and (check_quest_failed), would return true for this quest.
+                                      # Keep in mind that this operation does not clear any previously-set succeeded flag, they aren't mutually exclusive.
+                                      # So both can end up toggled on at the same time. Both (check_quest_succeeded), and (check_quest_failed), would return true for this quest.
 complete_quest                = 1281  # (complete_quest, <quest_id>),
                                       # Successfully completes specified quest. Generally used to remove it from the list of active quests.
                                       # Behavior changes depending on the quest flags.
                                       # When the quest has the <qf_random_quest> flag it clears all quest state flags and shows a <ui_quest_completed_value> message, ready for it to be recycled.
-                                      # If that flag is missing, then the quest is assumed to be a one-off permanent thing and the operation will instead toggle on the <finished> flag,
-                                      # leaving the <active> and any other existing flags (like <concluded>/<failed>/<succeeded>) toggled on and intact, the only way to reset the state is via the <cancel_quest> operation.
+                                      # If that flag is missing, then the quest is assumed to be a one-off permanent thing and the operation will instead toggle on the
+                                      # <finished> flag, leaving the <active> and any other existing flags (like <concluded>/<failed>/<succeeded>) toggled on and intact, the
+                                      # only way to reset the state is via the <cancel_quest> operation.
                                       # Addendum: In Warband the <active> flag does get cleared when the <qf_random_quest> quest type flag is missing, in M&B 1.011 it does not.
                                       # In any case any previous (<concluded>/<failed>/<succeeded>) flags are kept intact.
 
@@ -1633,7 +1647,8 @@ cancel_quest                  = 1284  # (cancel_quest, <quest_id>),
                                       # Clears all quest state flags and shows a ui_quest_cancelled_value message.
 
 setup_quest_text              = 1290  # (setup_quest_text, <quest_id>),
-                                      # Operation will refresh default quest description (as defined in module_quests.py). This is important when quest description contains references to variables and registers which need to be initialized with their current values.
+                                      # Operation will refresh default quest description (as defined in module_quests.py). This is important when quest description
+                                      # contains references to variables and registers which need to be initialized with their current values.
 
 store_partner_quest           = 2240  # (store_partner_quest, <destination>),
                                       # During conversation, if there's a quest given by conversation partner, the operation will return its ID.
@@ -1767,7 +1782,9 @@ item_get_leg_armor                  = 2705  # (item_get_leg_armor, <destination>
 item_get_hit_points                 = 2706  # (item_get_hit_points, <destination>, <item_kind_no>),
                                             # Version 1.161+. Retrieves item hit points amount.
 item_get_weapon_length              = 2707  # (item_get_weapon_length, <destination>, <item_kind_no>),
-                                            # Version 1.161+. Retrieves item length (for weapons) or shield half-width (for shields). To get actual shield width, multiply this value by 2. Essentially, it is a distance from shield's "center" point to its left, right and top edges (and bottom edge as well if shield height is not defined).
+                                            # Version 1.161+. Retrieves item length (for weapons) or shield half-width (for shields).
+                                            # To get actual shield width, multiply this value by 2.
+                                            # Essentially, it is a distance from shield's "center" point to its left, right and top edges (and bottom edge as well if shield height is not defined).
 item_get_speed_rating               = 2708  # (item_get_speed_rating, <destination>, <item_kind_no>),
                                             # Version 1.161+. Retrieves item speed rating.
 item_get_missile_speed              = 2709  # (item_get_missile_speed, <destination>, <item_kind_no>),
@@ -1775,9 +1792,12 @@ item_get_missile_speed              = 2709  # (item_get_missile_speed, <destinat
 item_get_max_ammo                   = 2710  # (item_get_max_ammo, <destination>, <item_kind_no>),
                                             # Version 1.161+. Retrieves item max ammo amount. Ignores large bag modifier.
 item_get_accuracy                   = 2711  # (item_get_accuracy, <destination>, <item_kind_no>),
-                                            # Version 1.161+. Retrieves item accuracy value. Note that this operation will return 0 for an item with undefined accuracy, even though the item accuracy will actually default to 100.
+                                            # Version 1.161+. Retrieves item accuracy value.
+                                            # Note that this operation will return 0 for an item with undefined accuracy, even though the item accuracy will actually default to 100.
 item_get_shield_height              = 2712  # (item_get_shield_height, <destination_fixed_point>, <item_kind_no>),
-                                            # Version 1.161+. Retrieves distance from shield "center" to its bottom edge as a fixed point number. Use (set_fixed_point_multiplier, 100), to retrieve the correct value with this operation. To get actual shield height, use shield_height + weapon_length if this operation returns a non-zero value, otherwise use 2 * weapon_length.
+                                            # Version 1.161+. Retrieves distance from shield "center" to its bottom edge as a fixed point number.
+                                            # Use (set_fixed_point_multiplier, 100), to retrieve the correct value with this operation.
+                                            # To get actual shield height, use shield_height + weapon_length if this operation returns a non-zero value, otherwise use 2 * weapon_length.
 item_get_horse_scale                = 2713  # (item_get_horse_scale, <destination_fixed_point>, <item_kind_no>),
                                             # Version 1.161+. Retrieves horse scale value as fixed point number.
                                             # Has a bug with rounding down the result which decreases its value by 1. To fix it multiply FPM by 10. Get scale with new FPM.
@@ -1791,9 +1811,11 @@ item_get_horse_speed                = 2714  # (item_get_horse_speed, <destinatio
 item_get_horse_maneuver             = 2715  # (item_get_horse_maneuver, <destination>, <item_kind_no>),
                                             # Version 1.161+. Retrieves horse maneuverability value.
 item_get_food_quality               = 2716  # (item_get_food_quality, <destination>, <item_kind_no>),
-                                            # Version 1.161+. Retrieves food quality coefficient (as of Warband 1.165, this coefficient is actually set for many food items, but never used in the code as there was no way to retrieve this coeff before 1.161 patch).
+                                            # Version 1.161+. Retrieves food quality coefficient.
+                                            # Note: as of Warband 1.165, this coefficient is actually set for many food items, but never used in the code as there was no way to retrieve this coefficient before 1.161 patch.
 item_get_abundance                  = 2717  # (item_get_abundance, <destination>, <item_kind_no>),
-                                            # Version 1.161+. Retrieve item abundance value. Note that this operation will return 0 for an item with undefined abundance, even though the item abundance will actually default to 100.
+                                            # Version 1.161+. Retrieve item abundance value.
+                                            # Note that this operation will return 0 for an item with undefined abundance, even though the item abundance will actually default to 100.
 item_get_thrust_damage              = 2718  # (item_get_thrust_damage, <destination>, <item_kind_no>),
                                             # Version 1.161+. Retrieves thrust base damage value for item.
 item_get_thrust_damage_type         = 2719  # (item_get_thrust_damage_type, <destination>, <item_kind_no>),
@@ -1826,17 +1848,21 @@ item_get_horse_charge_damage        = 2722  # (item_get_horse_charge_damage, <de
 play_sound_at_position   =  599  # (play_sound_at_position, <sound_id>, <position>, [options]),
                                  # Plays a sound in specified scene position. See sf_* flags in header_sounds.py for reference on possible options.
 play_sound               =  600  # (play_sound, <sound_id>, [options]),
-                                 # Plays a sound. If the operation is called from agent, scene_prop or item trigger, then the sound will be positional and 3D. See sf_* flags in header_sounds.py for reference on possible options.
+                                 # Plays a sound. If the operation is called from agent, scene_prop or item trigger, then the sound will be positional and 3D.
+                                 # See sf_* flags in header_sounds.py for reference on possible options.
 play_track               =  601  # (play_track, <track_id>, [options]),
                                  # Plays specified music track. Possible options: 0 = finish current then play this, 1 = fade out current and start this, 2 = stop current abruptly and start this
 play_cue_track           =  602  # (play_cue_track, <track_id>),
                                  # Plays specified music track OVER any currently played music track (so you can get two music tracks playing simultaneously). Hardly useful.
 music_set_situation      =  603  # (music_set_situation, <situation_type>),
-                                 # Sets current situation(s) in the game (see mtf_* flags in header_music.py for reference) so the game engine can pick matching tracks from module_music.py. Use 0 to stop any currently playing music (it will resume when situation is later set to something).
+                                 # Sets current situation(s) in the game (see mtf_* flags in header_music.py for reference) so the game engine can pick matching tracks from module_music.py.
+                                 # Use 0 to stop any currently playing music (it will resume when situation is later set to something).
 music_set_culture        =  604  # (music_set_culture, <culture_type>),
-                                 # Sets current culture(s) in the game (see mtf_* flags in header_music.py for reference) so the game engine can pick matching tracks from module_music.py. Use 0 to stop any currently playing music (it will resume when cultures are later set to something).
+                                 # Sets current culture(s) in the game (see mtf_* flags in header_music.py for reference) so the game engine can pick matching tracks from module_music.py.
+                                 # Use 0 to stop any currently playing music (it will resume when cultures are later set to something).
 stop_all_sounds          =  609  # (stop_all_sounds, [options]), 
-                                 # Stops all playing sounds. Version 1.153 options: 0 = stop only looping sounds, 1 = stop all sounds. Version 1.143 options: 0 = let current track finish, 1 = fade it out, 2 = stop it abruptly.
+                                 # Stops all playing sounds. Version 1.153 options: 0 = stop only looping sounds, 1 = stop all sounds.
+                                 # Version 1.143 options: 0 = let current track finish, 1 = fade it out, 2 = stop it abruptly.
 store_last_sound_channel =  615  # (store_last_sound_channel, <destination>),
                                  # Version 1.153+. UNTESTED. Stores the sound channel used for the last sound operation.
                                  # Can fail. Return -1 as value. For agent_play_sound; play_sound - if called from item, scene_prop trigger. 4research
