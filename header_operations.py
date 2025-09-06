@@ -1179,8 +1179,9 @@ party_get_ignore_with_player_party    = 1649  # (party_get_ignore_with_player_pa
   # items that the troop has are just suggestions for what this troop *might*
   # take into battle. On the battlefield, each agent spawned from the regular
   # troop, will only take a limited number of items from the inventory provided
-  # by the troop definition in module_troops.py. Choice is absolutely random and
-  # modder has only limited control over it through the use of guarantee flags.
+  # by the troop definition in module_troops.py. Choice is absolutely random
+  # (Vetrogor: it is not random. If you restart battle with 2 agents of the same troop their equipment will be the same. For research...)
+  # and modder has only limited control over it through the use of guarantee flags.
   # There's one more additional caveat: while you can easily change the outfit
   # of a hero troop and your changes will persist through the game, same applies
   # to regular troops. In other words, by changing equipment of some regular
@@ -1258,6 +1259,7 @@ class_set_name                           = 1837  # (class_set_name, <sub_class>,
                                                  # However, the game seems to be able to display only up to 291 characters from the feed message, and
                                                  # long class names aren't readable or viable but are definitely possible.
                                                  # Keep in mind that 10 characters are required for ", hear me!" to show up so the actual max length for class name is 281.
+                                                 # Because troop class actually has nothing to do with agent class, and everything to do with the agent division, a more appropriate name would be division_set_name.
                                                  # Names get stored in the savefile.
 add_xp_to_troop                          = 1062  # (add_xp_to_troop, <value>, [troop_id]),
                                                  # Adds xp points to troop.
@@ -1348,7 +1350,7 @@ troop_inventory_slot_get_item_amount     = 1537  # (troop_inventory_slot_get_ite
                                                  # If some Bread is 23/50, this operation will return 23.
 troop_inventory_slot_get_item_max_amount = 1538  # (troop_inventory_slot_get_item_max_amount, <destination>, <troop_id>, <inventory_slot_no>),
                                                  # Retrieves the maximum possible stack size for a specified equipment or inventory slot.
-                                                 # Exmaple: If some Bread is 23/50, this operation will return 50.
+                                                 # Example: If some Bread is 23/50, this operation will return 50.
 troop_add_items                          = 1535  # (troop_add_items, <troop_id>, <item_id>, <number>),
                                                  # Adds multiple items of specified type to the troop.
 troop_remove_items                       = 1536  # (troop_remove_items, <troop_id>, <item_id>, <number>),
@@ -1361,6 +1363,8 @@ troop_loot_troop                         = 1539  # (troop_loot_troop, <target_tr
                                                  # If an item is added to the target troop, it is given a random modifier from the item's imod list.
                                                  # Does not actually remove items from source_troop.
                                                  # Commonly used in Native to generate random loot after the battle.
+                                                 # itp_unique items are ignored and will not be copied as loot.
+                                                 # The result is a random chance of adding some number of items. Repeat in cycle if needed.
 troop_get_inventory_capacity             = 1540  # (troop_get_inventory_capacity, <destination>, <troop_id>),
                                                  # Returns the total inventory capacity (number of inventory slots) for the specified troop.
                                                  # Note that this number will include equipment slots as well.
@@ -1368,6 +1372,9 @@ troop_get_inventory_capacity             = 1540  # (troop_get_inventory_capacity
 troop_get_inventory_slot                 = 1541  # (troop_get_inventory_slot, <destination>, <troop_id>, <inventory_slot_no>),
                                                  # Retrieves the item_id of a specified equipment or inventory slot. 
                                                  # Returns -1 when there's nothing there.
+                                                 # Heroes has predetermined slot values range in 0..9. See constants in header_items.py "equipment slots".
+                                                 # Order is weapon1, weapon2, weapon3, weapon4, head_armor, body_armor, leg_armor, hand_armor, horse.
+                                                 # Deprecated 9th slot was for food.
 troop_get_inventory_slot_modifier        = 1542  # (troop_get_inventory_slot_modifier, <destination>, <troop_id>, <inventory_slot_no>),
                                                  # Retrieves the modifier value (see imod_* constants in header_items.py) for an item in the specified equipment or inventory slot.
                                                  # Returns 0 when there's nothing there, or if item does not have any modifiers.
@@ -1404,13 +1411,21 @@ set_merchandise_max_value           = 1491  # (set_merchandise_max_value, <value
 reset_item_probabilities            = 1492  # (reset_item_probabilities, <value>),
                                             # Sets all items probability of being generated as merchandise to the provided value.
                                             # Use zero with subsequent calls to (set_item_probability_in_merchandise) to only allow generation of certain items.
+                                            # Probability is a percentage modifier to abundance. See description of (set_item_probability_in_merchandise) for more details.
 set_item_probability_in_merchandise = 1493  # (set_item_probability_in_merchandise, <item_id>, <value>),
                                             # Sets item probability of being generated as merchandise to the provided value.
+                                            # Probability is a percentage modifier applied on top of base abundance defined in module_items.py, so for an item with abundance=80
+                                            # setting its probability to 25 means that when generating merchandise with (troop_add_merchandise)/(troop_add_merchandise_with_faction)
+                                            # the game engine will consider this item to have effective abundance of 80*25%=20. Lowering effective abundance of an item increases
+                                            # the chances of other items being generated, while increasing the effective abundance of an item increases its chance of being generated
+                                            # at the expense of lowering the chances for other items. You can prevent the item from being generated at all by setting its probability to 0.
+                                            # (The same can't be done with abundance, as setting the abundance to 0 means "use default value" which is 100).
 troop_add_merchandise               = 1512  # (troop_add_merchandise, <troop_id>, <item_type_id>, <value>),
                                             # Adds a specified number of random items of certain type (see itp_type_* constants in header_items.py) to troop inventory.
                                             # Only adds items with itp_merchandise flags.
 troop_add_merchandise_with_faction  = 1513  # (troop_add_merchandise_with_faction, <troop_id>, <faction_id>, <item_type_id>, <value>),
-                                            # faction_id is given to check if troop is eligible to produce that itemSame as (troop_add_merchandise), but with additional filter.
+                                            # faction_id is given to check if troop is eligible to produce that item.
+                                            # Same as (troop_add_merchandise), but with an additional faction filter.
                                             # Only adds items which belong to specified faction, or without any factions at all.
 
 # Miscellaneous troop information
@@ -1444,7 +1459,7 @@ troop_set_age                            = 1555  # (troop_set_age, <troop_id>, <
 store_troop_value                        = 2231  # (store_troop_value, <destination>, <troop_id>),
                                                  # Stores some value which is apparently related to troop's overall fighting value.
                                                  # Swadian infantry line troops from Native produced values 24, 47, 80, 133, 188.
-                                                 # Calling on player produced 0.
+                                                 # Calling on player and active NPCs produced 0.
 
 # Troop face code handling
 
