@@ -1836,24 +1836,27 @@ item_get_horse_charge_damage        = 2722  # (item_get_horse_charge_damage, <de
   # the scene or by player's opponent during the dialog). They can be generic
   # sound effects, like playing some drums when player meets mountain bandits.
 
-  # Tracks are the background music. The game works as a kind of a musuc box,
+  # Tracks are the background music. The game works as a kind of a music box,
   # cycling the available melodies according to the situation. It is up to the
   # Module System developer, however, to tell the game what the situation is.
   # There are two factors which you can tell the game: situation and culture.
   # So you can tell the game that the situation is "ambush" and the culture is
-  # "khergits", and the game will select the musuc tracks which fit this
+  # "khergits", and the game will select the music tracks which fit this
   # combination of situation and culture and will rotate them randomly. And of
   # course, you can also tell the game to play one specific track if you want.
 
 play_sound_at_position   =  599  # (play_sound_at_position, <sound_id>, <position>, [options]),
                                  # Plays a sound in specified scene position. See sf_* flags in header_sounds.py for reference on possible options.
 play_sound               =  600  # (play_sound, <sound_id>, [options]),
-                                 # Plays a sound. If the operation is called from agent, scene_prop or item trigger, then the sound will be positional and 3D.
-                                 # See sf_* flags in header_sounds.py for reference on possible options.
+                                 # Plays a sound. See sf_* flags in header_sounds.py for reference on possible options.
+                                 # If the operation is called from scene_prop or item trigger, then the sound will be positional and 3D.
+                                 # To achieve positional 3D sound from an agent use (agent_play_sound).
 play_track               =  601  # (play_track, <track_id>, [options]),
-                                 # Plays specified music track. Possible options: 0 = finish current then play this, 1 = fade out current and start this, 2 = stop current abruptly and start this
+                                 # Plays specified music track. Possible options:
+                                 # 0 = finish current then play this, 1 = fade out current and start this, 2 = stop current abruptly and start this
 play_cue_track           =  602  # (play_cue_track, <track_id>),
-                                 # Plays specified music track OVER any currently played music track (so you can get two music tracks playing simultaneously). Hardly useful.
+                                 # Plays specified music track OVER any currently played music track (so you can get two music tracks playing simultaneously).
+                                 # Hardly useful.
 music_set_situation      =  603  # (music_set_situation, <situation_type>),
                                  # Sets current situation(s) in the game (see mtf_* flags in header_music.py for reference) so the game engine can pick matching tracks from module_music.py.
                                  # Use 0 to stop any currently playing music (it will resume when situation is later set to something).
