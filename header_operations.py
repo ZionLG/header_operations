@@ -2500,16 +2500,19 @@ tutorial_message_set_background     = 1126  # (tutorial_message_set_background, 
 entering_town                         =   36  # (entering_town, <town_id>),
                                               # Apparently deprecated.
 encountered_party_is_attacker         =   39  # (encountered_party_is_attacker),
-                                              # Checks that the party encountered on the world map was following player (i.e. either player was trying to run away or at the very least this is a head-on clash).
+                                              # Checks that the party encountered on the world map was following player
+                                              # (i.e. either player was trying to run away or at the very least this is a head-on clash).
 conversation_screen_is_active         =   42  # (conversation_screen_is_active),
-                                              # Checks that the player is currently in dialogue with some agent. Can only be used in triggers of module_mission_templates.py file.
+                                              # Checks that the player is currently in dialogue with some agent.
+                                              # Can only be used in triggers of module_mission_templates.py file.
 in_meta_mission                       =   44  # (in_meta_mission),
                                               # Only works during conversations. Returns <false> if the conversation happens during a normal mission
                                               # (where we enter the scene, can walk around it). Returns <true> for "conversation missions" where mission starts
                                               # with a conversation and ends when the conversation ends. It may require extra testing for some unusual cases,
                                               # but in general <in_meta_mission> should return <true> for conversations in scenes entered with
                                               # <change_screen_map_conversation> and <false> for conversations in scenes entered with <change_screen_mission>.
-                                              # Official documentation: Deprecated, do not use.
+                                              # If called outside of conversation, results are unreliable.
+                                              # Official documentation: Deprecated, do not use. (But vanilla Warband uses it anyway.)
 
 # Game hardcoded windows and related operations
 
@@ -2518,35 +2521,47 @@ change_screen_return                  = 2040  # (change_screen_return),
 change_screen_loot                    = 2041  # (change_screen_loot, <troop_id>),
                                               # Opens the Looting interface, using the provided troop as loot storage. Player has full access to troop inventory.
 change_screen_trade                   = 2042  # (change_screen_trade, [troop_id]),
-                                              # Opens the Trade screen, using the provided troop as the trading partner. When called from module_dialogs, troop_id is optional and defaults to current dialogue partner.
+                                              # Opens the Trade screen, using the provided troop as the trading partner.
+                                              # When called from module_dialogs, troop_id is optional and defaults to current dialogue partner.
 change_screen_exchange_members        = 2043  # (change_screen_exchange_members, [exchange_leader], [party_id]),
-                                              # Opens the Exchange Members With Party interface, using the specified party_id. If called during an encounter, party_id is optional and defaults to the encountered party. Second parameter [0, 1] determines whether the party leader is exchangeable (useful when managing the castle garrison).
+                                              # Opens the Exchange Members With Party interface, using the specified party_id.
+                                              # First parameter [0, 1] determines whether the party leader is exchangeable (useful when managing the castle garrison).
+                                              # If called during an encounter, party_id is optional and defaults to the encountered party.
 change_screen_trade_prisoners         = 2044  # (change_screen_trade_prisoners),
                                               # Opens the Sell Prisoners interface. Script "script_game_get_prisoner_price" will be used to determine prisoner price.
 change_screen_buy_mercenaries         = 2045  # (change_screen_buy_mercenaries),
-                                              # Opens the Buy Mercenaries interface, where player can hire troops from the party specified with (set_mercenary_source_party) operation. Only works from the dialog.
+                                              # Opens the Buy Mercenaries interface, where player can hire troops from the party specified with (set_mercenary_source_party) operation.
+                                              # Only works from the dialog.
 change_screen_view_character          = 2046  # (change_screen_view_character),
                                               # Opens the character screen of another troop. Can only be used in dialogs.
 change_screen_training                = 2047  # (change_screen_training),
-                                              # Opens the character screen for the troop that player is currently talking to. Only works in dialogs. Deprecated, use (change_screen_view_character) instead.
+                                              # Opens the character screen for the troop that player is currently talking to. Only works in dialogs. 
+                                              # Deprecated, use (change_screen_view_character) instead.
 change_screen_mission                 = 2048  # (change_screen_mission),
                                               # Starts the mission, using previously defined scene and mission template.
 change_screen_map_conversation        = 2049  # (change_screen_map_conversation, <troop_id>),
-                                              # Starts the mission, same as (change_screen_mission). However once the mission starts, player will get into dialog with the specified troop, and once the dialog ends, the mission will automatically end.
+                                              # Starts the mission, same as (change_screen_mission). 
+                                              # However, once the mission starts, player will get into dialog with the specified troop, 
+                                              # and once the dialog ends, the mission will automatically end.
                                               # Works from menus. Doesn't work from map.
 change_screen_exchange_with_party     = 2050  # (change_screen_exchange_with_party, <party_id>),
-                                              # Effectively duplicates (change_screen_exchange_members), but party_id parameter is obligatory and the operation doesn't have an option to prevent party leader from being exchanged.
+                                              # Effectively duplicates (change_screen_exchange_members), 
+                                              # but party_id parameter is obligatory and the operation doesn't have an option to prevent party leader from being exchanged.
 change_screen_equip_other             = 2051  # (change_screen_equip_other, [troop_id]),
-                                              # Opens the Equip Companion interface. When calling from a dialog, it is not necessary to specify troop_id.
+                                              # Opens the Equip Companion interface. 
+                                              # When calling from a dialog, it is not necessary to specify troop_id.
 change_screen_map                     = 2052  # (change_screen_map),
                                               # Changes the screen to global map, closing any currently running game menu, dialog or mission.
 change_screen_notes                   = 2053  # (change_screen_notes, <note_type>, <object_id>),
-                                              # Opens the Notes screen, in the selected category (note_type: 1=troops, 2=factions, 3=parties, 4=quests, 5=info_pages) and for the specified object in that category.
+                                              # Opens the Notes screen, in the selected category 
+                                              # (note_type: 1=troops, 2=factions, 3=parties, 4=quests, 5=info_pages) 
+                                              # and for the specified object in that category.
 change_screen_quit                    = 2055  # (change_screen_quit),
                                               # Quits the game to the main menu.
                                               # Most probably needs to be called from module_game_menus.
 change_screen_give_members            = 2056  # (change_screen_give_members, [party_id]),
-                                              # Opens the Give Troops to Another Party interface. Party_id parameter is optional during an encounter and will use encountered party as default value.
+                                              # Opens the Give Troops to Another Party interface. 
+                                              # Party_id parameter is optional during an encounter and will use encountered party as default value.
 change_screen_controls                = 2057  # (change_screen_controls),
                                               # Opens the standard Configure Controls screen, pausing the game.
 change_screen_options                 = 2058  # (change_screen_options),
@@ -2554,47 +2569,77 @@ change_screen_options                 = 2058  # (change_screen_options),
 
 set_mercenary_source_party            = 1320  # (set_mercenary_source_party, <party_id>),
                                               # Defines the party from which the player will buy mercenaries with (change_screen_buy_mercenaries).
-start_map_conversation                = 1025  # (start_map_conversation, <troop_id>),
-                                              # Old syntax: (start_map_conversation, <troop_id>, [troop_dna]),
-                                              # Starts a conversation with the selected troop using "event_triggered" dialog state. Can be called directly from global map or game menus. Troop DNA parameter allows you to randomize non-hero troop appearances.
+start_map_conversation                = 1025  # (start_map_conversation, <troop_id>, [troop_dna]),
+                                              # Starts a conversation with the selected troop using "event_triggered" dialog state.
+                                              # Can be called directly from global map or game menus.
+                                              # Troop DNA parameter allows you to randomize non-hero troop appearances.
 
 # Game menus
 
 set_background_mesh                   = 2031  # (set_background_mesh, <mesh_id>),
-                                              # Sets the specified mesh as the background for the current menu. Possibly can be used for dialogs or presentations, but was not tested.
+                                              # Sets the specified mesh as the background for the current menu. 
+                                              # Possibly can be used for dialogs or presentations, but was not tested.
                                               # UPDATE: Not working for presentations, not tested yet for dialogs.
 set_game_menu_tableau_mesh            = 2032  # (set_game_menu_tableau_mesh, <tableau_material_id>, <value>, <position_register_no>),
-                                              # Adds a tableau to the current game menu screen. Position (X,Y) coordinates define mesh position, Z coordinate defines scaling. Parameter <value> will be passed as tableau_material script parameter.
+                                              # Adds a tableau to the current game menu screen. 
+                                              # Position (X,Y) coordinates define mesh position, Z coordinate defines scaling. 
+                                              # Parameter <value> will be passed as tableau_material script parameter.
 jump_to_menu                          = 2060  # (jump_to_menu, <menu_id>),
-                                              # Opens the specified game menu. Note this only happens after the current block of code completes execution.
+                                              # Opens the specified game menu. 
+                                              # Note this only happens after the current block of code completes execution.
 disable_menu_option                   = 2061  # (disable_menu_option),
-                                              # Greys out the menu option, making it unclickable, while still showing it to player, so he knows that such an option exists, but criteria for it have not been met.
+                                              # Greys out the menu option, making it unclickable, 
+                                              # while still showing it to player, so he knows that such an option exists, 
+                                              # but criteria for it have not been met.
 
 # Game encounter handling operations
 
 set_party_battle_mode                 = 1020  # (set_party_battle_mode),
-                                              # Used before or during the mission to start battle mode. Enables that any party you encouter will permanently take away player's health, can loot the defeated player and various things like that. Basically makes a party encounter like a proper battle (and apparently make agents use appropriate AI). not just a training run where the player gains back again all his health after the battle.
+                                              # Used before or during the mission to start battle mode. 
+                                              # Enables that any party you encouter will permanently take away player's health, 
+                                              # can loot the defeated player and various things like that. 
+                                              # Basically makes a party encounter like a proper battle 
+                                              # (and apparently make agents use appropriate AI). 
+                                              # not just a training run where the player gains back again all his health after the battle.
 finish_party_battle_mode              = 1019  # (finish_party_battle_mode),
                                               # Used during the mission to stop battle mode.
 
 start_encounter                       = 1300  # (start_encounter, <party_id>),
-                                              # Forces the player party to initiate encounter with the specified party. Distance does not matter in this situation,
+                                              # Forces the player party to initiate encounter with the specified party. 
+                                              # Distance does not matter in this situation,
                                               # but requires switching to map to take effect.
 leave_encounter                       = 1301  # (leave_encounter),
                                               # Leaves encounter mode.
 encounter_attack                      = 1302  # (encounter_attack),
                                               # Apparently starts the standard battle with the encountered party. 4research.
 select_enemy                          = 1303  # (select_enemy, <value>),
-                                              # When joining a battle, this determines what side player will be helping. Defending party is always 0, and attacking party is always 1. Player can support either attackers (value = 0, i.e. defenders are the enemy) or defenders (value = 1).
+                                              # When joining a battle, this determines what side player will be helping. 
+                                              # Defending party is always 0, and attacking party is always 1. 
+                                              # Player can support either attackers (value = 0, i.e. defenders are the enemy) 
+                                              # or defenders (value = 1).
 set_passage_menu                      = 1304  # (set_passage_menu, <value>),
-                                              # When setting up a mission, this allows you to determine what game menu will be used for that mission passages instead of "mnu_town". Passage menu item number will determine what menu option (in sequential order, starting from 0) will be executed when the player activates that passage on the scene. Note that menu option condition code block will be ignored.
+                                              # When setting up a mission, this allows you to determine what game menu item 
+                                              # will connect each mission passage index
+                                              # (e.g. passage 2 will lead to the scene in the third menu option, like 'Go to the arena', 'Go to the castle', ...)
+                                              # instead of reusing the menu from where the player entered the scene (e.g. "mnu_town")[https://discord.com/channels/411286129317249035/411291053702774784/1375098603411996812].
+                                              # This is also useful if you didn't enter the scene by clicking on a menu entry (e.g. by scripting).
+                                              # Your menu item order determines which menu option (in sequential order, starting from 0) 
+                                              # will be executed when the player activates that passage on the scene, 
+                                              # so reshuffling the menu options or changing the existing order will
+                                              # change their numbers and break existing passages placed in scenes.
+                                              # Note that the menu option condition code block will be ignored. 
+                                              # (Are we sure about this? 4research).
 start_mission_conversation            = 1920  # (start_mission_conversation, <troop_id>),
                                               # During the mission, initiates the dialog with specified troop.
 
 set_conversation_speaker_troop        = 2197  # (set_conversation_speaker_troop, <troop_id>),
-                                              # Allows to dynamically switch speaking troops during the dialog when developer doesn't know in advance who will be doing the speaking. Should be placed in post-talk code section of dialog entry.
+                                              # Allows to dynamically switch speaking troops during the dialog 
+                                              # when developer doesn't know in advance who will be doing the speaking.
+                                              # Should be placed in post-talk code section of dialog entry.
 set_conversation_speaker_agent        = 2198  # (set_conversation_speaker_agent, <agent_id>),
-                                              # Allows to dynamically switch speaking agents during the dialog when developer doesn't know in advance who will be doing the speaking. Should be placed in post-talk code section of dialog entry.
+                                              # Allows to dynamically switch speaking agents during the dialog 
+                                              # when developer doesn't know in advance who will be doing the speaking.
+                                              # Should be placed in post-talk code section of dialog entry.
 store_conversation_agent              = 2199  # (store_conversation_agent, <destination>),
                                               # Stores identifier of agent who is currently speaking.
 store_conversation_troop              = 2200  # (store_conversation_troop, <destination>),
@@ -2606,7 +2651,8 @@ store_encountered_party               = 2202  # (store_encountered_party, <desti
 store_encountered_party2              = 2203  # (store_encountered_party2, <destination>),
                                               # Stores the identifier of the second encountered party (when first party is in battle, this one will return its battle opponent).
 set_encountered_party                 = 2205  # (set_encountered_party, <party_no>),
-                                              # Sets the specified party as encountered by player, but does not run the entire encounter routine. Used in Native during chargen to set up the starting town and then immediately throw the player into street fight without showing him the town menu.
+                                              # Sets the specified party as encountered by player, but does not run the entire encounter routine.
+                                              # Used in Native during chargen to set up the starting town and then immediately throw the player into street fight without showing him the town menu.
 
 end_current_battle                    = 1307  # (end_current_battle),
                                               # Apparently ends the battle between player's party and its opponent. Exact effects not clear. 4research.
@@ -2614,11 +2660,13 @@ end_current_battle                    = 1307  # (end_current_battle),
 # Operations specific to dialogs
 
 store_repeat_object                   =   50  # (store_repeat_object, <destination>),
-                                              # Used in the dialogs code in combination with repeat_for_* dialog parameters, when creating dynamical player responses. Stores the value for the current iteration (i.e. a faction ID when repeat_for_factions is used, etc).
+                                              # Used in the dialogs code in combination with repeat_for_* dialog parameters, when creating dynamic player responses.
+                                              # Stores the value for the current iteration (i.e. a faction ID when repeat_for_factions is used, etc).
 talk_info_show                        = 2020  # (talk_info_show, <hide_or_show>),
                                               # Used in the dialogs code to display relations bar on opponent's portrait when mouse is hovering over it (value = 1) or disable this functionality (value = 0)
 talk_info_set_relation_bar            = 2021  # (talk_info_set_relation_bar, <value>),
-                                              # Sets the relations value for relationship bar in the dialog. Value should be in range -100..100. Enter an invalid value to hide the bar.
+                                              # Sets the relations value for relationship bar in the dialog. Value should be in range -100..100.
+                                              # Enter an invalid value to hide the bar.
 talk_info_set_line                    = 2022  # (talk_info_set_line, <line_no>, <string_no>)
                                               # Sets the additional text information (usually troop name) to be displayed together with the relations bar.
 
@@ -3564,7 +3612,7 @@ store_normalized_team_count              = 2385  # (store_normalized_team_count,
 # Conditional operations
 
 is_presentation_active                            =  903  # (is_presentation_active, <presentation_id),
-                                                          # Checks that the specified presentation is currently running.
+                                                          # Checks if the specified presentation is currently running.
 
 # General presentation operations
 
@@ -3572,6 +3620,7 @@ start_presentation                                =  900  # (start_presentation,
                                                           # Starts the specified presentation.
 start_background_presentation                     =  901  # (start_background_presentation, <presentation_id>),
                                                           # Can only be used in game menus. Apparently allows you to start a presentation in background but stay in the menu. 4research.
+                                                          # Official: can only be used in game menus
 presentation_set_duration                         =  902  # (presentation_set_duration, <duration-in-1/100-seconds>),
                                                           # Sets presentation duration time, in 1/100th of second. Must be called when a presentation is active. If several presentations are active, duration will be set for all of them.
 
@@ -3634,6 +3683,7 @@ overlay_get_position                              =  946  # (overlay_get_positio
                                                           # Retrieves overlay current position to specified position trigger, using position's X and Y coordinates. Note that the screen size in Warband is (1.00,0.75), further modified by fixed point multiplier.
 overlay_set_val                                   =  927  # (overlay_set_val, <overlay_id>, <value>),
                                                           # Sets the value of the overlays which have numeric values (sliders, combo buttons and check boxes).
+                                                          # Official: can be used for sliders, combo buttons and check boxes
 overlay_set_text                                  =  920  # (overlay_set_text, <overlay_id>, <string_id>),
                                                           # Changes the overlay text (if it has any). Works for labels, text fields, buttons with text labels...
 overlay_set_boundaries                            =  928  # (overlay_set_boundaries, <overlay_id>, <min_value>, <max_value>),
