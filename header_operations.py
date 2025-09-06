@@ -1920,10 +1920,14 @@ stop_sound_channel       =  616  # (stop_sound_channel, <sound_channel_no>),
   # case, position's scale is object's scale - so you can shrink that wall
   # or quite the opposite, make it grow to the sky, depending on your whim.
 
+  # Designate axis like this: Pitch (Y), Yaw (Z), Roll (X).
+  # Position (0, 0) - is left bottom corner of screen or map. X-axis points to the right, and Y-axis points to the top.
+  # Generally angles are counted clockwise.
+
 # Generic position operations
 
 init_position                               =  701  # (init_position, <position>),
-                                                    # Sets position coordinates to [0,0,0], without any rotation and default scale.
+                                                    # Sets position coordinates to [0,0,0], without any rotation and default scale (1 * fixed_point_multiplier).
                                                     # not initialized position has the values (-1000,-1000,0, 0,0,0); fpm=1 (x,y,z, x-rot,y-rot,z-rot).
 copy_position                               =  700  # (copy_position, <position_target>, <position_source>),
                                                     # Makes a duplicate of position_source.
@@ -1933,18 +1937,32 @@ position_copy_rotation                      =  718  # (position_copy_rotation, <
                                                     # Copies rotation from source position to target position, without changing coordinates or scale.
 
 position_transform_position_to_parent       =  716  # (position_transform_position_to_parent, <position_dest>, <position_anchor>, <position_relative_to_anchor>),
-                                                    # Converts position from local coordinate space to parent coordinate space. In other words, if you have some position on the scene (anchor) and a position describing some place *relative* to anchor (for example [10,20,0] means "20 meters forward and 10 meters to the right"), after calling this operation you will get that position coordinates on the scene in <position_dest>. Rotation and scale is also taken care of, so you can use relative angles.
+                                                    # Converts position from local coordinate space to parent coordinate space. 
+                                                    # In other words, if you have some position on the scene (anchor) and a position describing some place *relative* to anchor 
+                                                    # (for example [10,20,0] means "20 meters forward and 10 meters to the right"), 
+                                                    # after calling this operation you will get that position coordinates on the scene in <position_dest>. 
+                                                    # Rotation and scale is also taken care of, so you can use relative angles.
 position_transform_position_to_local        =  717  # (position_transform_position_to_local, <position_dest>, <position_anchor>, <position_source>),
-                                                    # The opposite to (position_transform_position_to_parent), this operation allows you to get source's *relative* position to your anchor. Suppose you want to run some decision making for your bot agent depending on player's position. In order to know where player is located relative to your bot you call (position_transform_position_to_local, <position_dest>, <bot_position>, <player_position>). Then we check position_dest's Y coordinate - if it's negative, then the player is behind our bot's back.
+                                                    # The opposite to (position_transform_position_to_parent), this operation allows you to get source's *relative* position to your anchor. 
+                                                    # Suppose you want to run some decision making for your bot agent depending on player's position. 
+                                                    # In order to know where player is located relative to your bot you call 
+                                                    # (position_transform_position_to_local, <position_dest>, <bot_position>, <player_position>). 
+                                                    # Then we check position_dest's Y coordinate - if it's negative, then the player is behind our bot's back.
 
 # Position (X,Y,Z) coordinates
 
 position_get_x                              =  726  # (position_get_x, <destination_fixed_point>, <position>),
-                                                    # Return position X coordinate (to the east, or to the right). Base unit is meters. Use (set_fixed_point_multiplier) to set another measurement unit (100 will get you centimeters, 1000 will get you millimeters, etc).
+                                                    # Return position X coordinate (to the east, or to the right). 
+                                                    # Base unit is meters. 
+                                                    # Use (set_fixed_point_multiplier) to set another measurement unit (100 will get you centimeters, 1000 will get you millimeters, etc).
 position_get_y                              =  727  # (position_get_y, <destination_fixed_point>, <position>),
-                                                    # Return position Y coordinate (to the north, or forward). Base unit is meters. Use (set_fixed_point_multiplier) to set another measurement unit (100 will get you centimeters, 1000 will get you millimeters, etc).
+                                                    # Return position Y coordinate (to the north, or forward). 
+                                                    # Base unit is meters. 
+                                                    # Use (set_fixed_point_multiplier) to set another measurement unit (100 will get you centimeters, 1000 will get you millimeters, etc).
 position_get_z                              =  728  # (position_get_z, <destination_fixed_point>, <position>),
-                                                    # Return position Z coordinate (to the top). Base unit is meters. Use (set_fixed_point_multiplier) to set another measurement unit (100 will get you centimeters, 1000 will get you millimeters, etc).
+                                                    # Return position Z coordinate (to the top). 
+                                                    # Base unit is meters. 
+                                                    # Use (set_fixed_point_multiplier) to set another measurement unit (100 will get you centimeters, 1000 will get you millimeters, etc).
 
 position_set_x                              =  729  # (position_set_x, <position>, <value_fixed_point>),
                                                     # Set position X coordinate.
@@ -1954,18 +1972,37 @@ position_set_z                              =  731  # (position_set_z, <position
                                                     # Set position Z coordinate.
 
 position_move_x                             =  720  # (position_move_x, <position>, <movement>, [value]),
-                                                    # Moves position along X axis. Movement distance is in cms. Optional parameter determines whether the position is moved along the local (value=0) or global (value=1) X axis (i.e. whether the position will be moved to its right/left, or to the global east/west).
+                                                    # Moves position along X axis. 
+                                                    # Movement distance is in cms. 
+                                                    # Optional parameter determines whether the position is moved along the local (value=0) or global (value=1) X axis 
+                                                    # (i.e. whether the position will be moved to its right/left, or to the global east/west).
 position_move_y                             =  721  # (position_move_y, <position>, <movement>,[value]),
-                                                    # Moves position along Y axis. Movement distance is in cms. Optional parameter determines whether the position is moved along the local (value=0) or global (value=1) Y axis (i.e. whether the position will be moved forward/backwards, or to the global north/south).
+                                                    # Moves position along Y axis. 
+                                                    # Movement distance is in cms. 
+                                                    # Optional parameter determines whether the position is moved along the local (value=0) or global (value=1) Y axis 
+                                                    # (i.e. whether the position will be moved forward/backwards, or to the global north/south).
 position_move_z                             =  722  # (position_move_z, <position>, <movement>,[value]),
-                                                    # Moves position along Z axis. Movement distance is in cms. Optional parameter determines whether the position is moved along the local (value=0) or global (value=1) Z axis (i.e. whether the position will be moved to its above/below, or to the global above/below - these directions will be different if the position is tilted).
+                                                    # Moves position along Z axis. 
+                                                    # Movement distance is in cms. 
+                                                    # Optional parameter determines whether the position is moved along the local (value=0) or global (value=1) Z axis 
+                                                    # (i.e. whether the position will be moved to its above/below, or to the global above/below - these directions will be 
+                                                    # different if the position is tilted).
 
 position_set_z_to_ground_level              =  791  # (position_set_z_to_ground_level, <position>),
-                                                    # This will bring the position Z coordinate so it rests on the ground level (i.e. an agent could stand on that position). This takes scene props with their collision meshes into account. Only works during a mission, so you can't measure global map height using this.
+                                                    # This will bring the position Z coordinate so it rests on the nearest ground level (i.e. an agent could stand on that position).
+                                                    # This takes scene props with their collision meshes into account. 
+                                                    # Only works during a mission, so you can't measure global map height using this.
 position_get_distance_to_terrain            =  792  # (position_get_distance_to_terrain, <distance_fixed_point>, <position>),
-                                                    # This will measure the distance (in a fixed point value) between position and terrain below, ignoring all scene props and their collision meshes. Retrieves a negative value if underground. Operation only works on the scenes and cannot be used on the global map.
+                                                    # This will measure the distance (in a fixed point value) between position and terrain below, 
+                                                    # ignoring all scene props and their collision meshes. 
+                                                    # Retrieves a negative value if underground. 
+                                                    # Operation only works on the scenes and cannot be used on the global map.
 position_get_distance_to_ground_level       =  793  # (position_get_distance_to_ground_level, <distance_fixed_point>, <position>),
-                                                    # This will measure the distance (in a fixed point value) between position and the ground level, taking scene props and their collision meshes into account. Retrieves a negative value if underground. Operation only works on the scenes and cannot be used on the global map.
+                                                    # This will measure the distance (in a fixed point value) between position and the ground level, 
+                                                    # taking scene props and their collision meshes into account.
+                                                    # Retrieves a negative value if underground. 
+                                                    # Values can be negative if ground level is up to 1 meter approximately.
+                                                    # Operation only works on the scenes and cannot be used on the global map.
 
 # Position rotation
 
@@ -1981,14 +2018,16 @@ position_rotate_x                           =  723  # (position_rotate_x, <posit
 position_rotate_y                           =  724  # (position_rotate_y, <position>, <angle>),
                                                     # Rotates position around Y axis (tilt right/left).
 position_rotate_z                           =  725  # (position_rotate_z, <position>, <angle>, [use_global_z_axis]),
-                                                    # Rotates position around Z axis (rotate right/left). Pass 1 for use_global_z_axis to rotate the position around global axis instead.
+                                                    # Rotates position around Z axis (rotate right/left). 
+                                                    # Pass 1 for use_global_z_axis to rotate the position around global axis instead.
 
 position_rotate_x_floating                  =  738  # (position_rotate_x_floating, <position>, <angle_fixed_point>),
                                                     # Same as (position_rotate_x), but takes fixed point value as parameter, allowing for more precise rotation.
 position_rotate_y_floating                  =  739  # (position_rotate_y_floating, <position>, <angle_fixed_point>),
                                                     # Same as (position_rotate_y), but takes fixed point value as parameter, allowing for more precise rotation.
-position_rotate_z_floating                  =  734  # (position_rotate_z_floating, <position_no>, <angle_fixed_point>),
+position_rotate_z_floating                  =  734  # (position_rotate_z_floating, <position_no>, <angle_fixed_point>, [use_global_z_axis]),
                                                     # Version 1.161+. Same as (position_rotate_z), but takes fixed point value as parameter, allowing for more precise rotation.
+                                                    # Pass 1 for use_global_z_axis to rotate the position around global axis instead.
 
 # Position scale
 
@@ -2009,9 +2048,13 @@ position_set_scale_z                        =  746  # (position_set_scale_z, <po
 # Measurement of distances and angles
 
 get_angle_between_positions                 =  705  # (get_angle_between_positions, <destination_fixed_point>, <position_no_1>, <position_no_2>),
-                                                    # Calculates angle between positions, using positions as vectors. Only rotation around Z axis is used. In other words, the function returns the difference between Z rotations of both positions.
+                                                    # Calculates angle between positions, using positions as vectors. 
+                                                    # Only rotation around Z axis is used. 
+                                                    # In other words, the function returns the difference between Z rotations of both positions.
 position_has_line_of_sight_to_position      =  707  # (position_has_line_of_sight_to_position, <position_no_1>, <position_no_2>),
-                                                    # Checks that you can see one position from another. This obviously implies that both positions must be in global space. Note this is computationally expensive, so try to keep number of these to a minimum.
+                                                    # Checks that you can see one position from another. 
+                                                    # This obviously implies that both positions must be in global space. 
+                                                    # Note this is computationally expensive, so try to keep number of these to a minimum.
 get_distance_between_positions              =  710  # (get_distance_between_positions, <destination>, <position_no_1>, <position_no_2>),
                                                     # Returns distance between positions in centimeters.
 get_distance_between_positions_in_meters    =  711  # (get_distance_between_positions_in_meters, <destination>, <position_no_1>, <position_no_2>),
@@ -2025,19 +2068,25 @@ position_is_behind_position                 =  714  # (position_is_behind_positi
 get_sq_distance_between_position_heights    =  715  # (get_sq_distance_between_position_heights, <destination>, <position_no_1>, <position_no_2>),
                                                     # Returns squared distance between position *heights* in centimeters.
 position_normalize_origin                   =  741  # (position_normalize_origin, <destination_fixed_point>, <position>),
-                                                    # What this operation seems to do is calculate the distance between the zero point [0,0,0] and the point with position's coordinates. Can be used to quickly calculate distance to relative positions.
+                                                    # What this operation seems to do is calculate the distance between the zero point [0,0,0] and the point with position's coordinates. 
+                                                    # Can be used to quickly calculate distance to relative positions.
 position_get_screen_projection              =  750  # (position_get_screen_projection, <position_screen>, <position_world>),
-                                                    # Calculates the screen coordinates of the position and stores it as position_screen's X and Y coordinates. Works in missions. Not sure if it works on global map.
-                                                    # <position> coordinates transform so distance becomes 1 meter. Then x,y coordinates can be multiplied, for example, by 10 and new position will be 10 meters in that direction.
+                                                    # Calculates the screen coordinates of the position and stores it as position_screen's X and Y coordinates. 
+                                                    # Works in missions. 
+                                                    # Not sure if it works on global map.
+                                                    # <position> coordinates transform so distance becomes 1 meter. 
+                                                    # Then x,y coordinates can be multiplied, for example, by 10 and new position will be 10 meters in that direction.
 
 # Global map positions
 
 map_get_random_position_around_position     = 1627  # (map_get_random_position_around_position, <dest_position_no>, <source_position_no>, <radius>),
                                                     # Returns a random position on the global map in the vicinity of the source_position.
 map_get_land_position_around_position       = 1628  # (map_get_land_position_around_position, <dest_position_no>, <source_position_no>, <radius>),
-                                                    # Returns a random position on the global map in the vicinity of the source_position. Will always return a land position (i.e. some place you can walk to).
+                                                    # Returns a random position on the global map in the vicinity of the source_position.
+                                                    # Will always return a land position (i.e. some place you can walk to).
 map_get_water_position_around_position      = 1629  # (map_get_water_position_around_position, <dest_position_no>, <source_position_no>, <radius>),
-                                                    # Returns a random position on the global map in the vicinity of the source_position. Will always return a water position (i.e. sea, lake or river).
+                                                    # Returns a random position on the global map in the vicinity of the source_position.
+                                                    # Will always return a water position (i.e. sea, lake or river).
 
 ################################################################################
 # [ Z15 ] GAME NOTES
