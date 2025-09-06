@@ -111,7 +111,7 @@
 
 neg          = 0x80000000  # (neg|<operation_name>, ...),
                            # Used in combination with conditional operations to invert their results.
-negate = neg			         # Avoid using <neg> as it is similar to <neq> operator and causes misleadings
+negate = neg               # Avoid using <neg> as it is similar to <neq> operator and causes misleadings
 this_or_next = 0x40000000  # (this_or_next|<operation_name>, ...),
                            # Used in combination with conditional operations to group them into OR blocks.
                            # E.g. If you have three chained OR conditions you would add this prefix to the first two, but not the final one,
@@ -3532,7 +3532,7 @@ ban_player_using_saved_ban_info              =  468  # (ban_player_using_saved_b
 
 server_add_message_to_log                    =  473  # (server_add_message_to_log, <string_id>),
 
-                                                     # server_get_renaming_server_allowed, server_get_changing_game_type_allowed - Both of these get the values for dedicated servers which have commands to run on the console to (dis)allowing them																																																
+                                                     # server_get_renaming_server_allowed, server_get_changing_game_type_allowed - Both of these get the values for dedicated servers which have commands to run on the console to (dis)allowing them                                                                                                
 server_get_renaming_server_allowed           =  475  # (server_get_renaming_server_allowed, <destination>),
                                                      # Official docs: 0-1
 server_get_changing_game_type_allowed        =  476  # (server_get_changing_game_type_allowed, <destination>),
@@ -3541,8 +3541,8 @@ server_get_combat_speed                      =  478  # (server_get_combat_speed,
                                                      # Official docs: 0-2
 server_set_combat_speed                      =  479  # (server_set_combat_speed, <value>),
                                                      # Official docs: 0-2
-												                             # Unofficial: <value> is actually 0-4, going from slowest to fastest, you can see its used in module_presentations from 0 to 4		
-                                                     # Sets the combat speed at the server.						
+                                                     # Unofficial: <value> is actually 0-4, going from slowest to fastest, you can see its used in module_presentations from 0 to 4    
+                                                     # Sets the combat speed at the server.            
 server_get_friendly_fire                     =  480  # (server_get_friendly_fire, <destination>),
                                                      # Gets if friendly fire is enabled (1) or not (0).
 server_set_friendly_fire                     =  481  # (server_set_friendly_fire, <value>),
@@ -3597,14 +3597,14 @@ server_set_anti_cheat                        =  477  # (server_set_anti_cheat, <
   # Honestly, I have no idea what these functions could be used for. If you
   # know, please let me know ASAP! :-)
 
-set_physics_delta_time      				 = 58    # (set_physics_delta_time, <fixed_value>), 
-												     # Default is 0.025 (40 fps).
-set_tooltip_text                     		 = 1130  # (set_tooltip_text, <string_id>),
-													 # Assigns the output text for the selected item?
-ai_mesh_face_group_show_hide          		 = 1805  # (ai_mesh_face_group_show_hide, <group_no>, <value>), 
-													 # Debug -- Draws the selected index of triangles/quads from the navigation graph on-screen. 1 for enable, 0 for disable.
-auto_set_meta_mission_at_end_commited 		 = 1305  # (auto_set_meta_mission_at_end_commited),
-													 # Returns the mission as successful by the game. Used in campaign.
+set_physics_delta_time                       =  58   # (set_physics_delta_time, <fixed_value>), 
+                             # Default is 0.025 (40 fps).
+set_tooltip_text                             = 1130  # (set_tooltip_text, <string_id>),
+                           # Assigns the output text for the selected item?
+ai_mesh_face_group_show_hide                 = 1805  # (ai_mesh_face_group_show_hide, <group_no>, <value>), 
+                           # Debug -- Draws the selected index of triangles/quads from the navigation graph on-screen. 1 for enable, 0 for disable.
+auto_set_meta_mission_at_end_commited        = 1305  # (auto_set_meta_mission_at_end_commited),
+                           # Returns the mission as successful by the game. Used in campaign.
 													 
 ################################################################################
 # [ Z26 ] WRECK macro operators.
