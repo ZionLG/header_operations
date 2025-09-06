@@ -98,7 +98,7 @@
    # Updated for engine 1.171 by Kalarhan for use with VC mods
    # https://raw.githubusercontent.com/KalarhanWB/VC_Tweaks_Tool/master/app/header_operations.py
    # https://github.com/KalarhanWB/VC_Tweaks_Tool/blob/master/app/header_operations.py
-  
+
    # Additional credits (in no particular order) go to
    # K700, Vetrogor, Burspa, Winter, fisheye, Hellequin, Veni Vidi Vici
 
@@ -791,9 +791,11 @@ party_slot_lt                         =  neg|party_slot_ge           # (party_sl
 # Generic operations
 
 set_party_creation_random_limits      = 1080  # (set_party_creation_random_limits, <min_value>, <max_value>),
-                                              # Affects party sizes spawned from templates. May be used to spawn larger parties when player is high level. Values should be in 0..100 range.
+                                              # Affects party sizes spawned from templates. May be used to spawn larger parties when player is high level.
+                                              # Values should be in 0..100 range.
 set_spawn_radius                      = 1103  # (set_spawn_radius, <value>),
-                                              # Sets radius for party spawning with subsequent <spawn_around_party> operations. Radius units depend on the world map scale, but are the same as used by get_distance_to_party_from_party.
+                                              # Sets radius for party spawning with subsequent <spawn_around_party> operations.
+                                              # Radius units depend on the world map scale, but are the same as used by get_distance_to_party_from_party.
 spawn_around_party                    = 1100  # (spawn_around_party, <party_id>, <party_template_id>),
                                               # Creates a new party from a party template and puts its <party_id> into reg0.
                                               # Seems to understand that land parties must be spawned on land. Does it understand to spawn ships on water? 4research
@@ -803,7 +805,9 @@ disable_party                         = 1230  # (disable_party, <party_id>),
 enable_party                          = 1231  # (enable_party, <party_id>),
                                               # Reactivates a previously disabled party.
 remove_party                          = 1232  # (remove_party, <party_id>),
-                                              # Destroys a party completely. Should ONLY be used with dynamically spawned parties, as removing parties pre-defined in module_parties.py file will corrupt the savegame. Non-spawned parties may be disabled.
+                                              # Destroys a party completely.
+                                              # Should ONLY be used with dynamically spawned parties, as removing parties pre-defined in module_parties.py file will corrupt the savegame.
+                                              # Non-spawned parties may be disabled.
 
 party_get_current_terrain             = 1608  # (party_get_current_terrain, <destination>, <party_id>),
                                               # Returns a value from header_terrain_types.py
