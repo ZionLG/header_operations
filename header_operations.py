@@ -21,7 +21,7 @@
 # [ Z09 ] Parties and Party Templates.
 # [ Z10 ] Troops.
 # [ Z11 ] Quests.
-# [ Z12 ] Items.
+# [ Z12 ] Items. 
 # [ Z13 ] Sounds and Music Tracks.
 # [ Z14 ] Positions.
 # [ Z15 ] Game Notes.
@@ -552,22 +552,30 @@ set_global_haze_amount     =   93  # (set_global_haze_amount, <value>),
 # Time-related operations
 
 store_current_hours        = 2270  # (store_current_hours, <destination>),
-                                   # Stores number of hours that have passed since beginning of the game. Commonly used to track time when accuracy up to hours is required.
-                                   # Starts counting from 6 (to align with the clock/time_of_day). Calibrates on the first visit to world map (instantly set to 6).
+                                   # Stores number of hours that have passed since beginning of the game.
+                                   # Commonly used to track time when accuracy up to hours is required.
+                                   # Starts counting from 6 (to align with the clock/time_of_day).
+                                   # Calibrates on the first visit to world map (instantly set to 6).
                                    # Before reaching the world map returns 0.
 store_time_of_day          = 2271  # (store_time_of_day, <destination>),
                                    # Stores current day hour (value in 0..24 range).
                                    # Initialized the moment you click New Game and works right away without world map calibration.
-                                   # Interestingly, time does pass in main menu very quickly. Operations store_current_hours/store_current_day can't detect it,
+                                   # Interestingly, time does pass in main menu very quickly.
+                                   # Operations store_current_hours/store_current_day can't detect it,
                                    # but this operation will return increasing values in range (0..24) as we stay a while in the main menu.
 store_current_day          = 2272  # (store_current_day, <destination>),
-                                   # Stores number of days that have passed since beginning of the game. Commonly used to track time when high accuracy is not required.
-                                   # Calibrates on first visit to world map (instantly set to 0). Before reaching the world map returns -1.
+                                   # Stores number of days that have passed since beginning of the game.
+                                   # Commonly used to track time when high accuracy is not required.
+                                   # Calibrates on first visit to world map (instantly set to 0).
+                                   # Before reaching the world map returns -1.
 
 rest_for_hours             = 1030  # (rest_for_hours, <rest_time_in_hours>, [time_speed_multiplier], [remain_attackable]),
-                                   # Forces the player party to rest for specified number of hours. Time can be accelerated and player can be made immune or subject to attacks.
+                                   # Forces the player party to rest for specified number of hours.
+                                   # Time can be accelerated and player can be made immune or subject to attacks.
 rest_for_hours_interactive = 1031  # (rest_for_hours_interactive, <rest_time_in_hours>, [time_speed_multiplier], [remain_attackable]),
-                                   # Forces the player party to rest for specified number of hours. Player can break the rest at any moment. Time can be accelerated and player can be made immune or subject to attacks.
+                                   # Forces the player party to rest for specified number of hours.
+                                   # Player can break the rest at any moment.
+                                   # Time can be accelerated and player can be made immune or subject to attacks.
 
 ################################################################################
 # [ Z07 ] GAME SETTINGS AND STATISTICS
@@ -800,25 +808,29 @@ spawn_around_party                    = 1100  # (spawn_around_party, <party_id>,
                                               # Creates a new party from a party template and puts its <party_id> into reg0.
                                               # Seems to understand that land parties must be spawned on land. Does it understand to spawn ships on water? 4research
 disable_party                         = 1230  # (disable_party, <party_id>),
-                                              # Party disappears from the map. Note that (try_for_parties) will still iterate over disabled parties, so you need to make additional checks with (party_is_active).
+                                              # Party disappears from the map. Note that (try_for_parties) will still iterate over disabled parties,
+                                              # so you need to make additional checks with (party_is_active).
                                               # Its slots, members and prisoners will persist, all it does is basically activating pf_disabled mid-game.
 enable_party                          = 1231  # (enable_party, <party_id>),
                                               # Reactivates a previously disabled party.
 remove_party                          = 1232  # (remove_party, <party_id>),
                                               # Destroys a party completely.
-                                              # Should ONLY be used with dynamically spawned parties, as removing parties pre-defined in module_parties.py file will corrupt the savegame.
+                                              # Should ONLY be used with dynamically spawned parties,
+                                              # as removing parties pre-defined in module_parties.py file will corrupt the savegame.
                                               # Non-spawned parties may be disabled.
 
 party_get_current_terrain             = 1608  # (party_get_current_terrain, <destination>, <party_id>),
                                               # Returns a value from header_terrain_types.py
 party_relocate_near_party             = 1623  # (party_relocate_near_party, <relocated_party_id>, <target_party_id>, <spawn_radius>),
-                                              # Teleports party into vicinity of another party. Radius units depend on the world map scale, but are the same as used by get_distance_to_party_from_party.
+                                              # Teleports party into vicinity of another party.
+                                              # Radius units depend on the world map scale, but are the same as used by get_distance_to_party_from_party.
 party_get_position                    = 1625  # (party_get_position, <dest_position>, <party_id>),
                                               # Stores current position of the party on world map.
 party_set_position                    = 1626  # (party_set_position, <party_id>, <position>),
                                               # Teleports the party to a specified position on the world map and aligns it to the ground level.
 set_camera_follow_party               = 1021  # (set_camera_follow_party, <party_id>),
-                                              # Self-explanatory. Can be used on world map only. Commonly used to make camera follow a party which has captured player as prisoner.
+                                              # Self-explanatory. Can be used on world map only.
+                                              # Commonly used to make camera follow a party which has captured player as prisoner.
 
 party_attach_to_party                 = 1660  # (party_attach_to_party, <party_id>, <party_id_to_attach_to>),
                                               # Attach a party to another one (like lord's army staying in a town/castle).
@@ -847,20 +859,24 @@ party_get_icon                        = 1681  # (party_get_icon, <destination>, 
                                               # Retrieve map icon used for the party.
 party_set_icon                        = 1676  # (party_set_icon, <party_id>, <map_icon_id>),
                                               # Sets what map icon will be used for the party.
+                                              # Will not work outside the 256 range.
 party_set_banner_icon                 = 1677  # (party_set_banner_icon, <party_id>, <map_icon_id>),
                                               # Sets what map icon will be used as the party banner. Use 0 to remove banner from a party.
+                                              # Allows for 256+ ranges.
 party_set_extra_icon                  = 1682  # (party_set_extra_icon, <party_id>, <map_icon_id>, <vertical_offset_fixed_point>, <up_down_frequency_fixed_point>, <rotate_frequency_fixed_point>, <fade_in_out_frequency_fixed_point>),
                                               # Adds or removes an extra map icon to a party, possibly with some animations. To remove extra icon set all params to 0.
                                               # If any of the animation params are used, the scale factor from module_map_icons entry is ignored so you have to adjust the real scale in brf.
                                               # <up_down> param requires <vertical_offset> and won't work without it.
                                               # Frequencies are in number of revolutions per second.
+                                              # Allows for 256+ ranges and some animation features too, recommended for people seeking 256+ ranges.
 party_add_particle_system             = 1678  # (party_add_particle_system, <party_id>, <particle_system_id>),
                                               # Appends some special visual effects to the party on the map. Used in Native to add fire and smoke over villages.
                                               # More than one effect can be active at the same time.
 party_clear_particle_systems          = 1679  # (party_clear_particle_systems, <party_id>),
                                               # Removes all special visual effects from the party on the map.
 context_menu_add_item                 =  980  # (context_menu_add_item, <string_id>, <value>),
-                                              # Must be called inside script_game_context_menu_get_buttons. Adds context menu option for a party and its respective identifier (will be passed to script_game_event_context_menu_button_clicked).
+                                              # Must be called inside script_game_context_menu_get_buttons.
+                                              # Adds context menu option for a party and its respective identifier (will be passed to script_game_event_context_menu_button_clicked).
 
 party_get_template_id                 = 1609  # (party_get_template_id, <destination>, <party_id>),
                                               # Retrieves what party template was used to create the party (if any). Commonly used to identify encountered party type.
@@ -874,11 +890,12 @@ store_random_party_in_range           = 2254  # (store_random_party_in_range, <d
                                               # Lower bound is included, upper bound is not.
                                               # Originally intended for parties, redundant since introduction of store_random_in_range which does exactly the same thing.
 store01_random_parties_in_range       = 2255  # (store01_random_parties_in_range, <lower_bound>, <upper_bound>),
-store_random_parties_in_range = store01_random_parties_in_range # (store_random_parties_in_range, <lower_bound>, <upper_bound>),
                                               # Stores two random, different parties in a range to reg0 and reg1.
-                                              # Despite "party" in the name, can be used for any ranges of numbers, and produces expected results as long as the range is long enough to fit 2 unique values in it.
+                                              # Despite "party" in the name, can be used for any ranges of numbers,
+                                              # and produces expected results as long as the range is long enough to fit 2 unique values in it.
                                               # Returned values are not sorted (either reg0 or reg1 could be bigger than the other).
                                               # If range is too short to draw 2 unique numbers from it, then both reg0 and reg1 will equal lower_bound.
+store_random_in_range_to_reg0_reg1    = store01_random_parties_in_range # (store_random_parties_in_range, <lower_bound>, <upper_bound>),
 store_distance_to_party_from_party    = 2281  # (store_distance_to_party_from_party, <destination>, <party_id_1>, <party_id_2>),
                                               # Retrieves distance between two parties on the global map.
                                               # Extremely unprecise as it does not use a fixed point multiplier at all and 1 distance unit is quite a noticeable distance on the map.
