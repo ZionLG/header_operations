@@ -21,7 +21,7 @@
 # [ Z09 ] Parties and Party Templates.
 # [ Z10 ] Troops.
 # [ Z11 ] Quests.
-# [ Z12 ] Items. 
+# [ Z12 ] Items.
 # [ Z13 ] Sounds and Music Tracks.
 # [ Z14 ] Positions.
 # [ Z15 ] Game Notes.
@@ -43,67 +43,67 @@
 ################################################################################
 # [ Z00 ] INTRODUCTION AND CREDITS
 ################################################################################
-   # Everyone who has ever tried to mod Mount&Blade games knows perfectly well,
-   # that the documentation for its Module System is severely lacking. Warband
-   # Module System, while introducing many new and useful operations, did not
-   # improve considerably in the way of documentation. What's worse, a number of
-   # outright errors and inconsistencies appeared between what was documented in
-   # the comments to the header_operations.py file (which was the root source of
-   # all Warband scripting documentation, whether you like it or not), and what
-   # was actually implemented in the game engine.
+  # Everyone who has ever tried to mod Mount&Blade games knows perfectly well,
+  # that the documentation for its Module System is severely lacking. Warband
+  # Module System, while introducing many new and useful operations, did not
+  # improve considerably in the way of documentation. What's worse, a number of
+  # outright errors and inconsistencies appeared between what was documented in
+  # the comments to the header_operations.py file (which was the root source of
+  # all Warband scripting documentation, whether you like it or not), and what
+  # was actually implemented in the game engine.
 
-   # Sooner or later someone was bound to dedicate some time and effort to fix
-   # this problem by properly documenting the file. It just so happened that I
-   # was the first person crazy enough to accept the challenge.
+  # Sooner or later someone was bound to dedicate some time and effort to fix
+  # this problem by properly documenting the file. It just so happened that I
+  # was the first person crazy enough to accept the challenge.
 
-   # I have tried to make this file a self-sufficient source of information on
-   # every operation that the Warband scripting engine knows of. Naturally I
-   # failed - there are still many operations for which there is simply not
-   # enough information, or operations with effects that have not yet been
-   # thoroughly tested and confirmed. But as far as I know, there is currently
-   # no other reference more exhaustive than this. I tried to make the file
-   # useful to both seasoned scripters and complete newbies, and to a certain
-   # degree this file can even serve as a tutorial into Warband scripting -
-   # though it still won't replace the wealth of tutorials produced by the
-   # Warband modding community.
+  # I have tried to make this file a self-sufficient source of information on
+  # every operation that the Warband scripting engine knows of. Naturally I
+  # failed - there are still many operations for which there is simply not
+  # enough information, or operations with effects that have not yet been
+  # thoroughly tested and confirmed. But as far as I know, there is currently
+  # no other reference more exhaustive than this. I tried to make the file
+  # useful to both seasoned scripters and complete newbies, and to a certain
+  # degree this file can even serve as a tutorial into Warband scripting -
+  # though it still won't replace the wealth of tutorials produced by the
+  # Warband modding community.
 
-   # I really hope you will find it useful as well.
+  # I really hope you will find it useful as well.
 
-   #                                    Alexander Lomski AKA Lav. Jan 18th, 2012.
+  #                                    Alexander Lomski AKA Lav. Jan 18th, 2012.
 
-   # And the credits.
+  # And the credits.
 
-   # First of all, I should credit Taleworlds for the creation of this game and
-   # its Module System. Without them, I wouldn't be able to work on this file
-   # so even though I'm often sceptical about their programming style and quality
-   # of their code, they still did a damn good job delivering this game to all
-   # of us.
+  # First of all, I should credit Taleworlds for the creation of this game and
+  # its Module System. Without them, I wouldn't be able to work on this file
+  # so even though I'm often sceptical about their programming style and quality
+  # of their code, they still did a damn good job delivering this game to all
+  # of us.
 
-   # And then I should credit many members from the Warband modding community
-   # who have shared their knowledge and helped me clear out many uncertainties
-   # and inconsistencies. Special credits (in no particular order) go to
-   # cmpxchg8b, Caba'drin, SonKidd, MadVader, dunde, Ikaguia, MadocComadrin,
-   # Cjkjvfnby, shokkueibu, Dalion, Dj_FRedy, Vetrogor, VonDegurechaff.
+  # And then I should credit many members from the Warband modding community
+  # who have shared their knowledge and helped me clear out many uncertainties
+  # and inconsistencies. Special credits (in no particular order) go to
+  # cmpxchg8b, Caba'drin, SonKidd, MadVader, dunde, Ikaguia, MadocComadrin,
+  # Cjkjvfnby, shokkueibu, Dalion, Dj_FRedy, Vetrogor, VonDegurechaff.
 
-   # Original work by Lav for version 1.166 of the game (published in 2015)
-   # https://forums.taleworlds.com/index.php?threads/warband-module-system-1-166-with-tweaks-and-giggles.324874/
-   #
-   # Updated by Zion
-   # [System Overhaul Redux Forum link]
-   # https://github.com/ZionLG/Project-Overhaul-Redux
-   #
-   # Updated by Vetrogor
-   # https://forums.taleworlds.com/index.php?threads/better-ms-scripting-reference-header_operations-expanded.213060/page-3#post-9410628
-   #
-   # Updated for engine 1.171 by Kalarhan for use with VC mods
-   # https://raw.githubusercontent.com/KalarhanWB/VC_Tweaks_Tool/master/app/header_operations.py
-   # https://github.com/KalarhanWB/VC_Tweaks_Tool/blob/master/app/header_operations.py
-
-   # Additional credits (in no particular order) go to
-   # K700, Vetrogor, Burspa, Winter, fisheye, Hellequin, Veni Vidi Vici
-
-   # Special thanks (in no particular order) to the Mount&Blade modding wiki [https://mbcommands.fandom.com/] contributors
-   # Vetrogor, Dalion, Sionfel, Erundil and Swyter, and any others!
+  # Original work by Lav for version 1.166 of the game (published in 2015)
+  # https://forums.taleworlds.com/index.php?threads/warband-module-system-1-166-with-tweaks-and-giggles.324874/
+  #
+  # Updated by Zion
+  # [System Overhaul Redux Forum link]
+  # https://github.com/ZionLG/Project-Overhaul-Redux
+  #
+  # Updated by Vetrogor
+  # https://forums.taleworlds.com/index.php?threads/better-ms-scripting-reference-header_operations-expanded.213060/page-3#post-9410628
+  #
+  # Updated for engine 1.171 by Kalarhan for use with VC mods
+  # https://raw.githubusercontent.com/KalarhanWB/VC_Tweaks_Tool/master/app/header_operations.py
+  # https://github.com/KalarhanWB/VC_Tweaks_Tool/blob/master/app/header_operations.py
+  
+  # Additional credits (in no particular order) go to
+  # K700, Vetrogor, Burspa, Winter, fisheye, Hellequin, Veni Vidi Vici
+  
+  # Special thanks (in no particular order) to the Mount&Blade modding wiki [https://mbcommands.fandom.com/] contributors
+  # Vetrogor, Dalion, Sionfel, Erundil and Swyter, and any others!
 
 ################################################################################
 # [ Z01 ] OPERATION MODIFIERS
@@ -687,15 +687,24 @@ get_average_game_difficulty           =  990  # (get_average_game_difficulty, <d
 # Once an achievement is unlocked it cannot be reset without external tools like Steam Achievement Manager.
 
 get_achievement_stat                  =  370  # (get_achievement_stat, <destination>, <achievement_id>, <stat_index>),
-                                              # Retrieves the numeric value associated with an achievement. Used to keep track of player's results before finally unlocking it.
+                                              # Retrieves the numeric value associated with an achievement.
+                                              # Used to keep track of player's results before finally unlocking it.
 set_achievement_stat                  =  371  # (set_achievement_stat, <achievement_id>, <stat_index>, <value>),
-                                              # Sets the new value associated with an achievement. Used to keep track of player's results before finally unlocking it.
+                                              # Sets the new value associated with an achievement.
+                                              # Used to keep track of player's results before finally unlocking it.
 unlock_achievement                    =  372  # (unlock_achievement, <achievement_id>),
                                               # Unlocks a Steam achievement.
+                                              
+# Kill stats  
+# These statistics are stored, locally, inside each individual savegame.
+
 get_player_agent_kill_count           = 1701  # (get_player_agent_kill_count, <destination>, [get_wounded]),
-                                              # Retrieves the total number of enemies killed by the player. Call with non-zero <get_wounded> parameter to retrieve the total number of knocked down enemies. Returns lifetime kill counts.
+                                              # Retrieves the total number of enemies killed by the player.
+                                              # Call with non-zero <get_wounded> parameter to retrieve the total number of knocked down enemies.
+                                              # Returns lifetime kill counts.
 get_player_agent_own_troop_kill_count = 1705  # (get_player_agent_own_troop_kill_count, <destination>, [get_wounded]),
-                                              # Retrieves the total number of allies killed by the player. Call with non-zero <get_wounded> parameter to retrieve the total number of knocked down allies.
+                                              # Retrieves the total number of allies killed by the player.
+                                              # Call with non-zero <get_wounded> parameter to retrieve the total number of knocked down allies.
 
 ################################################################################
 # [ Z08 ] FACTIONS
@@ -725,7 +734,8 @@ store_relation                  = 2190  # (store_relation, <destination>, <facti
 faction_set_name                = 1275  # (faction_set_name, <faction_id>, <string>),
                                         # Sets the name of the faction. See also (str_store_faction_name) in String Operations.
 faction_set_color               = 1276  # (faction_set_color, <faction_id>, <color_code>),
-                                        # Sets the faction color. All parties and centers belonging to this faction will be displayed with this color on global map.
+                                        # Sets the faction color.
+                                        # All parties and centers belonging to this faction will be displayed with this color on global map.
 faction_get_color               = 1277  # (faction_get_color, <destination>, <faction_id>),
                                         # Gets the faction color value.
 
