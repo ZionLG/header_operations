@@ -863,7 +863,8 @@ party_collect_attachments_to_party    = 1662  # (party_collect_attachments_to_pa
                                               # Clears <aggregated_party_id> before adding troops.
                                               # Will also count wounded troops.
 party_get_cur_town                    = 1665  # (party_get_cur_town, <destination>, <party_id>),
-                                              # When a party has reached its destination (using ai_bhvr_travel_to_party), this operation will retrieve the party_id of the destination party.
+                                              # When a party has reached its destination (using ai_bhvr_travel_to_party),
+                                              # this operation will retrieve the party_id of the destination party.
 party_get_attached_to                 = 1694  # (party_get_attached_to, <destination>, <party_id>),
                                               # Retrieves the party that the referenced party is attached to, if any.
 party_get_num_attached_parties        = 1695  # (party_get_num_attached_parties, <destination>, <party_id>),
@@ -874,7 +875,8 @@ party_get_attached_party_with_rank    = 1696  # (party_get_attached_party_with_r
 party_set_name                        = 1669  # (party_set_name, <party_id>, <string>),
                                               # Sets party name (will be displayed as label and/or in the party details popup).
 party_set_extra_text                  = 1605  # (party_set_extra_text, <party_id>, <string>),
-                                              # Allows to put extra text in party details popup. Used in Native to set status for villages or towns (being raided, razed, under siege...).
+                                              # Allows to put extra text in party details popup.
+                                              # Used in Native to set status for villages or towns (being raided, razed, under siege...).
 party_get_icon                        = 1681  # (party_get_icon, <destination>, <party_id>),
                                               # Retrieve map icon used for the party.
 party_set_icon                        = 1676  # (party_set_icon, <party_id>, <map_icon_id>),
@@ -952,7 +954,8 @@ troop_join                            = 1203  # (troop_join, <troop_id>),
 troop_join_as_prisoner                = 1204  # (troop_join_as_prisoner, <troop_id>),
                                               # Specified hero joins player's party as prisoner.
 add_companion_party                   = 1233  # (add_companion_party, <troop_id_hero>),
-                                              # Creates a new empty party with specified hero as party leader and the only member. Party is spawned at the position of player's party
+                                              # Creates a new empty party with specified hero as party leader and the only member.
+                                              # Party is spawned at the position of player's party
                                               # and according to Earendil’s MaBLED pf_limit_members gets set for it automatically
                                               # which in Native is only given to player party.
                                               # The limitation is that unlike spawn_around_party it doesn't return the ID (reg0), making further manipulation complicated.
@@ -967,14 +970,19 @@ party_force_add_members               = 1613  # (party_force_add_members, <party
                                               # Adds troops to party ignoring party size limits. Mostly used to add hero troops.
                                               # Only works if the party does not yet have any troops of the specified type.
 party_force_add_prisoners             = 1614  # (party_force_add_prisoners, <party_id>, <troop_id>, <number>),
-                                              # Adds prisoners to party ignoring party size limits. Mostly used to add hero prisoners. Doesn't add if troop already exists in the party.
+                                              # Adds prisoners to party ignoring party size limits. Mostly used to add hero prisoners.
+                                              # Doesn't add if troop already exists in the party.
 party_add_template                    = 1675  # (party_add_template, <party_id>, <party_template_id>, [reverse_prisoner_status]),
-                                              # Reinforces the party using the specified party template. Optional flag switches troop/prisoner status for reinforcements.
+                                              # Reinforces the party using the specified party template.
+                                              # Optional flag switches troop/prisoner status for reinforcements.
 distribute_party_among_party_group    = 1698  # (distribute_party_among_party_group, <party_to_be_distributed>, <group_root_party>),
-                                              # Distributes troops from first party among all parties attached to the second party. Commonly used to divide prisoners and resqued troops among NPC parties.
+                                              # Distributes troops from first party among all parties attached to the second party.
+                                              # Commonly used to divide prisoners and resqued troops among NPC parties.
 
 remove_member_from_party              = 1210  # (remove_member_from_party, <troop_id>, [party_id]),
-                                              # Removes hero member from party. Player party is default value. Will display a message about companion leaving the party. Should not be used with regular troops (it will successfully remove one of them, but will produce some meaningless spam).
+                                              # Removes hero member from party. Player party is default value.
+                                              # Will display a message about companion leaving the party
+                                              # Should not be used with regular troops (it will successfully remove one of them, but will produce some meaningless spam).
 remove_regular_prisoners              = 1211  # (remove_regular_prisoners, <party_id>),
                                               # Removes all non-hero prisoners from the party.
 remove_troops_from_companions         = 1215  # (remove_troops_from_companions, <troop_id>, <value>),
@@ -991,7 +999,8 @@ party_remove_prisoners                = 1616  # (party_remove_prisoners, <party_
 party_clear                           = 1617  # (party_clear, <party_id>),
                                               # Removes all members and prisoners from the party.
 add_gold_to_party                     = 1070  # (add_gold_to_party, <value>, <party_id>),
-                                              # Marks the party as carrying the specified amount of gold, which can be pillaged by player if he destroys it. Operation must not be used to give gold to player's party.
+                                              # Marks the party as carrying the specified amount of gold, which can be pillaged by player if he destroys it.
+                                              # Operation must not be used to give gold to player's party.
 
 # Calculating party and stack sizes
 
@@ -1052,11 +1061,13 @@ store_main_party_wounded              = 2180  # (store_main_party_wounded, <dest
 party_add_xp_to_stack                 = 1670  # (party_add_xp_to_stack, <party_id>, <stack_no>, <xp_amount>),
                                               # Awards specified number of xp points to a single troop stack in the party.
 party_upgrade_with_xp                 = 1673  # (party_upgrade_with_xp, <party_id>, <xp_amount>, <upgrade_path>),
-                                              # Awards specified number of xp points to entire party (split between all troops) and upgrades all eligible troops. Upgrade direction: (0 = random, 1 = first, 2 = second).
+                                              # Awards specified number of xp points to entire party (split between all troops) and upgrades all eligible troops.
+                                              # Upgrade direction: (0 = random, 1 = first, 2 = second).
 party_add_xp                          = 1674  # (party_add_xp, <party_id>, <xp_amount>),
                                               # Awards specified number of xp points to entire party (split between all troops).
 party_get_skill_level                 = 1685  # (party_get_skill_level, <destination>, <party_id>, <skill_no>),
-                                              # Retrieves skill level for the specified party (usually max among the heroes). Makes a callback to (script_game_get_skill_modifier_for_troop).
+                                              # Retrieves skill level for the specified party (usually max among the heroes).
+                                              # Makes a callback to (script_game_get_skill_modifier_for_troop).
                                               # If party doesn't have a single hero, than skill of the top stack will be counted.
 
 # Combat related operations
@@ -1077,7 +1088,8 @@ party_set_next_battle_simulation_time = 1667  # (party_set_next_battle_simulatio
 party_get_battle_opponent             = 1680  # (party_get_battle_opponent, <destination>, <party_id>),
                                               # When a party is engaged in battle with another party, returns its opponent party. Otherwise returns -1.
 inflict_casualties_to_party_group     = 1697  # (inflict_casualties_to_party_group, <parent_party_id>, <damage_amount>, <party_id_to_add_causalties_to>),
-                                              # Delivers auto-calculated damage to the party (and all other parties attached to it). Killed troops are moved to another party to keep track of.
+                                              # Delivers auto-calculated damage to the party (and all other parties attached to it).
+                                              # Killed troops are moved to another party to keep track of.
 party_end_battle                      =  108  # (party_end_battle, <party_no>),
                                               # Version 1.153+. UNTESTED. Supposedly ends the battle in which the party is currently participating.
 
