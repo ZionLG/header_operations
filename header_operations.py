@@ -1712,9 +1712,13 @@ item_has_capability                 = 2724  # (item_has_capability, <item_kind_n
 item_has_modifier                   = 2725  # (item_has_modifier, <item_kind_no>, <item_modifier_no>),
                                             # Version 1.161+. Checks that the specified modifiers is valid for the item. See the list of imod_* values in header_item_modifiers.py.
                                             # Vanilla Warband has x32 limit so any modifier higher than 31 is not shown. Strange behavior will show <imod_swaybacked = 31> if item has
-                                            # modifiers higher than 31. WSE2 doesn't have x32 limit bug.
+                                            # modifiers higher than 31.
+                                            # More information about the bug: https://forums.taleworlds.com/index.php?threads/python-script-scheme-exchange.8652/page-40#post-9900669 (dstn/SupaNinjaMan).
+                                            # Possible workaround: https://forums.taleworlds.com/index.php?threads/python-script-scheme-exchange.8652/post-9912637
+                                            # WSE2 doesn't have this x32 limit bug.
 item_has_faction                    = 2726  # (item_has_faction, <item_kind_no>, <faction_no>),
-                                            # Version 1.161+. Checks that the item is available for specified faction. Note that an item with no factions set is available to all factions.
+                                            # Version 1.161+. Checks that the item is available for specified faction.
+                                            # Note that an item with no factions set is available to all factions despite this operation returning false for each faction.
 
 # Item slot operations
 
@@ -1776,10 +1780,11 @@ item_get_shield_height              = 2712  # (item_get_shield_height, <destinat
                                             # Version 1.161+. Retrieves distance from shield "center" to its bottom edge as a fixed point number. Use (set_fixed_point_multiplier, 100), to retrieve the correct value with this operation. To get actual shield height, use shield_height + weapon_length if this operation returns a non-zero value, otherwise use 2 * weapon_length.
 item_get_horse_scale                = 2713  # (item_get_horse_scale, <destination_fixed_point>, <item_kind_no>),
                                             # Version 1.161+. Retrieves horse scale value as fixed point number.
-                                            # Has a bug with rounding down the result weach decreases value by 1. To fix it multiply FPM by 10. Get scale with new FPM.
-                                            # Than divide by 10 with rounding up: destination = (scale + 9) / 10.
+                                            # Has a bug with rounding down the result which decreases its value by 1. To fix it multiply FPM by 10. Get scale with new FPM.
+                                            # Then divide by 10 with rounding up: destination = (scale + 9) / 10.
                                             # If your FPM is 100 you can use (item_get_weapon_length, <destination>, <item_kind_no>), instead because it uses the same bits.
                                             # But it will return 0 for default size of 100.
+                                            # See also: https://forums.taleworlds.com/index.php?threads/python-script-scheme-exchange.8652/page-40#post-9897422 for a working replacement function, using both workarounds.
 
 item_get_horse_speed                = 2714  # (item_get_horse_speed, <destination>, <item_kind_no>),
                                             # Version 1.161+. Retrieves horse speed value.
