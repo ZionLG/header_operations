@@ -2309,6 +2309,9 @@ cur_tableau_add_override_item                    = 1999  # (cur_tableau_add_over
   # logic can be implemented using this mechanism. You can try to read through
   # the module_strings.py file and try to deduce what each particular
   # substitution does.
+  # The biggest string register supported by the engine is s127, but keep in mind
+  # that in formatter strings only up to two digits can be used, so {s99} is the
+  # biggest one that can be represented for substitutions. [https://discord.com/channels/411286129317249035/411291053702774784/1372185462973796434]
 
 # Conditional operations
 
@@ -2336,10 +2339,10 @@ str_store_item_name             = 2325  # (str_store_item_name, <string_register
                                         # Stores singular item name in referenced string register.
 str_store_item_name_plural      = 2326  # (str_store_item_name_plural, <string_register>, <item_id>),
                                         # Stores plural item name in referenced string register.
-                                        # Plural names need first to be activated (altering process_items.py (altered as of WRECK v1.13) and setting up plural names at module_items).
+                                        # Plural names need first to be activated (altering process_items.py and setting up plural names at module_items).
 str_store_item_name_by_count    = 2327  # (str_store_item_name_by_count, <string_register>, <item_id>),
                                         # Stores singular or plural item name with number of items ("11 Swords", "1 Bottle of Wine").
-                                        # Counting does always work, plural names need first to be activated (altering process_items.py (altered as of WRECK v1.13) and setting up plural names at module_items).
+                                        # Counting does always work, plural names need first to be activated (altering process_items.py and setting up plural names at module_items).
 str_store_party_name            = 2330  # (str_store_party_name, <string_register>, <party_id>),
                                         # Stores party name in referenced string register.
 str_store_agent_name            = 2332  # (str_store_agent_name, <string_register>, <agent_id>),
@@ -2353,19 +2356,27 @@ str_store_info_page_name        = 2337  # (str_store_info_page_name, <string_reg
 str_store_date                  = 2340  # (str_store_date, <string_register>, <number_of_hours_to_add_to_the_current_date>),
                                         # Stores formatted date string, using the number of hours since start of the game (can be retrieved by a call to store_current_hours).
 str_store_troop_name_link       = 2341  # (str_store_troop_name_link, <string_register>, <troop_id>),
-                                        # Stores troop name as an internal game link. Resulting string can be used in game notes, will be highlighted, and clicking on it will redirect the player to the details page of the referenced troop.
+                                        # Stores troop name as an internal game link. Resulting string can be used in game notes,
+                                        # will be highlighted, and clicking on it will redirect the player to the details page of the referenced troop.
 str_store_party_name_link       = 2342  # (str_store_party_name_link, <string_register>, <party_id>),
-                                        # Stores party name as an internal game link. Resulting string can be used in game notes, will be highlighted, and clicking on it will redirect the player to the details page of the referenced party.
+                                        # Stores party name as an internal game link. Resulting string can be used in game notes,
+                                        # will be highlighted, and clicking on it will redirect the player to the details page of the referenced party.
 str_store_faction_name_link     = 2343  # (str_store_faction_name_link, <string_register>, <faction_id>),
-                                        # Stores faction name as an internal game link. Resulting string can be used in game notes, will be highlighted, and clicking on it will redirect the player to the details page of the referenced faction.
+                                        # Stores faction name as an internal game link. Resulting string can be used in game notes,
+                                        # will be highlighted, and clicking on it will redirect the player to the details page of the referenced faction.
 str_store_quest_name_link       = 2344  # (str_store_quest_name_link, <string_register>, <quest_id>),
-                                        # Stores quest name as an internal game link. Resulting string can be used in game notes, will be highlighted, and clicking on it will redirect the player to the details page of the referenced quest.
+                                        # Stores quest name as an internal game link. Resulting string can be used in game notes,
+                                        # will be highlighted, and clicking on it will redirect the player to the details page of the referenced quest.
 str_store_info_page_name_link   = 2345  # (str_store_info_page_name_link, <string_register>, <info_page_id>),
-                                        # Stores info page title as an internal game link. Resulting string can be used in game notes, will be highlighted, and clicking on it will redirect the player to the details page of the referenced info page.
+                                        # Stores info page title as an internal game link. Resulting string can be used in game notes,
+                                        # will be highlighted, and clicking on it will redirect the player to the details page of the referenced info page.
 str_store_class_name            = 2346  # (str_store_class_name, <string_register>, <class_id>),
-                                        # Stores name of the selected troop class (Infantry, Archers, Cavalry or any of the custom class names) in referenced string register.
+                                        # Stores name of the selected agent division / troop class (which is more like troop division)
+                                        # (Infantry, Archers, Cavalry or any of the custom class names) in referenced string register.
+                                        # More fitting name would be str_store_division_name.
 game_key_get_mapped_key_name    =   65  # (game_key_get_mapped_key_name, <string_register>, <game_key>),
-                                        # Version 1.161+. Stores human-readable key name that's currently assigned to the provided game key. May store "unknown" and "No key assigned" strings (the latter is defined in languages/en/ui.csv, the former seems to be hardcoded).
+                                        # Version 1.161+. Stores human-readable key name that's currently assigned to the provided game key.
+                                        # May store "unknown" and "No key assigned" strings (the latter is defined in languages/en/ui.csv, the former seems to be hardcoded).
 
 # Network/multiplayer-related string operations
 
