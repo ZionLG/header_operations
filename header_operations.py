@@ -2067,9 +2067,14 @@ position_has_line_of_sight_to_position      =  707  # (position_has_line_of_sigh
                                                     # This obviously implies that both positions must be in global space. 
                                                     # Note this is computationally expensive, so try to keep number of these to a minimum.
 get_distance_between_positions              =  710  # (get_distance_between_positions, <destination>, <position_no_1>, <position_no_2>),
-                                                    # Returns distance between positions in centimeters.
+                                                    # In scenes returns distance between positions in centimeters.
+                                                    # The return value of this operation doesn't change based on (fixed_point_multiplier).
+                                                    # On the world map, depends on the scale chosen for the map.
+                                                    # Dev documentation suggest kilometers, but it's more likely decameters (tens of meters) in Native.
+                                                    # See [https://mbcommands.fandom.com/wiki/Operations#get_distance_between_positions] for more info.
 get_distance_between_positions_in_meters    =  711  # (get_distance_between_positions_in_meters, <destination>, <position_no_1>, <position_no_2>),
-                                                    # Returns distance between positions in meters.
+                                                    # In scenes returns distance between positions in meters.
+                                                    # On the world map returns values 100x smaller than (get_distance_between_positions).
 get_sq_distance_between_positions           =  712  # (get_sq_distance_between_positions, <destination>, <position_no_1>, <position_no_2>),
                                                     # Returns squared distance between two positions in centimeters.
 get_sq_distance_between_positions_in_meters =  713  # (get_sq_distance_between_positions_in_meters, <destination>, <position_no_1>, <position_no_2>),
@@ -2092,12 +2097,17 @@ position_get_screen_projection              =  750  # (position_get_screen_proje
 
 map_get_random_position_around_position     = 1627  # (map_get_random_position_around_position, <dest_position_no>, <source_position_no>, <radius>),
                                                     # Returns a random position on the global map in the vicinity of the source_position.
+                                                    # Radius units depend on the world map scale, but are the same as used by (get_distance_to_party_from_party).
 map_get_land_position_around_position       = 1628  # (map_get_land_position_around_position, <dest_position_no>, <source_position_no>, <radius>),
                                                     # Returns a random position on the global map in the vicinity of the source_position.
-                                                    # Will always return a land position (i.e. some place you can walk to).
+                                                    # Will return a land position that can be walked on (not rt_mountain, rt_mountain_forest, rt_water, rt_river, rt_bridge, rt_deep_water).
+                                                    # Can fail the condition block if the position wasn't found.
+                                                    # Radius units depend on the world map scale, but are the same as used by (get_distance_to_party_from_party).
 map_get_water_position_around_position      = 1629  # (map_get_water_position_around_position, <dest_position_no>, <source_position_no>, <radius>),
                                                     # Returns a random position on the global map in the vicinity of the source_position.
-                                                    # Will always return a water position (i.e. sea, lake or river).
+                                                    # Will return a water position (rt_water, rt_river or rt_bridge). Not even rt_deep_water is included.
+                                                    # Can fail the condition block if the position wasn't found.
+                                                    # Radius units depend on the world map scale, but are the same as used by (get_distance_to_party_from_party).
 
 ################################################################################
 # [ Z15 ] GAME NOTES
