@@ -306,7 +306,7 @@ store_pow                  = 2126    # (store_pow, <destination_fixed_point>, <v
                                      # Saves the result of <value> raised to the power of <power> in <destination>. Assigns dest := value ^ power
 
 
-# Bitwise operations [https://mbcommands.fandom.com/wiki/Operations#Bitwise_operations]
+# Bitwise operations [Additional information: https://mbcommands.fandom.com/wiki/Operations#Bitwise_operations]
 
 store_or                   = 2116    # (store_or, <destination>, <value_a>, <value_b>),
                                      # Binary OR (represented with |).
@@ -3444,8 +3444,11 @@ agent_get_rider                          = 1715  # (agent_get_rider, <destinatio
 agent_get_party_id                       = 1716  # (agent_get_party_id, <destination>, <agent_id>),
                                                  # Retrieves the party that the specified agent belongs to (supposedly should only work in battle missions for agents spawned as starting/reinforcement waves).
 agent_get_entry_no                       = 1717  # (agent_get_entry_no, <destination>, <agent_id>),
-                                                 # Retrieves the entry point number where this agent has spawned.
-                                                 # What does this return for agents spawned with (spawn_agent)? 4research.
+                                                 # Retrieves the entry where this agent has spawned.
+                                                 # This entry is the ordered number of line at the first code block of mission template.
+                                                 # Entry points are used in this entry line as the first parameter and can be not ordered.
+                                                 # Returns -1 on ti_on_agent_spawn trigger. In other words, entry is assigned after that trigger.
+                                                 # Returns -1 for agents added with (spawn_agent).
 agent_get_troop_id                       = 1718  # (agent_get_troop_id, <destination>, <agent_id>),
                                                  # Retrieves the troop type of the specified agent. Returns -1 for horses (because horses are items, not troops).
 agent_get_item_id                        = 1719  # (agent_get_item_id, <destination>, <horse_agent_id>),
@@ -3485,13 +3488,15 @@ agent_deliver_damage_to_agent_advanced   = 1827  # (agent_deliver_damage_to_agen
 add_missile                              = 1829  # (add_missile, <agent_id>, <starting_position>, <starting_speed_fixed_point>, <weapon_item_id>, <weapon_item_modifier>, <missile_item_id>, <missile_item_modifier>),
                                                  # Version 1.153+. Creates a missile with specified parameters.
                                                  # Note that <starting_position> parameter also determines the direction in which missile flies.
+                                                 # Avoid using pos1. This operation triggers script_game_missile_launch where pos1 is rewritten by weapon item position.
 
 agent_get_speed                          = 1689  # (agent_get_speed, <position>, <agent_id>),
                                                  # Retrieves agent speed to (X,Y) coordinates of the position register. 
                                                  # Speed is local position to agent.
-                                                 # X, Y - fixed point values. Sets Z = 0, rotation of <position> doesn't affected.
+                                                 # X, Y - fixed point values. Sets Z = 0, rotation of <position> doesn't get affected.
                                                  # Cavalry don't have x-coordinate.
                                                  # Their position-y-rotation leans to left or right.
+                                                 # Returned speed is in m/s, modified by fixed_point_multiplier (fpm=100 gives cm/s, fpm=3600 gives m/h).
 agent_get_damage_modifier                = 2065  # (agent_get_damage_modifier, <destination>, <agent_id>),
                                                  # Version 1.157+. output value is in percentage, 100 is default, value can be between [0..1000]
 agent_get_accuracy_modifier              = 2066  # (agent_get_accuracy_modifier, <destination>, <agent_id>),
@@ -3538,7 +3543,7 @@ agent_get_time_elapsed_since_removed     = 1760  # (agent_get_time_elapsed_since
 str_store_agent_face_keys                = 2749  # (str_store_agent_face_keys, <string_reg>, <agent_id>),
                                                  # Stores agent face code. Regular agents have random generated face from two face codes of the troop.
 
-# Agent equipment
+# Agent equipment [Additional information: https://mbcommands.fandom.com/wiki/Operations#Agent_equipment]
 
 agent_refill_wielded_shield_hit_points   = 1692  # (agent_refill_wielded_shield_hit_points, <agent_id>),
                                                  # Restores all hit points for the shield the agent is currently wielding.
@@ -3558,6 +3563,8 @@ agent_refill_ammo                        = 1728  # (agent_refill_ammo, <agent_id
 agent_set_wielded_item                   = 1747  # (agent_set_wielded_item, <agent_id>, <item_id>),
                                                  # Forces the agent to wield the specified item.
                                                  # Agent must have that item in his equipment for this to work. Use item_id = -1 to unwield any currently wielded item.
+                                                 # Agent wielding item is alarmed and can't be unalarmed. The animation changes to alarmed that has a higher priority.
+                                                 # After some time agent will rethink and switches his wielded item.
 agent_equip_item                         = 1779  # (agent_equip_item, <agent_id>, <item_id>, [weapon_slot_no], [modifier]),
                                                  # Adds the specified item to agent and forces him to equip it.
                                                  # Optional weapon_slot_no parameter is only used with weapons and will put the newly added item to that slot (range 1..4) and with optional modifier.
@@ -3657,12 +3664,14 @@ agent_get_action_dir                     = 1767  # (agent_get_action_dir, <desti
                                                  # Possible values at defending: invalid = -1, forward/down = 0, right = 1, left = 2, up = 3, global/blocking with shield = 5.
 agent_set_attack_action                  = 1745  # (agent_set_attack_action, <agent_id>, <direction_value>, <action_value>),
                                                  # Forces the agent to perform an attack action.
-                                                 # Direction value: -2 = cancel any action (1.153+), 0 = thrust, 1 = slashright, 2 = slashleft, 3 = overswing.
+                                                 # Direction value: [-2|-1] = will release readying action (1.153+), 0 = thrust, 1 = slashright, 2 = slashleft, 3 = overswing.
                                                  # Action value: 0 = ready and release, 1 = ready and hold.
-agent_set_defend_action                  = 1746  # (agent_set_defend_action, <agent_id>, <value>, <duration-in-1/1000-seconds>),
+                                                 # The operation will be ignored entirely if one of the values does not match the above.
+                                                 # If <action_value> is free = 0 than agents with shield will raise shield after few seconds. They are protecting themselves if not in range.
+agent_set_defend_action                  = 1746  # (agent_set_defend_action, <agent_id>, <action_value>, <duration-in-1/1000-seconds>),
                                                  # Forces the agent to perform a defend action.
-                                                 # Possible values: -2 = cancel any action (1.153+), 0 = defend_down, 1 = defend_right, 2 = defend_left, 3 = defend_up.
-                                                 # Does time value determine delay, speed or duration? 4research.
+                                                 # Possible values: [-2|-1] = cancel any action (1.153+), 0 = defend_down, 1 = defend_right, 2 = defend_left, 3 = defend_up.
+                                                 # The operation will be ignored entirely if duration is less then 0 or the <action_value> does not match the above.
 
 agent_set_scripted_destination           = 1730  # (agent_set_scripted_destination, <agent_id>, <position>, [auto_set_z_to_ground_level], [no_rethink]),
                                                  # Forces the agent to travel to specified position and stay there until new behavior is set or scripted mode cleared.
@@ -3678,6 +3687,8 @@ agent_force_rethink                      = 1732  # (agent_force_rethink, <agent_
                                                  # Forces the agent to recalculate his current actions after setting him a new scripted destination or changing other factors affecting his behavior.
 agent_clear_scripted_mode                = 1735  # (agent_clear_scripted_mode, <agent_id>),
                                                  # Clears scripting mode from the agent, making him behave as usual again.
+                                                 # Agent will stay on the same position for a while. Remove delay by using (agent_force_rethink).
+                                                 # Doesn't reset attack or defend action.
 agent_ai_set_always_attack_in_melee      = 1737  # (agent_ai_set_always_attack_in_melee, <agent_id>, <value>),
                                                  # Forces the agent to continuously attack in melee combat, instead of defending.
                                                  # Used in Native to prevent stalling at the top of the siege ladder.
@@ -3704,8 +3715,8 @@ agent_get_look_position                  = 1709  # (agent_get_look_position, <po
                                                  # Basically, it is a position rotated with the agents direction but located underneath the feet.
 agent_set_look_target_position           = 1744  # (agent_set_look_target_position, <agent_id>, <position>),
                                                  # Forces an agent to look at the specified position (turn his head as necessary).
-                                                 # Non alarmed agents will look for a short amount of time.
-                                                 # Not all alarmed agents will look continuesly at the point.
+                                                 # Non alarmed agents will look continuesly at the point.
+                                                 # Alarmed agents will look for a short amount of time.
 agent_ai_get_look_target                 = 2080  # (agent_ai_get_look_target, <destination>, <agent_id>),
                                                  # Version 1.153+. UNTESTED. Supposedly returns agent_id that the agent is currently looking at.
 agent_set_look_target_agent              = 1713  # (agent_set_look_target_agent, <watcher_agent_id>, <observed_agent_id>),
@@ -3751,8 +3762,11 @@ agent_set_team                           = 1771  # (agent_set_team, <agent_id>, 
                                                  # Puts the agent to specified team number. Also copies "value" to agent group.
                                                  # The max <value> is 7. But the 7 team is hardcoded neutral to everyone. If you set team out of range (0, 6) than 7 team will be assigned.
 agent_get_class                          = 1772  # (agent_get_class , <destination>, <agent_id>),
-                                                 # Retrieves the agent class (see grc_* constants in header_mission_templates.py for reference).
-                                                 # Note this operation returns the troop class that the game divines from troop equipment and flags, ignoring any custom troop class settings.
+                                                 # Retrieves the agent class (the only possible results are 0=Infantry, 1=Archers or 2=Cavalry), which reflects the agent's current status.
+                                                 # Class=2 (Cavalry) is assigned to an agent only when he's mounted. When the agent dismounts, his class changes to either 0=Infantry, 1=Archers.
+                                                 # The decision between class=0 and class=1 seems to be based on whether the agent is equipped with a ranged weapon or not.
+                                                 # (4research: does the class change from 1 to 0 when agent runs out of ammo?).
+                                                 # Because the engine decides agent classes dynamically, there are no operations to change agent class. To split agents into groups use agent divisions instead.
 agent_get_division                       = 1773  # (agent_get_division , <destination>, <agent_id>),
                                                  # Retrieves the agent division (custom troop class number in 0..8 range).
 agent_set_division                       = 1783  # (agent_set_division, <agent_id>, <value>),
@@ -3764,6 +3778,10 @@ team_get_hold_fire_order                 = 1784  # (team_get_hold_fire_order, <d
                                                  # Retrieves current status of hold fire order for specified team/division (see aordr_* constants in header_mission_templates.py for reference).
 team_get_movement_order                  = 1785  # (team_get_movement_order, <destination>, <team_no>, <division>),
                                                  # Retrieves current movement orders for specified team/division (see mordr_* constants in header_mission_templates.py for reference).
+                                                 # Note however, that unlike aord_*, wordr_* and rordr_*, mordr_* are not just statuses.
+                                                 # They are also orders that can be given to agent divisions.
+                                                 # On top of that, certain orders, once given, don't leave a trace to detect with any operation (most notably formation-related orders).
+                                                 # See more here: [https://mbcommands.fandom.com/wiki/Operations#team_get_movement_order]
 team_get_riding_order                    = 1786  # (team_get_riding_order, <destination>, <team_no>, <division>),
                                                  # Retrieves current status of riding order for specified team/division (see rordr_* constants in header_mission_templates.py for reference).
 team_get_weapon_usage_order              = 1787  # (team_get_weapon_usage_order, <destination>, <team_no>, <division>),
@@ -3808,10 +3826,14 @@ store_defender_count                     = 2383  # (store_defender_count, <desti
 store_attacker_count                     = 2384  # (store_attacker_count, <destination>),
                                                  # Deprecated. Stores unreliable value.
 store_normalized_team_count              = 2385  # (store_normalized_team_count, <destination>, <team_no>),
-                                                 # Stores the number of agents belonging to specified team, normalized according to battle_size and advantage.
+                                                 # Stores the number of agents belonging to a specified team, normalized according to battle_size and advantage.
                                                  # Commonly used to calculate advantage and possibly reinforcement wave sizes.
-                                                 # 100% is equal to relative spawn agents count on mission start.
-                                                 # For example if spawn point have 40 then 50% will be 20.
+                                                 # 100% is equal to the relative spawn agents count at mission start.
+                                                 # For example - if a team spawn point is set to spawn 40 agents, and the team has been mowed down to 50%, it will always be 20.
+                                                 # That will be the returned value here, irrespective of the actual amount of troops spawned on the field due to a larger battle size multiplier.
+                                                 # That is what 'normalized' means here.
+                                                 # See (options_set_battle_size) for more info.
+
 
 ################################################################################
 # [ Z23 ] PRESENTATIONS
