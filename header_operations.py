@@ -933,6 +933,7 @@ store_random_in_range_to_reg0_reg1    = store01_random_parties_in_range # (store
 store_random_parties_in_range         = store01_random_parties_in_range # Compatibility alias...
 store_distance_to_party_from_party    = 2281  # (store_distance_to_party_from_party, <destination>, <party_id_1>, <party_id_2>),
                                               # Retrieves distance between two parties on the global map.
+                                              # Despite the operation name containing "to" and "from", the order of parties doesn't matter.
                                               # Extremely unprecise as it does not use a fixed point multiplier at all and 1 distance unit is quite a noticeable distance on the map.
                                               # Instead of making decisions based on the output of this operation, first use it to measure distances between various parties on the map
                                               # and print the results with display_message in order to get a feeling for this function.
@@ -1369,9 +1370,9 @@ troop_remove_items                       = 1536  # (troop_remove_items, <troop_i
                                                  # Doesn't take item modifiers into account.
                                                  # Will not fail if <troop_id> does not have the required items.
 troop_loot_troop                         = 1539  # (troop_loot_troop, <target_troop>, <source_troop_id>, <probability>), 
-                                                 # Adds to target_troop's inventory some items from source_troop's equipment and inventory with some probability.
+                                                 # Adds to target_troop's inventory some items from <source_troop>'s equipment and inventory with some probability.
                                                  # If an item is added to the target troop, it is given a random modifier from the item's imod list.
-                                                 # Does not actually remove items from source_troop.
+                                                 # Does not actually remove items from <source_troop>.
                                                  # Commonly used in Native to generate random loot after the battle.
                                                  # itp_unique items are ignored and will not be copied as loot.
                                                  # The result is a random chance of adding some number of items. Repeat in cycle if needed.
