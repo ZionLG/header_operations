@@ -2685,9 +2685,12 @@ talk_info_set_line                    = 2022  # (talk_info_set_line, <line_no>, 
 # Conditional operations
 
 all_enemies_defeated                  = 1003                     # (all_enemies_defeated, [time-value]),
-                                                                 # Checks if all agents from the enemy are defeated. When a time value x (in seconds) is given the operation only succeeds if the last status change (dead, alive, wounded...) happened more than (or exactly) x seconds ago.
+                                                                 # Checks if all agents from the enemy are defeated.
+                                                                 # When a time value x (in seconds) is given the operation only succeeds if
+                                                                 # the last status change (dead, alive, wounded...) happened more than (or exactly) x seconds ago.
 race_completed_by_player              = 1004                     # (race_completed_by_player),
-                                                                 # Not documented. Not used in Native. Apparently deprecated, doesn't do anything, only returns true.
+                                                                 # Not documented. Not used in Native.
+                                                                 # Apparently deprecated, doesn't do anything, only returns true.
 num_active_teams_le                   = 1005                     # (num_active_teams_le, <value>),
                                                                  # Checks that the number of active teams (i.e. teams with at least one active agent) is less than or equal to given value.
 num_active_teams_gt                   = neg|num_active_teams_le  # (num_active_teams_gt, <value>),
@@ -2713,30 +2716,35 @@ scene_slot_lt                                =  neg|scene_slot_ge  # (scene_slot
 # Scene visitors handling operations
 
 add_troop_to_site                            = 1250  # (add_troop_to_site, <troop_id>, <scene_id>, <entry_no>),
-                                                     # Set troop's position in the world to the specified scene and entry point. Entry point must have mtef_scene_source type.
-                                                     # Agent will always appear at that entry when entering that scene. No longer used in Native.
+                                                     # Set troop's position in the world to the specified scene and entry point.
+                                                     # Entry point must have mtef_scene_source type.
+                                                     # Agent will always appear at that entry when entering that scene.
+                                                     # No longer used in Native.
 remove_troop_from_site                       = 1251  # (remove_troop_from_site, <troop_id>, <scene_id>),
-                                                     # Removes the troop from the specified scene. No longer used in Native.
+                                                     # Removes the troop from the specified scene.
+                                                     # No longer used in Native.
 modify_visitors_at_site                      = 1261  # (modify_visitors_at_site, <scene_id>),
-                                                     # Declares the scene which visitors will be modified from that moment on. Can be called inside mission or at global map.
+                                                     # Declares the scene which visitors will be modified from that moment on.
+                                                     # Can be called inside mission or at global map.
 reset_visitors                               = 1262  # (reset_visitors),
                                                      # If the scene defined in previous operand is not loaded yet all visitors will be removed.
 set_visitor                                  = 1263  # (set_visitor, <mission_template_spawn_record>, <troop_id>, [<dna>]),
                                                      # Adds the specified troop as the visitor to the specified spawn record (not the entry point) of the scene defined with (modify_visitors_at_site).
-                                                     # Entry point must have mtef_visitor_source type. Optional DNA parameter allows for randomization of agent looks (only applies to non-hero troops).                                                                               
-                                                     # Default team is 7 wich can be overridden by <entry_no> flags. 7 team is hardcoded neutral for everyone and this couldn't be changed.
+                                                     # Entry point must have mtef_visitor_source type.
+                                                     # Optional DNA parameter allows for randomization of agent looks (only applies to non-hero troops).                                                                               
 set_visitors                                 = 1264  # (set_visitors, <mission_template_spawn_record>, <troop_id>, <number_of_troops>),
                                                      # Same as (set_visitors), but spawns an entire group of some troop type.
 add_visitors_to_current_scene                = 1265  # (add_visitors_to_current_scene, <mission_template_spawn_record>, <troop_id>, <number_of_troops>, [<team_no>, <group_no>]),
-                                                     # Adds a number of troops to the specified spawn record (not the entry point) when the scene is already loaded. Requires the entry point to have the flag mtef_visitor_source. Optional <team_no> and <group_no> parameters are used
+                                                     # Adds a number of troops to the specified spawn record (not the entry point) when the scene is already loaded.
+                                                     # Requires the entry point to have the flag mtef_visitor_source. Optional <team_no> and <group_no> parameters are used
                                                      # in multiplayer mode only, singleplayer mode uses team settings for selected entry point as defined in module_mission_templates.py.
-                                                     # Default team is 7 wich can be overridden by <entry_no> flags. 7 team is hardcoded neutral for everyone and this couldn't be changed.
 mission_tpl_entry_set_override_flags         = 1940  # (mission_tpl_entry_set_override_flags, <mission_template_id>, <entry_no>, <value>),
                                                      # Allows modder to use a different set of equipment override flags (see af_* constants in header_mission_templates.py) for the selected entry point.
 mission_tpl_entry_clear_override_items       = 1941  # (mission_tpl_entry_clear_override_items, <mission_template_id>, <entry_no>),
                                                      # Clears the list of override equipment provided by the entry point definition in module_mission_templates.py.
 mission_tpl_entry_add_override_item          = 1942  # (mission_tpl_entry_add_override_item, <mission_template_id>, <entry_no>, <item_kind_id>),
-                                                     # Specified item will be added to any agent spawning on specified entry point. Must be used after using the set_jump_mission to define the context, otherwise it won't work properly.
+                                                     # Specified item will be added to any agent spawning on specified entry point.
+                                                     # Must be used after using the set_jump_mission to define the context, otherwise it won't work properly.
 mission_tpl_are_all_agents_spawned           = 1943  # (mission_tpl_are_all_agents_spawned), 
                                                      # Agents >300 may keep spawning after ti_after_mission_start (fires .1 second too early) if there is not enough space to spawn for agents.
 
@@ -2749,17 +2757,21 @@ finish_mission                               = 1907  # (finish_mission, <delay_i
 set_jump_mission                             = 1911  # (set_jump_mission, <mission_template_id>),
                                                      # Tells the game to use the specified mission template for the next mission. Apparently should precede the call to (jump_to_scene).
 jump_to_scene                                = 1910  # (jump_to_scene, <scene_id>, [entry_no]),
-                                                     # Tells the game to use the specified scene for the next mission. Usually followed by (change_screen_mission) call. Parameter entry_no does not seem to have any effect.
+                                                     # Official: (jump_to_scene, <scene_id>, <entry_no>),
+                                                     # Tells the game to use the specified scene for the next mission. Usually followed by (change_screen_mission) call.
+                                                     # Parameter entry_no does not seem to have any effect.
 set_jump_entry                               = 1912  # (set_jump_entry, <entry_no>),
                                                      # Defines what entry point the player will appear at when the mission starts.
-
+                                                     # 4research: How does it interact with (set_visitor,x,"trp_player"), ?
 store_current_scene                          = 2211  # (store_current_scene, <destination>),
-                                                     # Retrieves the identifier of the current scene. Note that the operation will return the scene id even after the mission is completed and the player is already on global map.
+                                                     # Retrieves the identifier of the current scene.
+                                                     # Note that the operation will return the scene id even after the mission is completed and the player is already on global map.
 close_order_menu                             = 1789  # (close_order_menu),
                                                      # Version 1.161+. If orders menu is currently open, it will be closed.
 
 entry_point_get_position                     = 1780  # (entry_point_get_position, <position>, <entry_no>),
                                                      # Retrieves the position of the entry point on the scene.
+                                                     # Before mission start values are from the previous scene.
 entry_point_set_position                     = 1781  # (entry_point_set_position, <entry_no>, <position>),
                                                      # Moves the entry point to the specified position on the scene.
 entry_point_is_auto_generated                = 1782  # (entry_point_is_auto_generated, <entry_no>),
@@ -2768,9 +2780,11 @@ entry_point_is_auto_generated                = 1782  # (entry_point_is_auto_gene
 # Scene parameters handling
 
 scene_set_day_time                           = 1266  # (scene_set_day_time, <value>),
-                                                     # Defines the time for the scene to force the engine to select a different skybox than the one dictated by current game time. Must be called within ti_before_mission_start trigger in module_mission_templates.py. Value should be in range 0..23.
+                                                     # Defines the time for the scene to force the engine to select a different skybox than the one dictated by current game time.
+                                                     # Must be called within ti_before_mission_start trigger in module_mission_templates.py. Value should be in range 0..23.
 set_rain                                     = 1797  # (set_rain, <rain-type>, <strength>),
-                                                     # Sets a new weather for the mission. Rain_type values: 0 = clear, 1 = rain, 2 = snow. Strength is typically used in range 0..100 but is actually unlimited. Affects number of particles and fog density.
+                                                     # Sets a new weather for the mission. Rain_type values: 0 = clear, 1 = rain, 2 = snow.
+                                                     # Strength is typically used in range 0..100 but is actually unlimited. Affects number of particles and fog density.
 set_fog_distance                             = 1798  # (set_fog_distance, <distance_in_meters>, [fog_color]),
                                                      # Sets the density (and optionally color) of the fog for the mission.
 
@@ -2795,7 +2809,8 @@ set_battle_advantage                         = 1691  # (set_battle_advantage, <v
                                                      # Sets a new value for battle advantage.
 
 get_scene_boundaries                         = 1799  # (get_scene_boundaries, <position_min>, <position_max>),
-                                                     # Retrieves the coordinates of the top-left and bottom-right corner of the scene to the provided position registers.
+                                                     # Retrieves the coordinates of the bottom-left and top-right corner of the scene to the provided position registers.
+                                                     # Before mission start values are from the previous scene.
 
 mission_enable_talk                          = 1935  # (mission_enable_talk),
                                                      # Allows dialogue with agents on the scene.
@@ -2805,16 +2820,26 @@ mission_disable_talk                         = 1936  # (mission_disable_talk),
 mission_get_time_speed                       = 2002  # (mission_get_time_speed, <destination_fixed_point>),
                                                      # Retrieves current time speed factor for the mission.
 mission_set_time_speed                       = 2003  # (mission_set_time_speed, <value_fixed_point>),
-                                                     # Instantly changes the speed of time during the mission. Speed of time cannot be set to zero or below. Operation only works when cheat mode is enabled.
+                                                     # Instantly changes the speed of time during the mission.
+                                                     # Speed of time cannot be set to zero or below.
+                                                     # Operation only works when cheat mode is enabled.
 mission_time_speed_move_to_value             = 2004  # (mission_time_speed_move_to_value, <value_fixed_point>, <duration-in-1/1000-seconds>),
-                                                     # Changes the speed of time during the mission gradually, within the specified duration period. Speed of time cannot be set to zero or below. Operation only works when cheat mode is enabled.
+                                                     # Changes the speed of time during the mission gradually, within the specified duration period.
+                                                     # Speed of time cannot be set to zero or below.
+                                                     # Operation only works when cheat mode is enabled.
+
 mission_set_duel_mode                        = 2006  # (mission_set_duel_mode, <value>),
-                                                     # Sets duel mode for the multiplayer mission. Values: 0 = off, 1 = on.
+                                                     # Sets duel mode for the multiplayer mission.
+                                                     # Values: 0 = off, 1 = on.
 
 store_zoom_amount                            = 2220  # (store_zoom_amount, <destination_fixed_point>),
                                                      # Version 1.153+. Stores current zoom rate.
+                                                     # Works only if native shift zoom is disabled in module.ini parameter disable_zoom = 1.
 set_zoom_amount                              = 2221  # (set_zoom_amount, <value_fixed_point>),
                                                      # Version 1.153+. Sets new zoom rate.
+                                                     # Works only if native shift zoom is disabled in module.ini parameter disable_zoom = 1.
+                                                     # 100 is default, 197 is max.
+                                                     # 198+ values will overflow and not recommended.
 
 # Mission timers
 
@@ -2842,41 +2867,70 @@ store_mission_timer_c_msec                   = 2367  # (store_mission_timer_c_ms
 # Camera and rendering operations
 
 is_camera_in_first_person                    = 61  # (is_camera_in_first_person),
-set_camera_in_first_person                   = 62  # (set_camera_in_first_person, <value>), # 1 = first, 0 = third person
+set_camera_in_first_person                   = 62  # (set_camera_in_first_person, <value>), 
+                                                     # 1 = first, 0 = third person
 
 mission_cam_set_mode                         = 2001  # (mission_cam_set_mode, <mission_cam_mode>, <duration-in-1/1000-seconds>, <value>),
-                                                     # Not documented. Changes main camera mode. Camera mode is 0 for automatic and 1 for manual (controlled by code). Duration parameter is used when switching from manual to auto, to determine how long will camera move to its new position. If value = 0, then camera velocity will be linear. Else it will be non-linear. Otherwise the third parameter is not documented.
+                                                     # Not documented.
+                                                     # Changes main camera mode.
+                                                     # Camera mode is 0 for automatic and 1 for manual (controlled by code).
+                                                     # Duration parameter is used when switching from manual to auto, to determine how long will camera move to its new position.
+                                                     # If value = 0, then camera velocity will be linear.
+                                                     # Else it will be non-linear.
+                                                     # Otherwise the third parameter is not documented.
 mission_cam_set_screen_color                 = 2008  # (mission_cam_set_screen_color, <value>),
-                                                     # Not documented. Paints the screen with solid color. Parameter <value> contains color code with alpha component. Can be used to block screen entirely, add tint etc.
+                                                     # Not documented.
+                                                     # Paints the screen with solid color.
+                                                     # Parameter <value> contains color code with alpha component.
+                                                     # Can be used to block screen entirely, add tint etc.
 mission_cam_animate_to_screen_color          = 2009  #(mission_cam_animate_to_screen_color, <value>, <duration-in-1/1000-seconds>),
-                                                     # Not documented. Same as above, but color change is gradual. Used in Native to fill the screen with white before the end of marriage scene.
+                                                     # Not documented.
+                                                     # Same as above, but color change is gradual.
+                                                     # Used in Native to fill the screen with white before the end of marriage scene.
 
 mission_cam_get_position                     = 2010  # (mission_cam_get_position, <position_register_no>),
                                                      # Retrieves the current position of camera during the mission (i.e. the point from which the player is observing the game).
 mission_cam_set_position                     = 2011  # (mission_cam_set_position, <position_register_no>),
                                                      # Moves the camera to the specified position during the mission.
 mission_cam_animate_to_position              = 2012  # (mission_cam_animate_to_position, <position_register_no>, <duration-in-1/1000-seconds>, <value>),
-                                                     # Moves the camera to the specified position smoothly. Second parameter determines how long it will take camera to move to destination, third parameter determines whether camera velocity will be linear (value = 0) or non-linear (value = 1).
+                                                     # Moves the camera to the specified position smoothly.
+                                                     # Second parameter determines how long it will take camera to move to destination,
+                                                     # third parameter determines whether camera velocity will be linear (value = 0) or non-linear (value = 1).
 mission_cam_get_aperture                     = 2013  # (mission_cam_get_aperture, <destination>),
-                                                     # If player is holding shift for zooming aperture = 37, normal aperture = 75. When player dies with shift holding mission cam aperture don't return to normal.
+                                                     # If player is holding shift for zooming aperture = 37, normal aperture = 75.
+                                                     # When player dies with shift holding mission cam aperture don't return to normal.
 mission_cam_set_aperture                     = 2014  # (mission_cam_set_aperture, <value>),
                                                      # Set aperture for cam.
 mission_cam_animate_to_aperture              = 2015  # (mission_cam_animate_to_aperture, <value>, <duration-in-1/1000-seconds>, <value>),
-                                                     # Not documented. if value = 0, then camera velocity will be linear. else it will be non-linear
+                                                     # Not documented.
+                                                     # if value = 0, then camera velocity will be linear.
+                                                     # else it will be non-linear
 mission_cam_animate_to_position_and_aperture = 2016  # (mission_cam_animate_to_position_and_aperture, <position_register_no>, <value>, <duration-in-1/1000-seconds>, <value>),
-                                                     # Not documented. if value = 0, then camera velocity will be linear. else it will be non-linear
+                                                     # Not documented.
+                                                     # if value = 0, then camera velocity will be linear.
+                                                     # else it will be non-linear
 mission_cam_set_target_agent                 = 2017  # (mission_cam_set_target_agent, <agent_id>, <value>),
-                                                     # Not documented. if value = 0 then do not use agent's rotation, else use agent's rotation
+                                                     # Not documented.
+                                                     # if value = 0 then do not use agent's rotation,
+                                                     # else use agent's rotation
 mission_cam_clear_target_agent               = 2018  # (mission_cam_clear_target_agent),
                                                      # Not documented.
 mission_cam_set_animation                    = 2019  # (mission_cam_set_animation, <anim_id>),
-                                                     # Plays any bone animation from animations.py, taking the coordinates from the first bone in the hierarchy. The name and number of bones do not matter.
+                                                     # Plays any bone animation from animations.py, taking the coordinates from the first bone in the hierarchy.
+                                                     # The name and number of bones do not matter.
 
 mouse_get_world_projection                   =  751  # (mouse_get_world_projection, <position_no_1>, <position_no_2>),
-                                                     # Version 1.161+. Returns current camera coordinates (first position) and mouse projection to the back of the world (second position). Rotation data of resulting positions seems unreliable.
+                                                     # Version 1.161+.
+                                                     # Returns current camera coordinates (first position) and mouse projection to the back of the world (second position).
+                                                     # Rotation data of resulting positions seems unreliable.
 cast_ray                                     = 1900  # (cast_ray, <destination>, <hit_position_register>, <ray_position_register>, [<ray_length_fixed_point>]),
-                                                     # Version 1.161+. Casts a ray starting from <ray_position_register> and stores the closest hit position into <hit_position_register>. (fails if no hits). Rotations of hit position will be normal to the surface, i.e. perpendicular.
-                                                     # Only checks collisions with collision bodies, scene props with collision, and terrain. Fails if no collision is made. Collision with terrain and trees returns -1 as result.
+                                                     # Version 1.161+.
+                                                     # Casts a ray starting from <ray_position_register> and stores the closest hit position into <hit_position_register>.
+                                                     # (fails if no hits).
+                                                     # Rotations of hit position will be normal to the surface, i.e. perpendicular.
+                                                     # Only checks collisions with collision bodies, scene props with collision, and terrain.
+                                                     # Fails if no collision is made.
+                                                     # Collision with terrain and trees returns -1 as result.
                                                      # Collision face's normals are stored in <hit_position_register> rotation with Y+ being the outward facing.
                                                      # If the body hit is a scene prop, its instance id will be stored into <destination>, otherwise it will store -1 and fail code below.
                                                      # Optional <ray_length> parameter seems to have no effect.
@@ -2884,12 +2938,17 @@ cast_ray                                     = 1900  # (cast_ray, <destination>,
 set_postfx                                   = 2386  # (set_postfx, <postfx_params-ID>)
                                                      # Sets the respective postfx effect for the current scene. Count through your post_fx-settings beginning from 0 to get the ID 
                                                      # for the effect or put the line 'ID_postfx_params import *' at the top to use directly the ID-name. Not used in Native.
-                                                     # Can get called with all mission triggers, even when already in the scene. However, in latter case a delay can be noticed
-                                                     # when the postfx switches. Appearantly a manually set postfx disappears if HDR gets toggled on/off in the graphic options.
+                                                     # Can get called with all mission triggers, even when already in the scene.
+                                                     # However, being performance-heavy, in latter case a noticeable freeze occurs when the postfx switches, so it's best to call it in ti_before_mission_start.
+                                                     # Apparently a manually set postfx disappears if HDR gets toggled on/off in the graphics options.
+                                                     # Trying to set incorrect ID (-1, or something too big) results in an error, but changes postfx anyway - to pfx_default.
+                                                     # It can also be used on the world map, where also causes freezes during a switch (best to call it in ti_on_switch_to_map).
+
 set_river_shader_to_mud                      = 2387  # (set_river_shader_to_mud),
                                                      # Changes river material for muddy shader variant affecting visibility and color (drastically darker). Cannot be undone.
 rebuild_shadow_map                           = 2393  # (rebuild_shadow_map),
-                                                     # Version 1.153+. Rebuilds shadow map for the current scene to match props' new positions. When you move the prop and don't use this operation, its shadow will still fall on its old position.
+                                                     # Version 1.153+. Rebuilds shadow map for the current scene to match props' new positions.
+                                                     # When you move the prop and don't use this operation, its shadow will still fall on its old position.
 
 # Shader uniforms
 
@@ -2905,14 +2964,54 @@ rebuild_shadow_map                           = 2393  # (rebuild_shadow_map),
 # [https://github.com/tldmod/tldmod/blob/e888eeffd/_wb/mb_src.fx#L759 here] and
 # [https://github.com/tldmod/tldmod/blob/e888eeffd/ModuleSystem/module_mission_templates_cutscenes.py#L15 here], from ''The Last Days''.
 
-set_shader_param_int                         = 2400  # (set_shader_param_int, <parameter_name>, <value>), #Sets the int shader parameter <parameter_name> to <value>
-                                                     # Version 1.153+. UNTESTED. Allows direct manupulation of shader parameters. Operation scope is unknown, possibly global. Parameter is an int value.
+set_shader_param_int                         = 2400  # (set_shader_param_int, <parameter_name>, <value>), 
+                                                     # Sets the int shader parameter <parameter_name> to <value>
+                                                     # Version 1.153+. UNTESTED. Allows direct manupulation of shader parameters. Operation scope is unknown, possibly global.
+                                                     # Parameter is an int value.
 set_shader_param_float                       = 2401  # (set_shader_param_float, <parameter_name>, <value_fixed_point>),
                                                      # Version 1.153+. The uniform is a single float value, interpreted as a float in both HLSL/Direct3D and GLSL/OpenGL.
 set_shader_param_float4                      = 2402  # (set_shader_param_float4, <parameter_name>, <valuex>, <valuey>, <valuez>, <valuew>),
                                                      # Version 1.153+. The uniform is a set of four float values, interpreted as a float4 in HLSL/Direct3D or vec4 in GLSL/OpenGL.
 set_shader_param_float4x4                    = 2403  # (set_shader_param_float4x4, <parameter_name>, [0][0], [0][1], [0][2], [1][0], [1][1], [1][2], [2][0], [2][1], [2][2], [3][0], [3][1], [3][2]),
-                                                     # Version 1.153+. Sets the float4x4 shader parameter <parameter_name> to the given values .w components are 0001 by default. Operation scope is unknown, possibly global.
+                                                     # Version 1.153+. Sets the float4x4 shader parameter <parameter_name> to the given values .w components are 0001 by default.
+                                                     # Operation scope is unknown, possibly global.
+                                                     # The uniform is a set of 4x4 float values, but for strange reasons we can apparently only set 12 values instead of 16: the {X, Y, Z} components of each of the four rows,
+                                                     # the {W} component stays hardcoded as 1.f, so modders only have control of a 3x4 in reality, 4research.
+                                                     # The W column being 1,1,1,1, instead of the homogeneous 0,0,0,1 [https://www.cs.usfca.edu/~galles/cs420/lecture/HomogenousMatrix.pdf],
+                                                     # limits the usefulness of this operation a ton out of the box,
+                                                     # but it can also be reused as an optimized way of accessing an array of four float3 elements at once.
+                                                     # Interpreted as a float4x4 in HLSL/Direct3D or mat4 in GLSL/OpenGL. 
+                                                     #           x       y       z      w
+                                                     # row 0 | [0][0], [0][1], [0][2], 1.f,
+                                                     # row 1 | [1][0], [1][1], [1][2], 1.f,
+                                                     # row 2 | [2][0], [2][1], [2][2], 1.f,
+                                                     # row 3 | [3][0], [3][1], [3][2], 1.f,
+                                                     #
+                                                     # As a trick, you can patch the values, copy or swizzle them in the shader like this:
+                                                     #           x       y       z       w
+                                                     # row 0 | [0][0], [0][1], [0][2], [3][0],
+                                                     # row 1 | [1][0], [1][1], [1][2], [3][1],
+                                                     # row 2 | [2][0], [2][1], [2][2], [3][2],
+                                                     # row 3 | [3][0], [3][1], [3][2], 1.f,
+                                                     #
+                                                     #   matrix[0][3] = matrix[3][0];  /* swy: copy the first three values in the last row */
+                                                     #   matrix[1][3] = matrix[3][1];  /*      into the fourth column vertically           */
+                                                     #   matrix[2][3] = matrix[3][2];
+                                                     #
+                                                     # If the W column never changes, and it is always going to be 0,0,0,1, patch it in the shader like this (identity example):
+                                                     #          x    y    z    w
+                                                     # row 0 | 1.f, 0.f, 0.f, 0.f, /* swy: identity matrix, multiplying something by this does nothing; it's the default */
+                                                     # row 1 | 0.f, 1.f, 0.f, 0.f, /* swy: note there's only ones in the diagonal */
+                                                     # row 2 | 0.f, 0.f, 1.f, 0.f,
+                                                     # row 3 | 0.f, 0.f, 0.f, 1.f,
+                                                     #   matrix[0][3] = matrix[1][3] = matrix[2][3] = 0.f;
+                                                     # You can also transpose the rows into columns if you just need 4x3 values instead of 3x4.
+                                                     #
+                                                     # If you really need to set the W/fourth component/column dynamically:
+                                                     #   (1) use four (set_shader_param_float4, [?][0], [?][1], [?][2], [?][3]) calls (one per row), or
+                                                     #   (2) keep using (set_shader_param_float4x4, …) and send the four missing W values through a single extra (set_shader_param_float4, [0][3], [1][3], [2][3], [3][3]) call, 
+                                                     #       patching the .w values in the shader.
+                                                     # Probably doing it in two calls has less overhead than doing it in four.
 
 ################################################################################
 # [ Z21 ] SCENE PROPS, SCENE ITEMS, LIGHT SOURCES AND PARTICLE SYSTEMS
