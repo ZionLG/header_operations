@@ -2809,8 +2809,15 @@ set_battle_advantage                         = 1691  # (set_battle_advantage, <v
                                                      # Sets a new value for battle advantage.
 
 get_scene_boundaries                         = 1799  # (get_scene_boundaries, <position_min>, <position_max>),
-                                                     # Retrieves the coordinates of the bottom-left and top-right corner of the scene to the provided position registers.
+                                                     # Retrieves scene boundaries as coordinates stored in 2 position registers.
+                                                     # The 1st position contains minimum x coordinate and minimum y coordinate (you can understand it as the bottom-left area of the scene)
+                                                     # and the 2nd position contains maximum x and maximum y (so that's the position of top-right area of the scene).
                                                      # Before mission start values are from the previous scene.
+                                                     # Keep in mind that the scene boundary means the traversable area of the scene, not full scene size -
+                                                     # the game reserves 24 meters on each edge of the scene as inaccessible.
+                                                     # For scenes that use a terrain hex code, the true scene size is stored on the 25th~29th digits of the terrain hex code itself, where conversion formulas are:
+                                                     # hex→(x,y): x = hex mod 1024, y = (hex-x) / 1024
+                                                     # (x,y)→hex: hex = x + 1024*y
 
 mission_enable_talk                          = 1935  # (mission_enable_talk),
                                                      # Allows dialogue with agents on the scene.
@@ -3393,23 +3400,27 @@ remove_agent                             = 1755  # (remove_agent, <agent_id>),
                                                  # Dead agents can't be removed of the game, they have to be alive.
 agent_fade_out                           = 1749  # (agent_fade_out, <agent_id>),
                                                  # Fades out the agent from the scene (same effect as fleeing enemies when they get to the edge of map).
-                                                 # They will be counted as dead (agent_is_alive) and not routed (agent_is_routed). This will not decrease party size.
+                                                 # They will be counted as dead (agent_is_alive) and not routed (agent_is_routed).
+                                                 # This will not decrease party size.
                                                  # They will be counted as alive for battle missions.
                                                  # Dead agents can't be faded out of the game, they have to be alive.
                                                  # Doesn't work on ragdolls.
                                                  # Doesn't fire trigger ti_on_agent_killed_or_wounded.
 agent_play_sound                         = 1750  # (agent_play_sound, <agent_id>, <sound_id>),
                                                  # Makes the agent emit the specified sound.
-                                                 # Gets synchronized by game engine automatically if called on server. Works appearantly the same way as with particle effects, it's getting cut off at a specific distance, up4research.
+                                                 # Gets synchronized by game engine automatically if called on server.
+                                                 # Works appearantly the same way as with particle effects, it's getting cut off at a specific distance, up4research.
 agent_stop_sound                         = 1808  # (agent_stop_sound, <agent_id>),
-                                                 # Stops whatever sound agent is currently performing. Only the reference to the last used sound channel is stored, it is impossible to know which ones were used before for a certain agent.
+                                                 # Stops whatever sound agent is currently performing.
+                                                 # Only the reference to the last used sound channel is stored, it is impossible to know which ones were used before for a certain agent.
 agent_set_visibility                     = 2096  # (agent_set_visibility, <agent_id>, <value>),
                                                  # Version 1.153+. Sets agent visibility. 0 for invisible, 1 for visible. Doesn't work on ragdolls.
 
 get_player_agent_no                      = 1700  # (get_player_agent_no, <destination>),
                                                  # Retrieves the reference to the player-controlled agent. Singleplayer mode only.
 agent_get_kill_count                     = 1723  # (agent_get_kill_count, <destination>, <agent_id>, [get_wounded]),
-                                                 # Retrieves the total number of kills by the specified agent during this battle. Call with non-zero <get_wounded> parameter to retrieve the total number of enemies the agent has knocked down.
+                                                 # Retrieves the total number of kills by the specified agent during this battle.
+                                                 # Call with non-zero <get_wounded> parameter to retrieve the total number of enemies the agent has knocked down.
                                                  # Doesn't count agent's horse kills.
 agent_get_position                       = 1710  # (agent_get_position, <position>, <agent_id>),
                                                  # Retrieves the position of the specified agent on the scene.
@@ -3446,16 +3457,17 @@ store_agent_hit_points                   = 1720  # (store_agent_hit_points, <des
                                                  # Retrieves current agent health. Optional last parameter determines whether actual health (absolute = 1) or relative percentile health (absolute = 0) is returned.
                                                  # Default is relative.
 agent_set_hit_points                     = 1721  # (agent_set_hit_points, <agent_id>, <value>, [absolute]),
-                                                 # Sets new value for agent health. Optional last parameter determines whether the value is interpreted as actual health (absolute = 1) or relative percentile health (absolute = 0).
+                                                 # Sets new value for agent health.
+                                                 # Optional last parameter determines whether the value is interpreted as actual health (absolute = 1) or relative percentile health (absolute = 0).
                                                  # Default is relative. Gets synchronized by game engine automatically if called on server.
 agent_set_max_hit_points                 = 2090  # (agent_set_max_hit_points, <agent_id>, <value>, [absolute]),
                                                  # Version 1.153+. Changes agent's max hit points.
                                                  # Optional flag [absolute] determines if <value> is an absolute number of his points, or relative percentage (0..1000) of default value.
                                                  # Treated as percentage by default.
                                                  # Official: range [0..100], can be exceeded when using absolute values(?)
-agent_deliver_damage_to_agent            = 1722  # (agent_deliver_damage_to_agent, <agent_id_deliverer>, <agent_id>, [damage_amount], [weapon_item_id]),
-                                                
-                                                 # Makes one agent deal damage to another. Parameter damage_amount is optional, if it is skipped or <= 0, then damage will be calculated using attacker's weapon item and stats (like a normal weapon attack).
+agent_deliver_damage_to_agent            = 1722  # (agent_deliver_damage_to_agent, <agent_id_deliverer>, <agent_id>, [damage_amount], [weapon_item_id]),                                         
+                                                 # Makes one agent deal damage to another.
+                                                 # Parameter damage_amount is optional, if it is skipped or <= 0, then damage will be calculated using attacker's weapon item and stats (like a normal weapon attack).
                                                  # Optional parameter weapon_item_id was added in 1.153 and will force the game the calculate the damage using this weapon.
                                                  # damage value was optional?
                                                  # Official: (agent_deliver_damage_to_agent, <agent_id_deliverer>, <agent_id>, <value>, [item_id]),
@@ -3533,17 +3545,25 @@ agent_refill_wielded_shield_hit_points   = 1692  # (agent_refill_wielded_shield_
 agent_set_invulnerable_shield            = 1725  # (agent_set_invulnerable_shield, <agent_id>, <value>),
                                                  # Makes the agent shield invulnerable to any damage (value = 1) or makes it vulnerable again (value = 0).
 agent_get_wielded_item                   = 1726  # (agent_get_wielded_item, <destination>, <agent_id>, <hand_no>),
-                                                 # Retrieves the item reference that the agent is currently wielding in his right hand (hand_no = 0) or left hand (hand_no = 1). Note that weapons are always wielded in right hand, and shield in left hand. When wielding a two-handed weapon (including bows and crossbows), this operation will return -1 for left hand.
+                                                 # Retrieves the item reference that the agent is currently wielding in his right hand (hand_no = 0) or left hand (hand_no = 1).
+                                                 # Note that weapons are always wielded in right hand, and shield in left hand.
+                                                 # When wielding a two-handed weapon (including bows and crossbows), this operation will return -1 for left hand.
 agent_get_ammo                           = 1727  # (agent_get_ammo, <destination>, <agent_id>, <value>),
                                                  # Retrieves the current ammo amount agent has for his wielded item (value = 1) or all his items (value = 0).
 agent_get_item_cur_ammo                  = 1977  # (agent_get_item_cur_ammo, <destination>, <agent_id>, <slot_no>),
                                                  # Version 1.153+. Returns remaining ammo for specified agent's item.
 agent_refill_ammo                        = 1728  # (agent_refill_ammo, <agent_id>),
-                                                 # Refills all ammo and throwing weapon stacks that the agent has in his equipment. Doesn't work at items with the flag itp_remove_item_on_use.
+                                                 # Refills all ammo and throwing weapon stacks that the agent has in his equipment.
+                                                 # Doesn't work at items with the flag itp_remove_item_on_use.
 agent_set_wielded_item                   = 1747  # (agent_set_wielded_item, <agent_id>, <item_id>),
-                                                 # Forces the agent to wield the specified item. Agent must have that item in his equipment for this to work. Use item_id = -1 to unwield any currently wielded item.
+                                                 # Forces the agent to wield the specified item.
+                                                 # Agent must have that item in his equipment for this to work. Use item_id = -1 to unwield any currently wielded item.
 agent_equip_item                         = 1779  # (agent_equip_item, <agent_id>, <item_id>, [weapon_slot_no], [modifier]),
-                                                 # Adds the specified item to agent and forces him to equip it. Optional weapon_slot_no parameter is only used with weapons and will put the newly added item to that slot (range 1..4) and with optional modifier. If it is omitted with a weapon item, then the agent must have an empty weapon slot for the operation to succeed. Gets synchronized (for weapons, not for armor) by game engine automatically if called on server. Weapons and shields should only be equipped on the server but armor should be equipped on the server for the damage calculations and also on all the clients for the visible meshes.
+                                                 # Adds the specified item to agent and forces him to equip it.
+                                                 # Optional weapon_slot_no parameter is only used with weapons and will put the newly added item to that slot (range 1..4) and with optional modifier.
+                                                 # If it is omitted with a weapon item, then the agent must have an empty weapon slot for the operation to succeed.
+                                                 # Gets synchronized (for weapons, not for armor) by game engine automatically if called on server.
+                                                 # Weapons and shields should only be equipped on the server but armor should be equipped on the server for the damage calculations and also on all the clients for the visible meshes.
 agent_unequip_item                       = 1774  # (agent_unequip_item, <agent_id>, <item_id>, [weapon_slot_no]),
                                                  # Removes the specified item from the agent. Optional parameter weapon_slot_no is in range 1..4 and determines what weapon slot to remove (item_id must still be set correctly).
 agent_set_ammo                           = 1776  # (agent_set_ammo, <agent_id>, <item_id>, <value>),
@@ -3557,7 +3577,12 @@ agent_get_ammo_for_slot                  = 1825  # (agent_get_ammo_for_slot, <de
 # Agent animations
 
 agent_set_no_dynamics                    = 1762  # (agent_set_no_dynamics, <agent_id>, <value>),
-                                                 # Makes the agent stand on the spot (value = 1) or move normally (value = 0). When frozen on the spot the agent can still turn around and fight if necessary. Used in Native for the wedding scene (required for cut-scenes). Agent will have collision and physics disabled on it if dynamics are turned off, allowing for (agent_set_position) to teleport them to any location, as well as allowing for a scripted no clipping flight mode ala Half-Life.
+                                                 # Makes the agent stand on the spot (value = 1) or move normally (value = 0).
+                                                 # When frozen on the spot the agent can still turn around and fight if necessary.
+                                                 # Used in Native for the wedding scene (required for cut-scenes).
+                                                 # Agent will have collision and physics disabled on it if dynamics are turned off,
+                                                 # allowing for (agent_set_position) to teleport them to any location,
+                                                 # as well as allowing for a scripted no clipping flight mode ala Half-Life.
 
 agent_get_animation                      = 1768  # (agent_get_animation, <destination>, <agent_id>, <body_part>),
                                                  # Retrieves current agent animation for specified body part (0 = lower, 1 = upper).
@@ -3582,7 +3607,9 @@ agent_set_crouch_mode                    = 2098  # (agent_set_crouch_mode, <agen
 agent_get_attached_scene_prop            = 1756  # (agent_get_attached_scene_prop, <destination>, <agent_id>),
                                                  # Retrieves the reference to scene prop instance which is attached to the agent, or -1 if there isn't any.
 agent_set_attached_scene_prop            = 1757  # (agent_set_attached_scene_prop, <agent_id>, <scene_prop_id>),
-                                                 # Attaches the specified prop instance to the agent. Used in multiplayer CTF missions to attach flags to players. Does not get synchronized by game engine automatically if called on server. The scale factor at the skin entry gets applied to the scene prop.
+                                                 # Attaches the specified prop instance to the agent. Used in multiplayer CTF missions to attach flags to players.
+                                                 # Does not get synchronized by game engine automatically if called on server.
+                                                 # The scale factor at the skin entry gets applied to the scene prop.
 agent_set_attached_scene_prop_x          = 1758  # (agent_set_attached_scene_prop_x, <agent_id>, <value>),
                                                  # Offsets the position of the attached scene prop in relation to agent, in centimeters, along the X axis (left/right).
 agent_set_attached_scene_prop_y          = 1809  # (agent_set_attached_scene_prop_y, <agent_id>, <value>),
@@ -3591,21 +3618,26 @@ agent_set_attached_scene_prop_z          = 1759  # (agent_set_attached_scene_pro
                                                  # Offsets the position of the attached scene prop in relation to agent, in centimeters, along the Z axis (down/up).
 
 agent_get_bone_position                  = 2076  # (agent_get_bone_position, <position_no>, <agent_no>, <bone_no>, [<local_or_global>]),
-                                                 # Version 1.161+. Returns current position for agent's bone. Examine skeletons.brf and horse_skeleton.brf in CommonRes folder to see hitboxes of these bones and their <bone_no>. Pass 1 as optional <local_or_global> parameter to retrieve global bone coordinates.
+                                                 # Version 1.161+. Returns current position for agent's bone.
+                                                 # Examine skeletons.brf and horse_skeleton.brf in CommonRes folder to see hitboxes of these bones and their <bone_no>.
+                                                 # Pass 1 as optional <local_or_global> parameter to retrieve global bone coordinates.
 
 # Agent AI and scripted behavior
 
 agent_ai_set_interact_with_player        = 2077  # (agent_ai_set_interact_with_player, <agent_no>, <value>),
-                                                 # Version 1.165+. Enables or disables agent AI interation with player. Will not turn to face player pre-dialog, but still will turn during conversation.
+                                                 # Version 1.165+. Enables or disables agent AI interation with player.
+                                                 # Will not turn to face player pre-dialog, but still will turn during conversation.
 agent_set_is_alarmed                     = 1807  # (agent_set_is_alarmed, <agent_id>, <value>),
                                                  # Sets agent's status as alarmed (value = 1) or peaceful (value = 0).
 agent_clear_relations_with_agents        = 1802  # (agent_clear_relations_with_agents, <agent_id>),
                                                  # Clears any agent-to-agent relations for specified agent.
 agent_add_relation_with_agent            = 1803  # (agent_add_relation_with_agent, <agent_id>, <agent_id>, <value>),
-                                                 # Changes relations between two agents on the scene to enemy (value = -1), neutral (value = 0), ally (value = 1). Note that neutral agents are immune to friendly fire.
+                                                 # Changes relations between two agents on the scene to enemy (value = -1), neutral (value = 0), ally (value = 1).
+                                                 # Note that neutral agents are immune to friendly fire.
 
 agent_get_number_of_enemies_following    = 1761  # (agent_get_number_of_enemies_following, <destination>, <agent_id>),
-                                                 # Retrieves the total number of enemies who are currently attacking the specified agents. May be used for AI decision-making.
+                                                 # Retrieves the total number of enemies who are currently attacking the specified agents. 
+                                                 # May be used for AI decision-making.
 agent_ai_get_num_cached_enemies          = 2670  # (agent_ai_get_num_cached_enemies, <destination>, <agent_no>),
                                                  # Version 1.165+. Returns total number of nearby enemies as has been cached by agent AI.
                                                  # Every 2 seconds a cache created with enemies stored from nearest to farthest. Max slots are 16.  
@@ -3614,20 +3646,29 @@ agent_ai_get_cached_enemy                = 2671  # (agent_ai_get_cached_enemy, <
                                                  # Returns -1 if the cached enemy from index is not exist.
                                                 # Max slots are 16. Every 2 seconds renew cashed enemies in order from nearest to farthest.
 agent_get_attack_action                  = 1763  # (agent_get_attack_action, <destination>, <agent_id>),
-                                                 # Retrieves agent's current attack action. Possible values: free = 0, readying_attack = 1, releasing_attack = 2, completing_attack_after_hit = 3, attack_parried = 4, reloading = 5, after_release = 6, cancelling_attack = 7.
+                                                 # Retrieves agent's current attack action.
+                                                 # Possible values: free = 0, readying_attack = 1, releasing_attack = 2, completing_attack_after_hit = 3, attack_parried = 4, reloading = 5, after_release = 6, cancelling_attack = 7.
 agent_get_defend_action                  = 1764  # (agent_get_defend_action, <destination>, <agent_id>),
-                                                 # Retrieves agent's current defend action. Possible values: free = 0, parrying = 1, blocking = 2.
+                                                 # Retrieves agent's current defend action.
+                                                 # Possible values: free = 0, parrying = 1, blocking = 2.
 agent_get_action_dir                     = 1767  # (agent_get_action_dir, <destination>, <agent_id>),
                                                  # Retrieves the direction of current agent's action.
                                                  # Possible values at attacking: invalid = -1, ranged/thrust = 0, right swing = 1, left swing = 2, overswing = 3.
                                                  # Possible values at defending: invalid = -1, forward/down = 0, right = 1, left = 2, up = 3, global/blocking with shield = 5.
 agent_set_attack_action                  = 1745  # (agent_set_attack_action, <agent_id>, <direction_value>, <action_value>),
-                                                 # Forces the agent to perform an attack action. Direction value: -2 = cancel any action (1.153+), 0 = thrust, 1 = slashright, 2 = slashleft, 3 = overswing. Action value: 0 = ready and release, 1 = ready and hold.
+                                                 # Forces the agent to perform an attack action.
+                                                 # Direction value: -2 = cancel any action (1.153+), 0 = thrust, 1 = slashright, 2 = slashleft, 3 = overswing.
+                                                 # Action value: 0 = ready and release, 1 = ready and hold.
 agent_set_defend_action                  = 1746  # (agent_set_defend_action, <agent_id>, <value>, <duration-in-1/1000-seconds>),
-                                                 # Forces the agent to perform a defend action. Possible values: -2 = cancel any action (1.153+), 0 = defend_down, 1 = defend_right, 2 = defend_left, 3 = defend_up. Does time value determine delay, speed or duration? 4research.
+                                                 # Forces the agent to perform a defend action.
+                                                 # Possible values: -2 = cancel any action (1.153+), 0 = defend_down, 1 = defend_right, 2 = defend_left, 3 = defend_up.
+                                                 # Does time value determine delay, speed or duration? 4research.
 
 agent_set_scripted_destination           = 1730  # (agent_set_scripted_destination, <agent_id>, <position>, [auto_set_z_to_ground_level], [no_rethink]),
-                                                 # Forces the agent to travel to specified position and stay there until new behavior is set or scripted mode cleared. First optional parameter determines whether the position Z coordinate will be automatically set to ground level (value = 1) or not (value = 0). Second optional parameter added in 1.165 patch, set it to 1 to save resources. It works also for AI cavalry riders and riderless horses.
+                                                 # Forces the agent to travel to specified position and stay there until new behavior is set or scripted mode cleared.
+                                                 # First optional parameter determines whether the position Z coordinate will be automatically set to ground level (value = 1) or not (value = 0).
+                                                 # Second optional parameter added in 1.165 patch, set it to 1 to save resources.
+                                                 # It works also for AI cavalry riders and riderless horses.
                                                  # Official: (agent_set_scripted_destination, <agent_id>, <position_no>, <auto_set_z_to_ground_level>, <no_rethink>),
 agent_set_scripted_destination_no_attack = 1748  # (agent_set_scripted_destination_no_attack, <agent_id>, <position>, <auto_set_z_to_ground_level>),
                                                  # Same as above, but the agent will not attack his enemies.
@@ -3638,7 +3679,9 @@ agent_force_rethink                      = 1732  # (agent_force_rethink, <agent_
 agent_clear_scripted_mode                = 1735  # (agent_clear_scripted_mode, <agent_id>),
                                                  # Clears scripting mode from the agent, making him behave as usual again.
 agent_ai_set_always_attack_in_melee      = 1737  # (agent_ai_set_always_attack_in_melee, <agent_id>, <value>),
-                                                 # Forces the agent to continuously attack in melee combat, instead of defending. Used in Native to prevent stalling at the top of the siege ladder. Use value = 0 to clear this mode.
+                                                 # Forces the agent to continuously attack in melee combat, instead of defending.
+                                                 # Used in Native to prevent stalling at the top of the siege ladder.
+                                                 # Use value = 0 to clear this mode.
 agent_get_simple_behavior                = 1738  # (agent_get_simple_behavior, <destination>, <agent_id>),
                                                  # Retrieves agent's current simple behavior (see aisb_* constants in header_mission_templates.py for details).
 agent_ai_get_behavior_target             = 2082  # (agent_ai_get_behavior_target, <destination>, <agent_id>),
@@ -3672,8 +3715,9 @@ agent_start_running_away                 = 1751  # (agent_start_running_away, <a
                                                  # he will fade out. Optional position_no parameter added in 1.153 and will make the agent flee to specified position instead 
                                                  # (pos0 is not allowed and will be ignored). When used on a mounted horse makes the agent 'fall off' instantly and the horse will run away
                                                  # (works for player too). Falling off from horse doesn't fire 'ti_on_agent_dismount' trigger.
-                                                 # Agents left the map in this mode will be counted as routed (agent_is_routed) and dead (agent_is_alive). But they will not decrease party size.
-                                                 # Riderless horses don't start running away. Use <agent_set_scripted_destination, horse, border_pos>. The horse will fade out when reached border.
+                                                 # Agents left the map in this mode will be counted as routed (agent_is_routed) and dead (agent_is_alive) But they will not decrease party size.
+                                                 # Riderless horses don't start running away. 
+                                                 # Use <agent_set_scripted_destination, horse, border_pos>. The horse will fade out when reached border.
 agent_stop_running_away                  = 1752  # (agent_stop_run_away, <agent_id>),
                                                  # Cancels fleeing behavior for the agent, turning him back to combat state.
 agent_ai_set_aggressiveness              = 1753  # (agent_ai_set_aggressiveness, <agent_id>, <value>),
@@ -3682,9 +3726,11 @@ agent_ai_set_aggressiveness              = 1753  # (agent_ai_set_aggressiveness,
                                                  # Higher values make agent more aggressive.
                                                  # Used to avoid melee, when a bot moves away from you in melee.
 agent_set_kick_allowed                   = 1754  # (agent_set_kick_allowed, <agent_id>, <value>),
-                                                 # Enables (value = 1) or disables (value = 0) kicking for the specified agent. Only makes sense for player-controlled agents as bots don't know how to kick anyway (if not scripted into the mod, kicking AI).
+                                                 # Enables (value = 1) or disables (value = 0) kicking for the specified agent.
+                                                 # Only makes sense for player-controlled agents as bots don't know how to kick anyway (if not scripted into the mod, kicking AI).
 set_cheer_at_no_enemy                    = 2379  # (set_cheer_at_no_enemy, <value>),
-                                                 # Version 1.153+. Determines whether the agents will cheer when no enemy remain on the map. 0 = do not cheer, 1 = cheer. A voice_victory sound entry at the skin entry is required for it to work.
+                                                 # Version 1.153+. Determines whether the agents will cheer when no enemy remain on the map.
+                                                 # 0 = do not cheer, 1 = cheer. A voice_victory sound entry at the skin entry is required for it to work.
 
 agent_add_offer_with_timeout             = 1777  # (agent_add_offer_with_timeout, <agent_id>, <offerer_agent_id>, <duration-in-1/1000-seconds>),
                                                  # Esoteric stuff. Used in multiplayer duels. Second agent_id is offerer, 0 value for duration is an infinite offer.
@@ -3705,11 +3751,14 @@ agent_set_team                           = 1771  # (agent_set_team, <agent_id>, 
                                                  # Puts the agent to specified team number. Also copies "value" to agent group.
                                                  # The max <value> is 7. But the 7 team is hardcoded neutral to everyone. If you set team out of range (0, 6) than 7 team will be assigned.
 agent_get_class                          = 1772  # (agent_get_class , <destination>, <agent_id>),
-                                                 # Retrieves the agent class (see grc_* constants in header_mission_templates.py for reference). Note this operation returns the troop class that the game divines from troop equipment and flags, ignoring any custom troop class settings.
+                                                 # Retrieves the agent class (see grc_* constants in header_mission_templates.py for reference).
+                                                 # Note this operation returns the troop class that the game divines from troop equipment and flags, ignoring any custom troop class settings.
 agent_get_division                       = 1773  # (agent_get_division , <destination>, <agent_id>),
                                                  # Retrieves the agent division (custom troop class number in 0..8 range).
 agent_set_division                       = 1783  # (agent_set_division, <agent_id>, <value>),
-                                                 # Puts the agent into the specified division. This does not affect agent's troop class. Note that there's a bug in Warband: if an order is issued to agent's original division, the agent will immediately switch back to its original division number. Therefore, if you want to manipulate agent divisions dynamically during the battle, you need to implement some workarounds for this bug.
+                                                 # Puts the agent into the specified division. This does not affect agent's troop class.
+                                                 # Note that there's a bug in Warband: if an order is issued to agent's original division, the agent will immediately switch back to its original division number.
+                                                 # Therefore, if you want to manipulate agent divisions dynamically during the battle, you need to implement some workarounds for this bug.
 
 team_get_hold_fire_order                 = 1784  # (team_get_hold_fire_order, <destination>, <team_no>, <division>),
                                                  # Retrieves current status of hold fire order for specified team/division (see aordr_* constants in header_mission_templates.py for reference).
@@ -3730,7 +3779,10 @@ team_set_leader                          = 1793  # (team_set_leader, <team_no>, 
 team_get_order_position                  = 1794  # (team_get_order_position, <position>, <team_no>, <division>),
                                                  # Retrieves position which is used for specified team/division current orders.
 team_set_order_listener                  = 1795  # (team_set_order_listener, <team_no>, <division>, [add_to_listeners]),
-                                                 # Set the specified division as the one which will be following orders issued by the player (assuming the player is on the same team). If optional parameter add_to_listeners is greater than 0, then the operation will instead *add* specified division to order listeners. If division number is -1, then list of order listeners is cleared. If division number is 9, then all divisions will listen to player's orders.
+                                                 # Set the specified division as the one which will be following orders issued by the player (assuming the player is on the same team).
+                                                 # If optional parameter add_to_listeners is greater than 0, then the operation will instead *add* specified division to order listeners.
+                                                 # If division number is -1, then list of order listeners is cleared.
+                                                 # If division number is 9, then all divisions will listen to player's orders.
                                                  # Official: (team_set_order_listener, <team_no>, <sub_class>, <value>), 
                                                  # merge with old listeners if value is non-zero 
                                                  # clear listeners if sub_class is less than zero
@@ -3740,7 +3792,8 @@ team_set_relation                        = 1796  # (team_set_relation, <team_no>
 store_remaining_team_no                  = 2360  # (store_remaining_team_no, <destination>),
                                                  # Retrieves the number of the last remaining team. Currently not used in Native, possibly deprecated.
 team_get_gap_distance                    = 1828  # (team_get_gap_distance, <destination>, <team_no>, <sub_class>),
-                                                 # Version 1.153+. UNTESTED. Supposedly returns average gap between troops of a specified team/class (depends on how many Stand Closer/Spread Out orders were given).
+                                                 # Version 1.153+. UNTESTED.
+                                                 # Supposedly returns average gap between troops of a specified team/class (depends on how many Stand Closer/Spread Out orders were given).
 
 # Combat statistics
 
@@ -3755,8 +3808,10 @@ store_defender_count                     = 2383  # (store_defender_count, <desti
 store_attacker_count                     = 2384  # (store_attacker_count, <destination>),
                                                  # Deprecated. Stores unreliable value.
 store_normalized_team_count              = 2385  # (store_normalized_team_count, <destination>, <team_no>),
-                                                 # Stores the number of agents belonging to specified team, normalized according to battle_size and advantage. Commonly used to calculate advantage and possibly reinforcement wave sizes.
-                                                 # 100% is equal to relative spawn agents count on mission start. For example if spawn point have 40 then 50% will be 20.
+                                                 # Stores the number of agents belonging to specified team, normalized according to battle_size and advantage.
+                                                 # Commonly used to calculate advantage and possibly reinforcement wave sizes.
+                                                 # 100% is equal to relative spawn agents count on mission start.
+                                                 # For example if spawn point have 40 then 50% will be 20.
 
 ################################################################################
 # [ Z23 ] PRESENTATIONS
