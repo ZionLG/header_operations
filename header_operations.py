@@ -3379,7 +3379,9 @@ agent_slot_lt                            =  neg|agent_slot_ge  # (agent_slot_lt,
 # Agent spawning, removal and general operations
 
 add_reinforcements_to_entry              = 1930  # (add_reinforcements_to_entry, <mission_template_spawn_record>, <wave_size>),
-                                                 # For battle missions, adds reinforcement wave to the specified spawn record (not the entry point). Additional parameter determines relative wave size. Agents in reinforcement wave are taken from all parties of the side that the entry point belongs to due to mtef_team_* flags.
+                                                 # For battle missions, adds reinforcement wave to the specified spawn record (not the entry point).
+                                                 # Additional parameter determines relative wave size.
+                                                 # Agents in reinforcement wave are taken from all parties of the side that the entry point belongs to due to mtef_team_* flags.
 set_spawn_position                       = 1970  # (set_spawn_position, <position>), ## DUPLICATE ENTRY
                                                  # Defines the position which will later be used by (spawn_scene_prop), (spawn_scene_item), (spawn_agent) and (spawn_horse) operations.
 spawn_agent                              = 1972  # (spawn_agent, <troop_id>),
@@ -3388,11 +3390,12 @@ spawn_horse                              = 1973  # (spawn_horse, <item_kind_id>,
                                                  # Spawns a new horse (with any modifier) in the specified position and saves the reference to the new agent in reg0.
 remove_agent                             = 1755  # (remove_agent, <agent_id>),
                                                  # Instantly kills or wounds an agent (will emit dying sound). Decreases party size.
-                                                 # [CLARIFICATION NEEDDED] Dead agents can't be removed of the game, they have to be alive. (from v1.0.3 by Limik)
+                                                 # Dead agents can't be removed of the game, they have to be alive.
 agent_fade_out                           = 1749  # (agent_fade_out, <agent_id>),
                                                  # Fades out the agent from the scene (same effect as fleeing enemies when they get to the edge of map).
                                                  # They will be counted as dead (agent_is_alive) and not routed (agent_is_routed). This will not decrease party size.
-                                                 # [CLARIFICATION NEEDDED] They will be counted as alive for battle missions. Dead agents can't be faded out of the game, they have to be alive. (from v1.0.3 by Limik)
+                                                 # They will be counted as alive for battle missions.
+                                                 # Dead agents can't be faded out of the game, they have to be alive.
                                                  # Doesn't work on ragdolls.
                                                  # Doesn't fire trigger ti_on_agent_killed_or_wounded.
 agent_play_sound                         = 1750  # (agent_play_sound, <agent_id>, <sound_id>),
@@ -3415,7 +3418,14 @@ agent_get_position                       = 1710  # (agent_get_position, <positio
                                                  # Sets X-rotation = 0, Y-rotation = 0. Y-rotation can change from 340 to 20 (aproximately) when turning mounted.
                                                  # Horse and rider have the same position and speed-position.
 agent_set_position                       = 1711  # (agent_set_position, <agent_id>, <position>),
-                                                 # Teleports the agent to specified position on the scene, sets to ground level automatically if dynamics are not turned off before setting agent position (agent_set_no_dynamics). Be careful with riders - you must teleport the horse, not the rider for the operation to work correctly! Does not properly set the rotation of players in MP Warband as their mouse-look direction overrides it. Gets synchronized by game engine automatically if called on server. Each time you call this operation the game sends a network event to all clients. Too many calls will fresh or mess up the client completely, so the only solution is not calling them 20 times per frame. Doesn't work on conversation partner during dialogs.
+                                                 # Teleports the agent to specified position on the scene.
+                                                 # Sets to ground level automatically if dynamics are not turned off before setting agent position (agent_set_no_dynamics).
+                                                 # Be careful with riders - you must teleport the horse, not the rider for the operation to work correctly!
+                                                 # Does not properly set the rotation of players in MP Warband as their mouse-look direction overrides it.
+                                                 # Gets synchronized by game engine automatically if called on server.
+                                                 # Each time you call this operation the game sends a network event to all clients.
+                                                 # Too many calls will fresh or mess up the client completely, so the only solution is not calling them 20 times per frame.
+                                                 # Doesn't work on conversation partner during dialogs.
 agent_get_horse                          = 1714  # (agent_get_horse, <destination>, <agent_id>),
                                                  # Retrieves the reference to the horse agent that the specified agent is riding, or -1 if he's not riding a horse (or is a horse himself).
 agent_get_rider                          = 1715  # (agent_get_rider, <destination>, <horse_agent_id>),
@@ -3423,7 +3433,8 @@ agent_get_rider                          = 1715  # (agent_get_rider, <destinatio
 agent_get_party_id                       = 1716  # (agent_get_party_id, <destination>, <agent_id>),
                                                  # Retrieves the party that the specified agent belongs to (supposedly should only work in battle missions for agents spawned as starting/reinforcement waves).
 agent_get_entry_no                       = 1717  # (agent_get_entry_no, <destination>, <agent_id>),
-                                                 # Retrieves the entry point number where this agent has spawned. What does this return for agents spawned with (spawn_agent)? 4research.
+                                                 # Retrieves the entry point number where this agent has spawned.
+                                                 # What does this return for agents spawned with (spawn_agent)? 4research.
 agent_get_troop_id                       = 1718  # (agent_get_troop_id, <destination>, <agent_id>),
                                                  # Retrieves the troop type of the specified agent. Returns -1 for horses (because horses are items, not troops).
 agent_get_item_id                        = 1719  # (agent_get_item_id, <destination>, <horse_agent_id>),
@@ -3432,29 +3443,43 @@ agent_get_item_id                        = 1719  # (agent_get_item_id, <destinat
 # Agent combat parameters and stats
 
 store_agent_hit_points                   = 1720  # (store_agent_hit_points, <destination>, <agent_id>, [absolute]),
-                                                 # Retrieves current agent health. Optional last parameter determines whether actual health (absolute = 1) or relative percentile health (absolute = 0) is returned. Default is relative.
-agent_set_hit_points                     = 1721  # (agent_set_hit_points, <agent_id>, <value>,[absolute]),
-                                                 # Sets new value for agent health. Optional last parameter determines whether the value is interpreted as actual health (absolute = 1) or relative percentile health (absolute = 0). Default is relative. Gets synchronized by game engine automatically if called on server.
+                                                 # Retrieves current agent health. Optional last parameter determines whether actual health (absolute = 1) or relative percentile health (absolute = 0) is returned.
+                                                 # Default is relative.
+agent_set_hit_points                     = 1721  # (agent_set_hit_points, <agent_id>, <value>, [absolute]),
+                                                 # Sets new value for agent health. Optional last parameter determines whether the value is interpreted as actual health (absolute = 1) or relative percentile health (absolute = 0).
+                                                 # Default is relative. Gets synchronized by game engine automatically if called on server.
 agent_set_max_hit_points                 = 2090  # (agent_set_max_hit_points, <agent_id>, <value>, [absolute]),
-                                                 # Version 1.153+. Changes agent's max hit points. Optional flag [absolute] determines if <value> is an absolute number of his points, or relative percentage (0..1000) of default value. Treated as percentage by default.
+                                                 # Version 1.153+. Changes agent's max hit points.
+                                                 # Optional flag [absolute] determines if <value> is an absolute number of his points, or relative percentage (0..1000) of default value.
+                                                 # Treated as percentage by default.
                                                  # Official: range [0..100], can be exceeded when using absolute values(?)
 agent_deliver_damage_to_agent            = 1722  # (agent_deliver_damage_to_agent, <agent_id_deliverer>, <agent_id>, [damage_amount], [weapon_item_id]),
                                                 
-                                                 # Makes one agent deal damage to another. Parameter damage_amount is optional, if it is skipped or <= 0, then damage will be calculated using attacker's weapon item and stats (like a normal weapon attack). Optional parameter weapon_item_id was added in 1.153 and will force the game the calculate the damage using this weapon.
+                                                 # Makes one agent deal damage to another. Parameter damage_amount is optional, if it is skipped or <= 0, then damage will be calculated using attacker's weapon item and stats (like a normal weapon attack).
+                                                 # Optional parameter weapon_item_id was added in 1.153 and will force the game the calculate the damage using this weapon.
                                                  # damage value was optional?
                                                  # Official: (agent_deliver_damage_to_agent, <agent_id_deliverer>, <agent_id>, <value>, [item_id]),
 agent_deliver_damage_to_agent_advanced   = 1827  # (agent_deliver_damage_to_agent_advanced, <destination>, <attacker_agent_id>, <agent_id>, <value>, [weapon_item_id]),
-                                                 # Version 1.153+. Same as (agent_deliver_damage_to_agent), but resulting damage is returned. Also operation takes relations between agents into account, which may result in no damage, or even damage to attacker due to friendly fire rules. If value <= 0, then damage will be calculated using the weapon item.
+                                                 # Version 1.153+. Same as (agent_deliver_damage_to_agent), but resulting damage is returned.
+                                                 # Also operation takes relations between agents into account, which may result in no damage, or even damage to attacker due to friendly fire rules.
+                                                 # If value <= 0, then damage will be calculated using the weapon item.
                                                  # Official: (agent_deliver_damage_to_agent_advanced, <destination>, <agent_id_deliverer>, <agent_id>, <value>, [item_id]),
-                                                 # if value <= 0, then damage will be calculated using the weapon item.
-                                                 # item_id is the item that the damage is delivered. can be ignored. #this advanced mode of agent_deliver_damage_to_agent has 2 differences. 1- the delivered damage is returned. 2- the damage delivery is done after checking the relationship between agents. this might cause no damage, or even damage to the shooter agent because of a friendly fire.
+                                                 # If value <= 0, then damage will be calculated using the weapon item.
+                                                 # Item_id is the item that the damage is delivered. can be ignored.
+                                                 # this advanced mode of agent_deliver_damage_to_agent has 2 differences:
+                                                 #  (1) the delivered damage is returned.
+                                                 #  (2) the damage delivery is done after checking the relationship between agents.
+                                                 # this might cause no damage, or even damage to the shooter agent because of a friendly fire.
 add_missile                              = 1829  # (add_missile, <agent_id>, <starting_position>, <starting_speed_fixed_point>, <weapon_item_id>, <weapon_item_modifier>, <missile_item_id>, <missile_item_modifier>),
-                                                 # Version 1.153+. Creates a missile with specified parameters. Note that <starting_position> parameter also determines the direction in which missile flies.
+                                                 # Version 1.153+. Creates a missile with specified parameters.
+                                                 # Note that <starting_position> parameter also determines the direction in which missile flies.
 
 agent_get_speed                          = 1689  # (agent_get_speed, <position>, <agent_id>),
                                                  # Retrieves agent speed to (X,Y) coordinates of the position register. 
                                                  # Speed is local position to agent.
-                                                 # X, Y - fixed point values. Sets Z = 0, rotation of <position> doesn't affected. Cavalry don't have x-coordinate. Their position-y-rotation leans to left or right.
+                                                 # X, Y - fixed point values. Sets Z = 0, rotation of <position> doesn't affected.
+                                                 # Cavalry don't have x-coordinate.
+                                                 # Their position-y-rotation leans to left or right.
 agent_get_damage_modifier                = 2065  # (agent_get_damage_modifier, <destination>, <agent_id>),
                                                  # Version 1.157+. output value is in percentage, 100 is default, value can be between [0..1000]
 agent_get_accuracy_modifier              = 2066  # (agent_get_accuracy_modifier, <destination>, <agent_id>),
@@ -3466,29 +3491,38 @@ agent_get_reload_speed_modifier          = 2068  # (agent_get_reload_speed_modif
 agent_get_use_speed_modifier             = 2069  # (agent_get_use_speed_modifier, <destination>, <agent_id>),
                                                  # Version 1.157+. output value is in percentage, 100 is default, value can be between [0..1000]
 agent_set_no_death_knock_down_only       = 1733  # (agent_set_no_death_knock_down_only, <agent_id>, <value>),
-                                                 # Sets the agent as unkillable (value = 1) or normal (value = 0). Unkillable agents will drop on the ground instead of dying and will stand up afterwards.
+                                                 # Sets the agent as unkillable (value = 1) or normal (value = 0).
+                                                 # Unkillable agents will drop on the ground instead of dying and will stand up afterwards.
 agent_set_horse_speed_factor             = 1734  # (agent_set_horse_speed_factor, <agent_id>, <speed_multiplier-in-1/100>),
                                                  # Multiplies agent's horse speed (and maneuverability?) by the specified percentile value.
                                                  # Value is in percentage, 100 is default, value can be between [0..1000].
                                                  # Note that this is called on the rider, not on the horse!
                                                  # Supposedly will persist even if the agent changes horses. 4research.
 agent_set_speed_limit                    = 1736  # (agent_set_speed_limit, <agent_id>, <speed_limit(kilometers/hour)>),
-                                                 # Limits agent speed by the specified value in kph. Can't make agent move faster than normal. Use 5 for average walking speed. Affects only AI agents.
+                                                 # Limits agent speed by the specified value in kph. Can't make agent move faster than normal.
+                                                 # Use 5 for average walking speed. Affects only AI agents.
                                                  # Setting to 0 will limit the speed to a minimum value wich is never equal to 0.
 agent_set_damage_modifier                = 2091  # (agent_set_damage_modifier, <agent_id>, <value>),
-                                                 # Version 1.153+. Changes the damage delivered by this agent. Value is in percentage, 100 is default, 1000 is max possible value.
+                                                 # Version 1.153+. Changes the damage delivered by this agent.
+                                                 # Value is in percentage, 100 is default, 1000 is max possible value.
 agent_set_accuracy_modifier              = 2092  # (agent_set_accuracy_modifier, <agent_id>, <value>),
-                                                 # Version 1.153+. Changes agent's accuracy (with ranged weapons?). Value is in percentage, 100 is default, value can be between [0..1000]
+                                                 # Version 1.153+. Changes agent's accuracy (with ranged weapons?).
+                                                 # Value is in percentage, 100 is default, value can be between [0..1000]
 agent_set_speed_modifier                 = 2093  # (agent_set_speed_modifier, <agent_id>, <value>),
-                                                 # Version 1.153+. Changes agent's speed. Value is in percentage, 100 is default, value can be between [0..1000]
+                                                 # Version 1.153+. Changes agent's speed.
+                                                 # Value is in percentage, 100 is default, value can be between [0..1000]
 agent_set_reload_speed_modifier          = 2094  # (agent_set_reload_speed_modifier, <agent_id>, <value>),
-                                                 # Version 1.153+. Changes agent's reload speed. Value is in percentage, 100 is default, value can be between [0..1000]
+                                                 # Version 1.153+. Changes agent's reload speed.
+                                                 # Value is in percentage, 100 is default, value can be between [0..1000]
 agent_set_use_speed_modifier             = 2095  # (agent_set_use_speed_modifier, <agent_id>, <value>),
-                                                 # Version 1.153+. Changes agent's speed with using various scene props. Value is in percentage, 100 is default, value can be between [0..1000]
+                                                 # Version 1.153+. Changes agent's speed with using various scene props.
+                                                 # Value is in percentage, 100 is default, value can be between [0..1000]
 agent_set_ranged_damage_modifier         = 2099  # (agent_set_ranged_damage_modifier, <agent_id>, <value>),
-                                                 # Version 1.157+. Changes agent's damage with ranged weapons. Value is in percentage, 100 is default, value can be between [0..1000]
+                                                 # Version 1.157+. Changes agent's damage with ranged weapons.
+                                                 # Value is in percentage, 100 is default, value can be between [0..1000]
 agent_get_time_elapsed_since_removed     = 1760  # (agent_get_time_elapsed_since_removed, <destination>, <agent_id>),
-                                                 # Retrieves the number of seconds that have passed since agent's death. Native uses this only for multiplayer to track player's respawns. Can it be used in singleplayer too? 4research.
+                                                 # Retrieves the number of seconds that have passed since agent's death.
+                                                 # Native uses this only for multiplayer to track player's respawns. Can it be used in singleplayer too? 4research.
 str_store_agent_face_keys                = 2749  # (str_store_agent_face_keys, <string_reg>, <agent_id>),
                                                  # Stores agent face code. Regular agents have random generated face from two face codes of the troop.
 
@@ -3528,8 +3562,10 @@ agent_set_no_dynamics                    = 1762  # (agent_set_no_dynamics, <agen
 agent_get_animation                      = 1768  # (agent_get_animation, <destination>, <agent_id>, <body_part>),
                                                  # Retrieves current agent animation for specified body part (0 = lower, 1 = upper).
 agent_set_animation                      = 1740  # (agent_set_animation, <agent_id>, <anim_id>, [channel_no]),
-                                                 # Forces the agent to perform the specified animation. Optional channel_no parameter determines whether upper body (value = 1) or lower body (value = 0, default) is affected by animation.
-                                                 # Gets synchronized by game engine automatically if called on server and if the animation doesn't have the amf_client_prediction flag. Some animations might still need a server event, might be influenced by the flags amf_client_owner_prediction and amf_client_prediction, up4research.
+                                                 # Forces the agent to perform the specified animation.
+                                                 # Optional channel_no parameter determines whether upper body (value = 1) or lower body (value = 0, default) is affected by animation.
+                                                 # Gets synchronized by game engine automatically if called on server and if the animation doesn't have the amf_client_prediction flag.
+                                                 # Some animations might still need a server event, might be influenced by the flags amf_client_owner_prediction and amf_client_prediction, up4research.
 agent_set_stand_animation                = 1741  # (agent_set_stand_animation, <agent_id>, <anim_id>),
                                                  # Defines the animation that this agent will use when standing still. Does not force the agent into actually doing this animation.
 agent_set_walk_forward_animation         = 1742  # (agent_set_walk_forward_animation, <agent_id>, <anim_id>),
@@ -3620,7 +3656,9 @@ agent_get_combat_state                   = 1739  # (agent_get_combat_state, <des
 agent_ai_get_move_target                 = 2081  # (agent_ai_get_move_target, <destination>, <agent_id>),
                                                  # Version 1.153+. UNTESTED. Supposedly returns the enemy agent to whom the agent is currently moving to.
 agent_get_look_position                  = 1709  # (agent_get_look_position, <position>, <agent_id>),
-                                                 # Retrieves the coordinates of the agent position and currently looking angles. It is a position that is located centrally horizontally and vertically on the bottom of the model. Basically, it is a position rotated with the agents direction but located underneath the feet.
+                                                 # Retrieves the coordinates of the agent position and currently looking angles.
+                                                 # It is a position that is located centrally horizontally and vertically on the bottom of the model.
+                                                 # Basically, it is a position rotated with the agents direction but located underneath the feet.
 agent_set_look_target_position           = 1744  # (agent_set_look_target_position, <agent_id>, <position>),
                                                  # Forces an agent to look at the specified position (turn his head as necessary).
                                                  # Non alarmed agents will look for a short amount of time.
@@ -3639,7 +3677,10 @@ agent_start_running_away                 = 1751  # (agent_start_running_away, <a
 agent_stop_running_away                  = 1752  # (agent_stop_run_away, <agent_id>),
                                                  # Cancels fleeing behavior for the agent, turning him back to combat state.
 agent_ai_set_aggressiveness              = 1753  # (agent_ai_set_aggressiveness, <agent_id>, <value>),
-                                                 # Sets the aggressiveness parameter for agent AI to use. Default value is 100. Higher values make agent more aggressive. Used to avoid melee, when a bot moves away from you in melee.
+                                                 # Sets the aggressiveness parameter for agent AI to use.
+                                                 # Default value is 100.
+                                                 # Higher values make agent more aggressive.
+                                                 # Used to avoid melee, when a bot moves away from you in melee.
 agent_set_kick_allowed                   = 1754  # (agent_set_kick_allowed, <agent_id>, <value>),
                                                  # Enables (value = 1) or disables (value = 0) kicking for the specified agent. Only makes sense for player-controlled agents as bots don't know how to kick anyway (if not scripted into the mod, kicking AI).
 set_cheer_at_no_enemy                    = 2379  # (set_cheer_at_no_enemy, <value>),
@@ -4176,13 +4217,13 @@ server_set_anti_cheat                        =  477  # (server_set_anti_cheat, <
   # know, please let me know ASAP! :-)
 
 set_physics_delta_time                       =  58   # (set_physics_delta_time, <fixed_value>), 
-                             # Default is 0.025 (40 fps).
+                                                     # Default is 0.025 (40 fps).
 set_tooltip_text                             = 1130  # (set_tooltip_text, <string_id>),
-                           # Assigns the output text for the selected item?
+                                                     # Assigns the output text for the selected item?
 ai_mesh_face_group_show_hide                 = 1805  # (ai_mesh_face_group_show_hide, <group_no>, <value>), 
-                           # Debug -- Draws the selected index of triangles/quads from the navigation graph on-screen. 1 for enable, 0 for disable.
+                                                     # Debug -- Draws the selected index of triangles/quads from the navigation graph on-screen. 1 for enable, 0 for disable.
 auto_set_meta_mission_at_end_commited        = 1305  # (auto_set_meta_mission_at_end_commited),
-                           # Returns the mission as successful by the game. Used in campaign.
+                                                     # Returns the mission as successful by the game. Used in campaign.
 													 
 ################################################################################
 # [ Z26 ] WRECK macro operators.
