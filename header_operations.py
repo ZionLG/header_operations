@@ -3045,9 +3045,14 @@ prop_instance_is_valid                      = 1838  # (prop_instance_is_valid, <
 prop_instance_is_animating                  = 1862  # (prop_instance_is_animating, <destination>, <scene_prop_id>),
                                                     # Checks that the scene prop instance is currently animating.
 prop_instance_intersects_with_prop_instance = 1880  # (prop_instance_intersects_with_prop_instance, <checked_scene_prop_id>, <scene_prop_id>),
-                                                    # Checks if two scene props are intersecting (i.e. collided). Useful when animating scene props movement. Pass -1 for second parameter to check the prop against all other props on the scene. Scene props must have active collision meshes. Cannot check polygon-to-polygon physics models, but can check any other combinations between sphere, capsule and polygon physics models.
+                                                    # Checks if two scene props are intersecting (i.e. collided).
+                                                    # Useful when animating scene props movement.
+                                                    # Pass -1 for second parameter to check the prop against all other props on the scene.
+                                                    # Scene props must have active collision meshes.
+                                                    # Cannot check polygon-to-polygon physics models, but can check any other combinations between sphere, capsule and polygon physics models.
 scene_prop_has_agent_on_it                  = 1801  # (scene_prop_has_agent_on_it, <scene_prop_instance_id>, <agent_id>),
-                                                    # Checks that the specified agent is above the scene prop instance. scene_prop_has_agent_over_it would be a more appropriate name for the operation.
+                                                    # Checks that the specified agent is above the scene prop instance.
+                                                    # scene_prop_has_agent_over_it would be a more appropriate name for the operation.
 
 # Scene prop instance slot operations
 
@@ -3064,14 +3069,17 @@ scene_prop_get_num_instances                = 1810  # (scene_prop_get_num_instan
                                                     # Retrieves the total number of instances of a specified scene prop on the current scene.
 scene_prop_get_instance                     = 1811  # (scene_prop_get_instance, <destination>, <scene_prop_id>, <instance_no>),
                                                     # Retrieves the reference to a scene prop instance by its number.
-
+                                                    # Fails if an instance of such index doesn't exist.
 scene_prop_enable_after_time                = 1800  # (scene_prop_enable_after_time, <scene_prop_id>, <time_period>),
-                                                    # Prevents usable scene prop from being used for the specified time period in 1/100th of second. Commonly used to implement "cooldown" periods.
+                                                    # Prevents usable scene prop from being used for the specified time period in 1/100th of second.
+                                                    # Commonly used to implement "cooldown" periods.
 
 set_spawn_position                          = 1970  # (set_spawn_position, <position>),
                                                     # Defines the position which will later be used by (spawn_scene_prop), (spawn_scene_item), (spawn_agent) and (spawn_horse) operations.
 spawn_scene_prop                            = 1974  # (spawn_scene_prop, <scene_prop_id>),
-                                                    # Spawns a new scene prop instance of the specified type at the position defined by the last call to (set_spawn_position) (Operation stores the prop_instance_id of the spawned position in reg0. Be aware: it is not possible to unspawn a scene prop while a mission is running.)
+                                                    # Spawns a new scene prop instance of the specified type at the position defined by the last call to (set_spawn_position).
+                                                    # Operation stores the prop_instance_id of the spawned position in reg0.
+                                                    # Be aware: it is not possible to unspawn a scene prop while a mission is running.
 
 prop_instance_get_variation_id              = 1840  # (prop_instance_get_variation_id, <destination>, <scene_prop_id>),
                                                     # Retrieves the first variation ID number for the specified scene prop instance.
@@ -3079,34 +3087,46 @@ prop_instance_get_variation_id_2            = 1841  # (prop_instance_get_variati
                                                     # Retrieves the second variation ID number for the specified scene prop instance.
 
 replace_prop_instance                       = 1889  # (replace_prop_instance, <scene_prop_id>, <new_scene_prop_id>),
-                                                    # Replaces a single scene prop instance with an instance of another scene prop (usually with the same dimensions, but not necessarily so). Can only be called in ti_before_mission_start trigger in module_mission_templates.py.
+                                                    # Replaces a single scene prop instance with an instance of another scene prop.
+                                                    # Usually with the same dimensions, but not necessarily so.
+                                                    # Can only be called in ti_before_mission_start trigger in module_mission_templates.py.
 replace_scene_props                         = 1890  # (replace_scene_props, <old_scene_prop_id>, <new_scene_prop_id>),
-                                                    # Replaces all instances of specified scene prop type with another scene prop type. Commonly used to replace damaged walls with their intact versions during normal visits to castle scenes. Can only be called in ti_before_mission_start trigger in module_mission_templates.py.
+                                                    # Replaces all instances of specified scene prop type with another scene prop type.
+                                                    # Commonly used to replace damaged walls with their intact versions during normal visits to castle scenes.
+                                                    # Can only be called in ti_before_mission_start trigger in module_mission_templates.py.
 scene_prop_fade_out                         = 1822  # (scene_prop_fade_out, <scene_prop_id>, <fade_out_time>, [meta_mesh]),
-                                                    # Version 1.153+. Makes the scene prop instance disappear within specified time. Doesn't work with time values below 100.
-                                                    # Leaving meta_mesh blank will have the operation only affect the main mesh, setting it to -1 will affect all submeshes.
+                                                    # Version 1.153+. Makes the scene prop instance disappear within specified time.
+                                                    # Doesn't work with time values below 100.
+                                                    # Leaving meta_mesh blank will have the operation only affect the main mesh.
+                                                    # Setting it to -1 will affect all submeshes.
 scene_prop_fade_in                          = 1823  # (scene_prop_fade_in, <scene_prop_id>, <fade_in_time>),
                                                     # Version 1.153+. Makes the scene prop instance reappear within specified time.
 
 prop_instance_set_material                  = 2617  # (prop_instance_set_material, <prop_instance_no>, <sub_mesh_no>, <string_register>),
-                                                    # Version 1.161+. 4research. give sub mesh as -1 to change all meshes' materials.
+                                                    # Version 1.161+. 4research. Give sub mesh as -1 to change all meshes' materials.
 
 # Scene prop manipulation
 
 scene_prop_get_visibility                   = 1812  # (scene_prop_get_visibility, <destination>, <scene_prop_id>),
                                                     # Retrieves the current visibility state of the scene prop instance (1 = visible, 0 = invisible).
 scene_prop_set_visibility                   = 1813  # (scene_prop_set_visibility, <scene_prop_id>, <value>),
-                                                    # Shows (value = 1) or hides (value = 0) the scene prop instance. Collision remains on invisible props.  (The collision mesh remains, so you need to always run a seperate operation (prop_instance_enable_physics) to turn on and off to match the collision mesh. Use (rebuild_shadow_map), afterwards to remove prop shadows (Will stutter for a frame))
+                                                    # Shows (value = 1) or hides (value = 0) the scene prop instance.
+                                                    # Collision remains on invisible props.
+                                                    # The collision mesh remains, so you need to always run a seperate operation (prop_instance_enable_physics) to turn on and off to match the collision mesh.
+                                                    # Use (rebuild_shadow_map), afterwards to remove prop shadows (Will stutter for a frame)
 scene_prop_get_hit_points                   = 1815  # (scene_prop_get_hit_points, <destination>, <scene_prop_id>),
                                                     # Retrieves current number of hit points that the scene prop instance has.
 scene_prop_get_max_hit_points               = 1816  # (scene_prop_get_max_hit_points, <destination>, <scene_prop_id>),
                                                     # Retrieves the maximum number of hit points that the scene prop instance has (useful to calculate the percent of damage).
 scene_prop_set_hit_points                   = 1814  # (scene_prop_set_hit_points, <scene_prop_id>, <value>),
-                                                    # Sets the number of hit points that the scene prop has. Both current and max hit points are affected. Only makes sense for sokf_destructible scene props.
+                                                    # Sets the number of hit points that the scene prop has.
+                                                    # Both current and max hit points are affected.
+                                                    # Only makes sense for sokf_destructible scene props.
 scene_prop_set_cur_hit_points               = 1820  # (scene_prop_set_cur_hit_points, <scene_prop_id>, <value>),
                                                     # Version 1.153+. Sets current HP amount for scene prop.
 prop_instance_receive_damage                = 1877  # (prop_instance_receive_damage, <scene_prop_id>, <agent_id>, <damage_value>),
-                                                    # Makes scene prop instance receive specified amount of damage from any arbitrary agent. Agent reference is apparently necessary to properly initialize ti_on_scene_prop_hit trigger parameters.
+                                                    # Makes scene prop instance receive specified amount of damage from any arbitrary agent.
+                                                    # Agent reference is apparently necessary to properly initialize ti_on_scene_prop_hit trigger parameters.
 prop_instance_refill_hit_points             = 1870  # (prop_instance_refill_hit_points, <scene_prop_id>), 
                                                     # Restores hit points of a scene prop instance to their maximum value.
 scene_prop_get_team                         = 1817  # (scene_prop_get_team, <value>, <scene_prop_id>),
@@ -3114,108 +3134,153 @@ scene_prop_get_team                         = 1817  # (scene_prop_get_team, <val
 scene_prop_set_team                         = 1818  # (scene_prop_set_team, <scene_prop_id>, <value>),
                                                     # Assigns the scene prop instance to a certain team.
 scene_prop_set_prune_time                   = 1819  # (scene_prop_set_prune_time, <scene_prop_id>, <value>),
-                                                    # Not documented. Not used in Native. Taleworlds comment: Prune time can only be set to objects that are already on the prune queue. Static objects are not affected by this operation.
+                                                    # Not documented. Not used in Native. Taleworlds comment: Prune time can only be set to objects that are already on the prune queue.
+                                                    # Static objects are not affected by this operation.
 
 prop_instance_get_position                  = 1850  # (prop_instance_get_position, <position>, <scene_prop_id>),
                                                     # Retrieves the prop instance current position on the scene.
 prop_instance_get_starting_position         = 1851  # (prop_instance_get_starting_position, <position>, <scene_prop_id>),
                                                     # Retrieves the prop instance starting position on the scene (i.e. the place where it was positioned when initialized).
 prop_instance_set_position                  = 1855  # (prop_instance_set_position, <scene_prop_id>, <position>, [dont_send_to_clients]),
-                                                    # Teleports prop instance to another position. Optional flag dont_send_to_clients can be used on the server to prevent position change from being replicated to client machines (useful when doing some calculations which require to move the prop temporarily to another place).
-                                                    # Gets synchronized by game engine automatically if called on server. Each time you call this operation the game sends a network event to all clients. Too many calls will fresh or mess up the client completely, so the only solution is not calling them 20 times per frame.
+                                                    # Teleports prop instance to another position.
+                                                    # Optional flag dont_send_to_clients can be used on the server to prevent position change from being replicated to client machines (useful when doing some calculations which require to move the prop temporarily to another place).
+                                                    # Gets synchronized by game engine automatically if called on server.
+                                                    # Each time you call this operation the game sends a network event to all clients.
+                                                    # Too many calls will fresh or mess up the client completely, so the only solution is not calling them 20 times per frame.
 prop_instance_animate_to_position           = 1860  # (prop_instance_animate_to_position, <scene_prop_id>, position, <duration-in-1/100-seconds>),
                                                     # Moves prop instance to another position during the specified time frame (i.e. animates). Time is specified in 1/100th of second.
                                                     # Prop is moving each frame after mission timer triggers.
-                                                    # If prop was animating it stops current animation first, i.e. ti_on_scene_prop_animation_finished is launched. Also prop is moved to animation target position simultaneously.
+                                                    # If prop was animating it stops current animation first, i.e. ti_on_scene_prop_animation_finished is launched.
+                                                    # Also prop is moved to animation target position simultaneously.
                                                     # Doesn't move on the first frame.
                                                     # There is a small gap of 10cm engines thinks as reached to target position and teleports prop there.
 prop_instance_get_animation_target_position = 1863  # (prop_instance_get_animation_target_position, <pos>, <scene_prop_id>),
                                                     # Retrieves the position that the prop instance is currently animating to.
 prop_instance_stop_animating                = 1861  # (prop_instance_stop_animating, <scene_prop_id>),
-                                                    # Stops animating of the prop instance in the current position. Does not fire 'ti_on_scene_prop_animation_finished'.
+                                                    # Stops animating of the prop instance in the current position.
+                                                    # Does not fire 'ti_on_scene_prop_animation_finished'.
 prop_instance_get_scale                     = 1852  # (prop_instance_get_scale, <position>, <scene_prop_id>),
                                                     # Retrieves the current scaling factors of the prop instance.
 prop_instance_set_scale                     = 1854  # (prop_instance_set_scale, <scene_prop_id>, <value_x_fixed_point>, <value_y_fixed_point>, <value_z_fixed_point>),
                                                     # Sets new scaling factors for the scene prop.
 prop_instance_enable_physics                = 1864  # (prop_instance_enable_physics, <scene_prop_id>, <value>),
-                                                    # Enables (value = 1) or disables (value = 0) physics calculation (gravity, collision checks and objects) for the scene prop instance. Disables the use prompt for usable objects as well. Note that even with (value = 0) it will still be detected by cast_ray and will still fail line of sight checks.
+                                                    # Enables (value = 1) or disables (value = 0) physics calculation (gravity, collision checks and objects) for the scene prop instance.
+                                                    # Disables the use prompt for usable objects as well.
+                                                    # Note that even with (value = 0) it will still be detected by cast_ray and will still fail line of sight checks.
 prop_instance_initialize_rotation_angles    = 1866  # (prop_instance_initialize_rotation_angles, <scene_prop_id>),
                                                     # Should be called to initialize the scene prop instance prior to any calls to (prop_instance_rotate_to_position).
+                                                    # This operation resets rotation angles to zeroes.
 prop_instance_rotate_to_position            = 1865  # (prop_instance_rotate_to_position, <scene_prop_id>, <position>, <duration-in-1/100-seconds>, <total_rotate_angle_fixed_point>),
-                                                    # Specified prop instance will move to the target position within the specified duration of time, and within the same time it will rotate for the specified angle. Used in Native code to simulate behavior of belfry wheels and rotating winches.
+                                                    # Specified prop instance will move to the target position within the specified duration of time, and within the same time it will rotate for the specified angle.
+                                                    # Used in Native code to simulate behavior of belfry wheels and rotating winches.
 prop_instance_clear_attached_missiles       = 1885  # (prop_instance_clear_attached_missiles, <scene_prop_id>),
-                                                    # Version 1.153+. Removes all missiles currently attached to the scene prop. Only works with dynamic scene props. (non-retrievable missiles)
+                                                    # Version 1.153+. Removes all missiles currently attached to the scene prop.
+                                                    # Only works with dynamic scene props. (non-retrievable missiles)
 
 prop_instance_dynamics_set_properties       = 1871  # (prop_instance_dynamics_set_properties, <scene_prop_id>, <position>),
-                                                    # Initializes physical parameters of a scene prop. Position (X,Y) coordinates are used to store object's mass and friction coefficient. Coordinate Z is reserved (set it to zero just in case). Scene prop must be defined as sokf_moveable|sokf_dynamic_physics, and a call to (prop_instance_enable_physics) must be previously made.
+                                                    # Initializes physical parameters of a scene prop.
+                                                    # Position (X,Y) coordinates are used to store object's mass and friction coefficient.
+                                                    # Coordinate Z is reserved (set it to zero just in case).
+                                                    # Scene prop must be defined as sokf_moveable|sokf_dynamic_physics, and a call to (prop_instance_enable_physics) must be previously made.
                                                     # Official: (prop_instance_dynamics_set_properties,<scene_prop_id>,mass_friction),
 prop_instance_dynamics_set_velocity         = 1872  # (prop_instance_dynamics_set_velocity, <scene_prop_id>, <position>),
-                                                    # Sets current movement speed for a scene prop. Position's coordinates define velocity along corresponding axis. Same comments as for (prop_instance_dynamics_set_properties).
+                                                    # Sets current movement speed for a scene prop.
+                                                    # Position's coordinates define velocity along corresponding axis.
+                                                    # Same comments as for (prop_instance_dynamics_set_properties).
                                                     # Official: (prop_instance_dynamics_set_velocity,<scene_prop_id>,linear_velocity),
 prop_instance_dynamics_set_omega            = 1873  # (prop_instance_dynamics_set_omega, <scene_prop_id>, <position>),
-                                                    # Sets current rotation speed for a scene prop. Position's coordinates define rotational speed around corresponding axis. Same comments as for (prop_instance_dynamics_set_properties).
+                                                    # Sets current rotation speed for a scene prop.
+                                                    # Position's coordinates define rotational speed around corresponding axis.
+                                                    # Same comments as for (prop_instance_dynamics_set_properties).
                                                     # Official: (prop_instance_dynamics_set_omega,<scene_prop_id>,angular_velocity),
 prop_instance_dynamics_apply_impulse        = 1874  # (prop_instance_dynamics_apply_impulse, <scene_prop_id>, <position>),
-                                                    # Applies an impulse of specified scale to the scene prop. Position's coordinates define instant change in movement speed along corresponding axis. Same comments as for (prop_instance_dynamics_set_properties).
+                                                    # Applies an impulse of specified scale to the scene prop.
+                                                    # Position's coordinates define instant change in movement speed along corresponding axis.
+                                                    # Same comments as for (prop_instance_dynamics_set_properties).
                                                     # Official: (prop_instance_dynamics_apply_impulse,<scene_prop_id>,impulse_force),
 prop_instance_deform_to_time                = 2610  # (prop_instance_deform_to_time, <prop_instance_no>, <value>),
-                                                    # Version 1.161+. Deforms a vertex-animated scene prop to specified vertex time. If you open the mesh in OpenBrf, right one of "Time of frame" boxes contains the relevant value. If value is 0 will deform to time 1 instead, so make sure to duplicate 0 frame as last one if you want it to be accessible for deform. Doesn't work inside ti_scene_prop_deformation_finished.
+                                                    # Version 1.161+. Deforms a vertex-animated scene prop to specified vertex time.
+                                                    # If you open the mesh in OpenBrf, right one of "Time of frame" boxes contains the relevant value.
+                                                    # If value is 0 will deform to time 1 instead, so make sure to duplicate 0 frame as last one if you want it to be accessible for deform.
+                                                    # Doesn't work inside ti_scene_prop_deformation_finished.
 prop_instance_deform_in_range               = 2611  # (prop_instance_deform_in_range, <prop_instance_no>, <start_frame>, <end_frame>, <duration-in-1/1000-seconds>),
-                                                    # Version 1.161+. Animate vertex-animated scene prop from start frame to end frame within the specified time period (in milliseconds). If you open the mesh in OpenBrf, right one of "Time of frame" boxes contains the relevant values for frame parameters.
+                                                    # Version 1.161+. Animate vertex-animated scene prop from start frame to end frame within the specified time period (in milliseconds).
+                                                    # If you open the mesh in OpenBrf, right one of "Time of frame" boxes contains the relevant values for frame parameters.
 prop_instance_deform_in_cycle_loop          = 2612  # (prop_instance_deform_in_cycle_loop, <prop_instance_no>, <start_frame>, <end_frame>, <duration-in-1/1000-seconds>),
-                                                    # Version 1.161+. Performs looping animation of vertex-animated scene prop within the specified vertex frame ranges and within specified time (in milliseconds). If you open the mesh in OpenBrf, right one of "Time of frame" boxes contains the relevant values for frame parameters.
+                                                    # Version 1.161+. Performs looping animation of vertex-animated scene prop within the specified vertex frame ranges and within specified time (in milliseconds).
+                                                    # If you open the mesh in OpenBrf, right one of "Time of frame" boxes contains the relevant values for frame parameters.
 prop_instance_get_current_deform_progress   = 2615  # (prop_instance_get_current_deform_progress, <destination>, <prop_instance_no>),
-                                                    # Version 1.161+. Returns a percentage value between 0 and 100 if animation is still in progress. Returns 100 otherwise.
+                                                    # Version 1.161+. Returns a percentage value between 0 and 100 if animation is still in progress.
+                                                    # Returns 100 otherwise.
 prop_instance_get_current_deform_frame      = 2616  # (prop_instance_get_current_deform_frame, <destination>, <prop_instance_no>),
                                                     # Version 1.161+. Returns current frame of a vertex-animated scene prop, rounded to nearest integer value.
 
 prop_instance_play_sound                    = 1881  # (prop_instance_play_sound, <scene_prop_id>, <sound_id>, [flags]),
-                                                    # Version 1.153+. Makes the scene prop play a specified sound. See sf_* flags in header_sounds.py for reference on possible options.
+                                                    # Version 1.153+. Makes the scene prop play a specified sound.
+                                                    # See sf_* flags in header_sounds.py for reference on possible options.
 prop_instance_stop_sound                    = 1882  # (prop_instance_stop_sound, <scene_prop_id>),
                                                     # Version 1.153+. Stops any sound currently played by the scene prop instance.
 
 # Scene items operations
 
 scene_item_get_num_instances                = 1830  # (scene_item_get_num_instances, <destination>, <item_id>),
-                                                    # Gets the number of specified scene items present on the scene. Scene items behave exactly like scene props (i.e. cannot be picked).
+                                                    # Gets the number of specified scene items present on the scene.
+                                                    # Scene items behave exactly like scene props (i.e. cannot be picked).
 scene_item_get_instance                     = 1831  # (scene_item_get_instance, <destination>, <item_id>, <instance_no>),
                                                     # Retrieves the reference to a single instance of a scene item by its sequential number.
 scene_spawned_item_get_num_instances        = 1832  # (scene_spawned_item_get_num_instances, <destination>, <item_id>),
-                                                    # Retrieves the number of specified spawned items present on the scene. Spawned items are actual items, i.e. they can be picked by player.
+                                                    # Retrieves the number of specified spawned items present on the scene.
+                                                    # Spawned items are actual items, i.e. they can be picked by player.
 scene_spawned_item_get_instance             = 1833  # (scene_spawned_item_get_instance, <destination>, <item_id>, <instance_no>),
                                                     # Retrieves the reference to a single instance of a spawned item by its sequential number.
 
 replace_scene_items_with_scene_props        = 1891  # (replace_scene_items_with_scene_props, <old_item_id>, <new_scene_prop_id>),
-                                                    # Replaces all instances of specified scene item with scene props. Can only be called in ti_before_mission_start trigger in module_mission_templates.py.
+                                                    # Replaces all instances of specified scene item with scene props.
+                                                    # Can only be called in ti_before_mission_start trigger in module_mission_templates.py.
 
 set_spawn_position                          = 1970  # (set_spawn_position, <position>), ## DUPLICATE ENTRY
                                                     # Defines the position which will later be used by (spawn_scene_prop), (spawn_scene_item), (spawn_agent) and (spawn_horse) operations.
 spawn_item                                  = 1971  # (spawn_item, <item_kind_id>, <item_modifier>, [seconds_before_pruning]),
-                                                    # Spawns a new item, possibly with modifier, on the scene in the position specified by previous call to (set_spawn_position). Optional parameter determines time period (in second) after which the item will disappear. Using 0 will prevent the item from disappearing.
+                                                    # Spawns a new item, possibly with modifier, on the scene in the position specified by previous call to (set_spawn_position).
+                                                    # Optional parameter determines time period (in second) after which the item will disappear.
+                                                    # Using 0 will prevent the item from disappearing.
 spawn_item_without_refill                   = 1976  # (spawn_item_without_refill, <item_kind_id>, <item_modifier>, [seconds_before_pruning]),
                                                     # Version 1.153+. UNTESTED. It is unclear how this is different from standard (spawn_item).
 
 # Light sources and particle systems
 
 set_current_color                           = 1950  # (set_current_color, <red_value>, <green_value>, <blue_value>),
-                                                    # Sets color for subsequent calls to (add_point_light) etc. Color component ranges are 0..255.
+                                                    # Sets color for subsequent calls to (add_point_light) etc.
+                                                    # Color component ranges are 0..255.
 set_position_delta                          = 1955  # (set_position_delta, <value>, <value>, <value>),
-                                                    # Can only be called inside item or scene prop triggers. Sets (X,Y,Z) offsets from the item/prop current position for subsequent calls to (add_point_light) etc. Offsets are apparently in centimeters.
+                                                    # Can only be called inside item or scene prop triggers.
+                                                    # Sets (X,Y,Z) offsets from the item/prop current position for subsequent calls to (add_point_light) etc.
+                                                    # Offsets are apparently in centimeters.
 add_point_light                             = 1960  # (add_point_light, [flicker_magnitude], [flicker_interval]),
-                                                    # Adds a point light source to an object with optional flickering magnitude (range 0..100) and flickering interval (in 1/100th of second). Uses position offset and color provided to previous calls to (set_position_delta) and (set_current_color). Can only be used in item triggers.
+                                                    # Adds a point light source to an object with optional flickering magnitude (range 0..100) and flickering interval (in 1/100th of second).
+                                                    # Uses position offset and color provided to previous calls to (set_position_delta) and (set_current_color).
+                                                    # Can only be used in item triggers.
 add_point_light_to_entity                   = 1961  # (add_point_light_to_entity, [flicker_magnitude], [flicker_interval]),
-                                                    # Adds a point light source to an object with optional flickering magnitude (range 0..100) and flickering interval (in 1/100th of second). Uses position offset and color provided to previous calls to (set_position_delta) and (set_current_color). Can only be used in scene prop triggers.
-                                                    # [?] Attaches an emissive into any [Item] or [Scene Prop] when putting this into their functions. Doesn't work on the Original Game.
+                                                    # Adds a point light source to an object with optional flickering magnitude (range 0..100) and flickering interval (in 1/100th of second).
+                                                    # Uses position offset and color provided to previous calls to (set_position_delta) and (set_current_color).
+                                                    # Can only be used in scene prop triggers.
+                                                    # [?] Attaches an emissive light into any [Item] or [Scene prop] instance when added as part of their trigger init functions.
+                                                    # Doesn't seem to work on the original (M&B 1.011) game, so probably was fixed on Warband. (4research)
 particle_system_add_new                     = 1965  # (particle_system_add_new, <par_sys_id>,[position]),
-                                                    # Adds a new particle system to an object. Uses position offset and color provided to previous calls to (set_position_delta) and (set_current_color). Can only be used in item/prop triggers.
+                                                    # Adds a new particle system to an object.
+                                                    # Uses position offset and color provided to previous calls to (set_position_delta) and (set_current_color).
+                                                    # Can only be used in item/prop triggers.
 particle_system_emit                        = 1968  # (particle_system_emit, <par_sys_id>, <value_num_particles>, <value_period>),
-                                                    # Adds a particle system in some fancy way. Uses position offset and color provided to previous calls to (set_position_delta) and (set_current_color). Can only be used in item/prop triggers.
+                                                    # Adds a particle system in some fancy way.
+                                                    # Uses position offset and color provided to previous calls to (set_position_delta) and (set_current_color).
+                                                    # Can only be used in item/prop triggers.
 particle_system_burst                       = 1969  # (particle_system_burst, <par_sys_id>, <position>, [percentage_burst_strength]),
-                                                    # Bursts a particle system in specified position.
+                                                    # Bursts a particle system in the specified position.
 particle_system_burst_no_sync               = 1975  # (particle_system_burst_without_sync,<par_sys_id>,<position_no>,[percentage_burst_strength]),
                                                     # Version 1.153+. Same as above, but apparently does not synchronize this between server and client.
 prop_instance_add_particle_system           = 1886  # (prop_instance_add_particle_system, <scene_prop_id>, <par_sys_id>, <position_no>),
-                                                    # Version 1.153+. Adds a new particle system to the scene prop. Note that <position_no> is local, i.e. in relation to scene prop's coordinates and rotation.
+                                                    # Version 1.153+. Adds a new particle system to the scene prop.
+                                                    # Note that <position_no> is local, i.e. in relation to scene prop's coordinates and rotation.
 prop_instance_stop_all_particle_systems     = 1887  # (prop_instance_stop_all_particle_systems, <scene_prop_id>),
                                                     # Version 1.153+. Removes all particle systems currently associated with scene prop instance.
 
