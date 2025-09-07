@@ -376,6 +376,7 @@ store_atan2                = 2143    # (store_atan2, <destination_fixed_point>, 
                                      # Returns the angle between the x axis and a point with coordinates (X,Y) in degrees.
                                      # Note the angle is calculated counter-clockwise,
                                      # i.e. (1,1) will return 45, not -45. Returns values in -180..180 range.
+                                     # Notice that parameters are in reverse order, so you're meant to input the Y coordinate first, then X.
                                      # Additional information: [https://mbcommands.fandom.com/wiki/Operations#store_atan2]
 
 # Random number generation
@@ -553,6 +554,12 @@ set_global_haze_amount     =   93  # (set_global_haze_amount, <value>),
                                    # Sets current fogginess (value is clamped to 0..100).
 
 # Time-related operations
+
+  # Time passing on the world map is separate from time passing in scenes. During missions consider the "world time" paused.
+  # You can still read world time in scenes, menus etc. but it doesn't progress - triggers in module_simple_triggers.py
+  # and module_triggers.py don't tick. On the other hand, when you're on the world map, mission timers are stopped
+  # and triggers in module_mission_templates.py don't tick. This chapter deals with operations on world time.
+  # For scene time operations go to the Scenes chapter.
 
 store_current_hours        = 2270  # (store_current_hours, <destination>),
                                    # Stores number of hours that have passed since beginning of the game.
