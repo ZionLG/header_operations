@@ -169,15 +169,18 @@ try_for_agents          =   12  # (try_for_agents, <agent_no>, [<position_no>, <
                                 # Does not take into account the height of positions.
                                 # WSE-
 try_for_prop_instances  =   16  # (try_for_prop_instances, <instance_no>, [<object_id>], [<object_type>]),
-                                # Version 1.161+. Runs a cycle, iterating all valid scene prop instances on the scene.
+                                # Version 1.161+. Loops or iterates over every scene prop instance on the scene. Returning it into <instance_no> as destination.
                                 # <object_id> refers to <scene_prop_id> or <item_kind_id>.
-                                # If <object_id> and <object_type> is not given, it loops through all instances.
-                                # Bug: When iterating all instances sometimes it returns not valid zero instance. Zero instance usually refered to "spr_inventory".
-                                # This bug is fixed in the WSE.
-                                # For object types see list of "somt_" in header_common.py
-                                # To iterate without <object_id> pass -1. Example (try_for_prop_instances, ":instance", -1, somt_spawned_item),
+                                # The loop only takes the ID into account, so use somt_ flags to narrow down or limit the search.
+                                # For somt_ flag definitions see module_constants.py (Native) or header_common.py (Viking Conquest)
+                                # If <object_id> and <object_type> aren't given, then it will loop through every instance of every object.
+                                # Bug: When iterating over every instance sometimes it returns an invalid zero instance (what? 4research), which usually is spr_inventory.
+                                # This bug is fixed in WSE.
+                                # To specify somt_ without specifying <object_id> pass -1 as <object_id>.
+                                # Example: (try_for_prop_instances, ":instance", -1, somt_spawned_item),
 try_for_players         =   17  # (try_for_players, <destination>, [skip_server]),
-                                # Version 1.165+. Iterates through all active players in a multiplayer game. Set optional parameter to 1 to skip server player entry.
+                                # Version 1.165+. Iterates through all active players in a multiplayer game.
+                                # Set optional parameter to 1 to skip server's player entry.
 
 ################################################################################
 # [ Z03 ] MATHEMATICAL OPERATIONS
@@ -1802,7 +1805,7 @@ item_get_horse_scale                = 2713  # (item_get_horse_scale, <destinatio
                                             # Version 1.161+. Retrieves horse scale value as fixed point number.
                                             # Has a bug with rounding down the result which decreases its value by 1. To fix it multiply FPM by 10. Get scale with new FPM.
                                             # Then divide by 10 with rounding up: destination = (scale + 9) / 10.
-                                            # If your FPM is 100 you can use (item_get_weapon_length, <destination>, <item_kind_no>), instead because it uses the same bits.
+                                            # If you set fpm to 100 you can use (item_get_weapon_length, <destination>, <item_kind_no>), instead because it uses the same bits.
                                             # But it will return 0 for default size of 100.
                                             # See also: https://forums.taleworlds.com/index.php?threads/python-script-scheme-exchange.8652/page-40#post-9897422 for a working replacement function, using both workarounds.
 
@@ -2652,7 +2655,7 @@ store_encountered_party2              = 2203  # (store_encountered_party2, <dest
                                               # Stores the identifier of the second encountered party (when first party is in battle, this one will return its battle opponent).
 set_encountered_party                 = 2205  # (set_encountered_party, <party_no>),
                                               # Sets the specified party as encountered by player, but does not run the entire encounter routine.
-                                              # Used in Native during chargen to set up the starting town and then immediately throw the player into street fight without showing him the town menu.
+                                              # Used in Native during CharGen to set up the starting town and then immediately throw the player into street fight without showing him the town menu.
 
 end_current_battle                    = 1307  # (end_current_battle),
                                               # Apparently ends the battle between player's party and its opponent. Exact effects not clear. 4research.
