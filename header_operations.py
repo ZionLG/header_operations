@@ -2752,7 +2752,9 @@ reset_visitors                               = 1262  # (reset_visitors),
 set_visitor                                  = 1263  # (set_visitor, <mission_template_spawn_record>, <troop_id>, [<dna>]),
                                                      # Adds the specified troop as the visitor to the specified spawn record (not the entry point) of the scene defined with (modify_visitors_at_site).
                                                      # Entry point must have mtef_visitor_source type.
-                                                     # Optional DNA parameter allows for randomization of agent looks (only applies to non-hero troops).                                                                               
+                                                     # Optional DNA parameter allows for randomization of agent looks (only applies to non-hero troops).                                                                                
+                                                     # Default team for visitor entries is 7. It can be overridden by <entry_no> flags.
+                                                     # Team 7 is hardcoded neutral for everyone and cannot be changed.
 set_visitors                                 = 1264  # (set_visitors, <mission_template_spawn_record>, <troop_id>, <number_of_troops>),
                                                      # Same as (set_visitors), but spawns an entire group of some troop type.
 add_visitors_to_current_scene                = 1265  # (add_visitors_to_current_scene, <mission_template_spawn_record>, <troop_id>, <number_of_troops>, [<team_no>, <group_no>]),
@@ -3478,12 +3480,14 @@ agent_get_item_id                        = 1719  # (agent_get_item_id, <destinat
 # Agent combat parameters and stats
 
 store_agent_hit_points                   = 1720  # (store_agent_hit_points, <destination>, <agent_id>, [absolute]),
-                                                 # Retrieves current agent health. Optional last parameter determines whether actual health (absolute = 1) or relative percentile health (absolute = 0) is returned.
+                                                 # Retrieves current agent health.
+                                                 # Optional last parameter determines whether actual health (absolute = 1) or relative percentile health (absolute = 0) is returned.
                                                  # Default is relative.
 agent_set_hit_points                     = 1721  # (agent_set_hit_points, <agent_id>, <value>, [absolute]),
                                                  # Sets new value for agent health.
                                                  # Optional last parameter determines whether the value is interpreted as actual health (absolute = 1) or relative percentile health (absolute = 0).
-                                                 # Default is relative. Gets synchronized by game engine automatically if called on server.
+                                                 # Default is relative.
+                                                 # Gets synchronized by game engine automatically if called on server.
 agent_set_max_hit_points                 = 2090  # (agent_set_max_hit_points, <agent_id>, <value>, [absolute]),
                                                  # Version 1.153+. Changes agent's max hit points.
                                                  # Optional flag [absolute] determines if <value> is an absolute number of his points, or relative percentage (0..1000) of default value.
@@ -3560,7 +3564,8 @@ agent_set_ranged_damage_modifier         = 2099  # (agent_set_ranged_damage_modi
                                                  # Value is in percentage, 100 is default, value can be between [0..1000]
 agent_get_time_elapsed_since_removed     = 1760  # (agent_get_time_elapsed_since_removed, <destination>, <agent_id>),
                                                  # Retrieves the number of seconds that have passed since agent's death.
-                                                 # Native uses this only for multiplayer to track player's respawns. Can it be used in singleplayer too? 4research.
+                                                 # Native uses this only for multiplayer to track player's respawns.
+                                                 # Can it be used in singleplayer too? 4research.
 str_store_agent_face_keys                = 2749  # (str_store_agent_face_keys, <string_reg>, <agent_id>),
                                                  # Stores agent face code. Regular agents have random generated face from two face codes of the troop.
 
@@ -3583,22 +3588,27 @@ agent_refill_ammo                        = 1728  # (agent_refill_ammo, <agent_id
                                                  # Doesn't work at items with the flag itp_remove_item_on_use.
 agent_set_wielded_item                   = 1747  # (agent_set_wielded_item, <agent_id>, <item_id>),
                                                  # Forces the agent to wield the specified item.
-                                                 # Agent must have that item in his equipment for this to work. Use item_id = -1 to unwield any currently wielded item.
-                                                 # Agent wielding item is alarmed and can't be unalarmed. The animation changes to alarmed that has a higher priority.
+                                                 # Agent must have that item in his equipment for this to work.
+                                                 # Use item_id = -1 to unwield any currently wielded item.
+                                                 # Agent wielding item is alarmed and can't be unalarmed.
+                                                 # The animation changes to alarmed that has a higher priority.
                                                  # After some time agent will rethink and switches his wielded item.
 agent_equip_item                         = 1779  # (agent_equip_item, <agent_id>, <item_id>, [weapon_slot_no], [modifier]),
                                                  # Adds the specified item to agent and forces him to equip it.
                                                  # Optional weapon_slot_no parameter is only used with weapons and will put the newly added item to that slot (range 1..4) and with optional modifier.
                                                  # If it is omitted with a weapon item, then the agent must have an empty weapon slot for the operation to succeed.
                                                  # Gets synchronized (for weapons, not for armor) by game engine automatically if called on server.
-                                                 # Weapons and shields should only be equipped on the server but armor should be equipped on the server for the damage calculations and also on all the clients for the visible meshes.
+                                                 # Weapons and shields should only be equipped on the server but armor should be equipped on the server for the damage calculations
+                                                 # and also on all the clients for the visible meshes.
 agent_unequip_item                       = 1774  # (agent_unequip_item, <agent_id>, <item_id>, [weapon_slot_no]),
-                                                 # Removes the specified item from the agent. Optional parameter weapon_slot_no is in range 1..4 and determines what weapon slot to remove (item_id must still be set correctly).
+                                                 # Removes the specified item from the agent.
+                                                 # Optional parameter weapon_slot_no is in range 1..4 and determines what weapon slot to remove (item_id must still be set correctly).
 agent_set_ammo                           = 1776  # (agent_set_ammo, <agent_id>, <item_id>, <value>),
                                                  # Sets current agent ammo amount to the specified value between 0 and maximum ammo. <item_id> is an ammo item, not the weapon!.
                                                  # When you have more than one instance of the same type you must add the total value of all in order to set the correct ammo amount.
 agent_get_item_slot                      = 1804  # (agent_get_item_slot, <destination>, <agent_id>, <value>),
-                                                 # Retrieves item_id for specified agent's slot Possible slot values range in 0..7, order is weapon1, weapon2, weapon3, weapon4, head_armor, body_armor, leg_armor, hand_armor.
+                                                 # Retrieves item_id for specified agent's slot Possible slot values range in 0..7,
+                                                 # order is weapon1, weapon2, weapon3, weapon4, head_armor, body_armor, leg_armor, hand_armor.
 agent_get_ammo_for_slot                  = 1825  # (agent_get_ammo_for_slot, <destination>, <agent_id>, <slot_no>),
                                                  # Retrieves the amount of ammo agent has in the referenced slot (range 0..3).
 
@@ -3672,7 +3682,7 @@ agent_ai_get_num_cached_enemies          = 2670  # (agent_ai_get_num_cached_enem
 agent_ai_get_cached_enemy                = 2671  # (agent_ai_get_cached_enemy, <destination>, <agent_no>, <cache_index>),
                                                  # Version 1.165+. Return agent reference from AI's list of cached enemies, from nearest to farthest.
                                                  # Returns -1 if the cached enemy from index is not exist.
-                                                # Max slots are 16. Every 2 seconds renew cashed enemies in order from nearest to farthest.
+                                                 # Max slots are 16. Every 2 seconds renew cashed enemies in order from nearest to farthest.
 agent_get_attack_action                  = 1763  # (agent_get_attack_action, <destination>, <agent_id>),
                                                  # Retrieves agent's current attack action.
                                                  # Possible values: free = 0, readying_attack = 1, releasing_attack = 2, completing_attack_after_hit = 3, attack_parried = 4, reloading = 5, after_release = 6, cancelling_attack = 7.
@@ -3688,7 +3698,8 @@ agent_set_attack_action                  = 1745  # (agent_set_attack_action, <ag
                                                  # Direction value: [-2|-1] = will release readying action (1.153+), 0 = thrust, 1 = slashright, 2 = slashleft, 3 = overswing.
                                                  # Action value: 0 = ready and release, 1 = ready and hold.
                                                  # The operation will be ignored entirely if one of the values does not match the above.
-                                                 # If <action_value> is free = 0 than agents with shield will raise shield after few seconds. They are protecting themselves if not in range.
+                                                 # If <action_value> is free = 0 than agents with shield will raise shield after few seconds.
+                                                 # They are protecting themselves if not in range.
 agent_set_defend_action                  = 1746  # (agent_set_defend_action, <agent_id>, <action_value>, <duration-in-1/1000-seconds>),
                                                  # Forces the agent to perform a defend action.
                                                  # Possible values: [-2|-1] = cancel any action (1.153+), 0 = defend_down, 1 = defend_right, 2 = defend_left, 3 = defend_up.
@@ -3711,9 +3722,7 @@ agent_clear_scripted_mode                = 1735  # (agent_clear_scripted_mode, <
                                                  # Agent will stay on the same position for a while. Remove delay by using (agent_force_rethink).
                                                  # Doesn't reset attack or defend action.
 agent_ai_set_always_attack_in_melee      = 1737  # (agent_ai_set_always_attack_in_melee, <agent_id>, <value>),
-                                                 # Forces the agent to continuously attack in melee combat, instead of defending.
-                                                 # Used in Native to prevent stalling at the top of the siege ladder.
-                                                 # Use value = 0 to clear this mode.
+                                                 # Ranged units will switch to melee and charge instead of waiting for line of sight.
 agent_get_simple_behavior                = 1738  # (agent_get_simple_behavior, <destination>, <agent_id>),
                                                  # Retrieves agent's current simple behavior (see aisb_* constants in header_mission_templates.py for details).
 agent_ai_get_behavior_target             = 2082  # (agent_ai_get_behavior_target, <destination>, <agent_id>),
@@ -3743,9 +3752,11 @@ agent_ai_get_look_target                 = 2080  # (agent_ai_get_look_target, <d
 agent_set_look_target_agent              = 1713  # (agent_set_look_target_agent, <watcher_agent_id>, <observed_agent_id>),
                                                  # Forces the agent to look at specified agent (track his movements). Alarmed agents will ignore this.
 agent_start_running_away                 = 1751  # (agent_start_running_away, <agent_id>, [<position_no>]),
-                                                 # Makes the agent flee the battlefield, ignoring everything else and not attacking. If the agent reaches the edge of map in this mode,
-                                                 # he will fade out. Optional position_no parameter added in 1.153 and will make the agent flee to specified position instead 
-                                                 # (pos0 is not allowed and will be ignored). When used on a mounted horse makes the agent 'fall off' instantly and the horse will run away
+                                                 # Makes the agent flee the battlefield, ignoring everything else and not attacking.
+                                                 # If the agent reaches the edge of map in this mode, he will fade out.
+                                                 # Optional position_no parameter added in 1.153 and will make the agent flee to specified position instead 
+                                                 # (pos0 is not allowed and will be ignored).
+                                                 # When used on a mounted horse makes the agent 'fall off' instantly and the horse will run away
                                                  # (works for player too). Falling off from horse doesn't fire 'ti_on_agent_dismount' trigger.
                                                  # Agents left the map in this mode will be counted as routed (agent_is_routed) and dead (agent_is_alive) But they will not decrease party size.
                                                  # Riderless horses don't start running away. 
@@ -3781,32 +3792,40 @@ agent_get_team                           = 1770  # (agent_get_team, <destination
                                                  # Retrieves the team that the agent belongs to.
 agent_set_team                           = 1771  # (agent_set_team, <agent_id>, <value>),
                                                  # Puts the agent to specified team number. Also copies "value" to agent group.
-                                                 # The max <value> is 7. But the 7 team is hardcoded neutral to everyone. If you set team out of range (0, 6) than 7 team will be assigned.
-agent_get_class                          = 1772  # (agent_get_class , <destination>, <agent_id>),
+                                                 # The max <value> is 7. But the team=7 is hardcoded as neutral to everyone.
+                                                 # If you set team out of range [0,6] then team=7 will be assigned.
+agent_get_class                          = 1772  # (agent_get_class, <destination>, <agent_id>),
                                                  # Retrieves the agent class (the only possible results are 0=Infantry, 1=Archers or 2=Cavalry), which reflects the agent's current status.
-                                                 # Class=2 (Cavalry) is assigned to an agent only when he's mounted. When the agent dismounts, his class changes to either 0=Infantry, 1=Archers.
+                                                 # Class=2 (Cavalry) is assigned to an agent only when he's mounted.
+                                                 # When the agent dismounts, his class changes to either 0=Infantry, 1=Archers.
                                                  # The decision between class=0 and class=1 seems to be based on whether the agent is equipped with a ranged weapon or not.
                                                  # (4research: does the class change from 1 to 0 when agent runs out of ammo?).
-                                                 # Because the engine decides agent classes dynamically, there are no operations to change agent class. To split agents into groups use agent divisions instead.
-agent_get_division                       = 1773  # (agent_get_division , <destination>, <agent_id>),
-                                                 # Retrieves the agent division (custom troop class number in 0..8 range).
+                                                 # Because the engine decides agent classes dynamically, there are no operations to change agent class.
+                                                 # To split agents into groups use agent divisions instead.
+agent_get_division                       = 1773  # (agent_get_division, <destination>, <agent_id>),
+                                                 # Retrieves the agent division (number in 0..8 range).
+                                                 # Its initial value equals troop class of the corresponding troop.
+                                                 # Unlike agent class, agent division does not change automatically during the mission.
+                                                 # Agent division can also be changed during the mission using (agent_set_division).
 agent_set_division                       = 1783  # (agent_set_division, <agent_id>, <value>),
                                                  # Puts the agent into the specified division. This does not affect agent's troop class.
                                                  # Note that there's a bug in Warband: if an order is issued to agent's original division, the agent will immediately switch back to its original division number.
                                                  # Therefore, if you want to manipulate agent divisions dynamically during the battle, you need to implement some workarounds for this bug.
 
 team_get_hold_fire_order                 = 1784  # (team_get_hold_fire_order, <destination>, <team_no>, <division>),
-                                                 # Retrieves current status of hold fire order for specified team/division (see aordr_* constants in header_mission_templates.py for reference).
+                                                 # Retrieves current status of hold fire order for specified team/division - see aordr_* constants in header_mission_templates.py for reference
+                                                 # (not all aordr_* values can be returned, because e.g. "all fire now!" is a command with instant result, not a status,
+                                                 # so with this operation we can only detect whether the troops can fire at will or not).
 team_get_movement_order                  = 1785  # (team_get_movement_order, <destination>, <team_no>, <division>),
-                                                 # Retrieves current movement orders for specified team/division (see mordr_* constants in header_mission_templates.py for reference).
+                                                 # Retrieves current movement orders for specified team/division - see mordr_* constants in header_mission_templates.py for reference.
                                                  # Note however, that unlike aord_*, wordr_* and rordr_*, mordr_* are not just statuses.
                                                  # They are also orders that can be given to agent divisions.
                                                  # On top of that, certain orders, once given, don't leave a trace to detect with any operation (most notably formation-related orders).
                                                  # See more here: [https://mbcommands.fandom.com/wiki/Operations#team_get_movement_order]
 team_get_riding_order                    = 1786  # (team_get_riding_order, <destination>, <team_no>, <division>),
-                                                 # Retrieves current status of riding order for specified team/division (see rordr_* constants in header_mission_templates.py for reference).
+                                                 # Retrieves current status of riding order for specified team/division - see rordr_* constants in header_mission_templates.py for reference.
 team_get_weapon_usage_order              = 1787  # (team_get_weapon_usage_order, <destination>, <team_no>, <division>),
-                                                 # Retrieves current status of weapon usage order for specified team/division (see wordr_* constants in header_mission_templates.py for reference).
+                                                 # Retrieves current status of weapon usage order for specified team/division - see wordr_* constants in header_mission_templates.py for reference.
 team_give_order                          = 1790  # (team_give_order, <team_no>, <division>, <order_id>),
                                                  # Issues an order to specified team/division. Non alarmed agents will ignore.
 team_set_order_position                  = 1791  # (team_set_order_position, <team_no>, <division>, <position>),
@@ -3831,8 +3850,9 @@ team_set_relation                        = 1796  # (team_set_relation, <team_no>
 store_remaining_team_no                  = 2360  # (store_remaining_team_no, <destination>),
                                                  # Retrieves the number of the last remaining team. Currently not used in Native, possibly deprecated.
 team_get_gap_distance                    = 1828  # (team_get_gap_distance, <destination>, <team_no>, <sub_class>),
-                                                 # Version 1.153+. UNTESTED.
-                                                 # Supposedly returns average gap between troops of a specified team/class (depends on how many Stand Closer/Spread Out orders were given).
+                                                 # Version 1.153+. Returns status of mordr_stand_closer/mordr_spread_out as values in range [3,6], 
+                                                 # where 3 means the tightest formation, and 6 means most loose. 
+                                                 # Initial formation density is 4 until changed.
 
 # Combat statistics
 
@@ -3914,7 +3934,7 @@ store_normalized_team_count              = 2385  # (store_normalized_team_count,
 
 # Conditional operations
 
-is_presentation_active                            =  903  # (is_presentation_active, <presentation_id),
+is_presentation_active                            =  903  # (is_presentation_active, <presentation_id>),
                                                           # Checks if the specified presentation is currently running.
 
 # General presentation operations
@@ -3922,70 +3942,113 @@ is_presentation_active                            =  903  # (is_presentation_act
 start_presentation                                =  900  # (start_presentation, <presentation_id>),
                                                           # Starts the specified presentation.
 start_background_presentation                     =  901  # (start_background_presentation, <presentation_id>),
-                                                          # Can only be used in game menus. Apparently allows you to start a presentation in background but stay in the menu. 4research.
+                                                          # Can only be used in game menus.
+                                                          # Apparently allows you to start a presentation in background but stay in the menu. 4research.
                                                           # Official: can only be used in game menus
 presentation_set_duration                         =  902  # (presentation_set_duration, <duration-in-1/100-seconds>),
-                                                          # Sets presentation duration time, in 1/100th of second. Must be called when a presentation is active. If several presentations are active, duration will be set for all of them.
-
+                                                          # Sets presentation duration time, in 1/100th of second. Must be called when a presentation is active. Setting it to 0 ends the presentation.
+                                                          # If several presentations are active, duration will be set for all of them.
+                                                          # However, this doesn't necessarily mean that if we want to end one presentation we must end them all.
+                                                          # In a test case I observed that when (presentation_set_duration,0), was called from within the presentation, that presentation have ended, but the other did not.
+                                                          # I am not sure if calling the operation from within the presentation is enough, maybe it also depended on the presentation flags, so here they are:
+                                                          # (presentation_set_duration,0), was called from prsnt_battle which has no flags and no background mesh and it closed prsnt_battle.
+                                                          # The presentation that continued to run was an overlay presentation with flags prsntf_read_only|prsntf_manual_end_only
+                                                          # and it continued to run both before and after prsnt_battle was opened and closed.
 # Creating overlays
 
 create_text_overlay                               =  910  # (create_text_overlay, <destination>, <string_id>, [style_flags]),
                                                           # Creates a text label overlay and returns its overlay_id.
-                                                          # If tf_scrollable - doesn't work overlay_set_additional_render_height
+                                                          # Using tf_scrollable flag on this overlay prevents overlay_set_additional_render_height from working.
 create_mesh_overlay                               =  911  # (create_mesh_overlay, <destination>, <mesh_id>),
                                                           # Creates a mesh overlay and returns its overlay_id.
 create_mesh_overlay_with_item_id                  =  944  # (create_mesh_overlay_with_item_id, <destination>, <item_id>),
                                                           # Creates a mesh overlay, using the specified item mesh. Returns overlay_id.
 create_mesh_overlay_with_tableau_material         =  939  # (create_mesh_overlay_with_tableau_material, <destination>, <mesh_id>, <tableau_material_id>, <value>),
-                                                          # Creates a mesh overlay, using the specified tableau_material. When mesh_id = -1, it is generated automatically. Value is passed as the parameter for tableau_material script. Returns overlay_id.
+                                                          # Creates a mesh overlay, using the specified tableau_material. When mesh_id = -1, it is generated automatically.
+                                                          # Value is passed as the parameter for tableau_material script. Returns overlay_id.
 create_button_overlay                             =  912  # (create_button_overlay, <destination>, <string_id>, <alignment>),
-                                                          # Creates a generic button overlay and returns its overlay_id. The only difference between this and subsequent two operations is that they use different button meshes.
-                                                          # Possible mesh - transparent plane.
+                                                          # Creates a generic button overlay and returns its overlay_id.
+                                                          # The only difference between this and subsequent two operations is that they use different button meshes.
+                                                          # Looks like plain text label. Possible mesh - transparent plane.
 create_game_button_overlay                        =  940  # (create_game_button_overlay, <destination>, <string_id>),
-                                                          # Creates a game button overlay and returns its overlay_id. The size specified with <overlay_set_size>.
+                                                          # Creates a game button overlay and returns its overlay_id. Specifying the size works a bit weird:
+                                                          # 1. overlay_set_area_size doesn't seem to have any effect.
+                                                          # 2. overlay_set_size seems to control both the button size and text size on it, but applied values are treated weirdly and are hard to control.
+                                                          # I may be wrong, but it feels to me like x controls the width of the button, while y controls the overall scale of both button and text on both axis (but x also seems to have some influence over font size).
+                                                          # In my testing, with fixed_point_multiplier=1000, setting size to x=100 and y=30 produced a relatively satisfying result.
+                                                          # I suggest starting from those values, then adjusting only x or only y at a time to avoid confusion, and changing them in very small increments.
+                                                          # Basically: test thoroughly, this is a weird one.
 create_in_game_button_overlay                     =  941  # (create_in_game_button_overlay, <destination>, <string_id>),
                                                           # Creates an in-game button overlay and returns its overlay_id.
 create_image_button_overlay                       =  913  # (create_image_button_overlay, <destination>, <mesh_id>, <mesh_id>),
-                                                          # Creates an image button, using two meshes for normal (1st mesh) and pressed (2nd mesh) status. Button does not have a textual label. Returns button overlay_id.
+                                                          # Creates an image button, using two meshes for normal (1st mesh) and pressed (2nd mesh) status. Button does not have a textual label.
+                                                          # Returns button overlay_id.
 create_image_button_overlay_with_tableau_material =  938  # (create_image_button_overlay_with_tableau_material, <destination>, <mesh_id>, <tableau_material_id>, <value>),
-                                                          # Creates an image button from the specified mesh, using tableau_material as the image. When mesh = -1, it is generated automatically. Value is passed as the parameter to the tableau_material script. Returns overlay_id.
+                                                          # Creates an image button from the specified mesh, using tableau_material as the image.
+                                                          # When mesh = -1, it is generated automatically.
+                                                          # Value is passed as the parameter to the tableau_material script. Returns overlay_id.
 create_slider_overlay                             =  914  # (create_slider_overlay, <destination>, <min_value>, <max_value>),
-                                                          # Creates horizontal slider overlay, with positions of the slider varying between min and max values. Current value of the slider can be changed with (overlay_set_val). Returns slider's overlay_id.
+                                                          # Creates horizontal slider overlay, with positions of the slider varying between min and max values.
+                                                          # Current value of the slider can be changed with (overlay_set_val). Returns slider's overlay_id.
+                                                          # <max value> is included in range of values that can be set using the slider.
 create_progress_overlay                           =  915  # (create_progress_overlay, <destination>, <min_value>, <max_value>),
-                                                          # Creates progress bar overlay, with positions of the bar varying between min and max values. Current value of the progress bar can be changed with (overlay_set_val). Returns bar's overlay_id.
+                                                          # Creates progress bar overlay, with positions of the bar varying between min and max values.
+                                                          # Current value of the progress bar can be changed with (overlay_set_val). Returns bar's overlay_id.
 create_number_box_overlay                         =  942  # (create_number_box_overlay, <destination>, <min_value>, <max_value>),
                                                           # Creates a number box overlay (a small field for numeric value and small increase/decrease buttons to the right) with specified min and max values.
-                                                          # Returns number box overlay_id. Size is not changeable.
+                                                          # Returns number box overlay_id.
+                                                          # <max value> is not included in range of values that can be set using the number box.
+                                                          # This one is unique, because - according to tests performed by Dalion - it can't be resized by any means,
+                                                          # being immune to both overlay_set_size and overlay_set_area_size.
 create_text_box_overlay                           =  917  # (create_text_box_overlay, <destination>),
-                                                          # Apparently deprecated. No longer used in Native.
+                                                          # No longer used in Native, but fully functional.
+                                                          # Works almost the same way as simple text box overlay, but it positions based on bottom center point, rather than bottom left.
+                                                          # 4research: can it be resized?
 create_simple_text_box_overlay                    =  919  # (create_simple_text_box_overlay, <destination>),
-                                                          # Creates a text field overlay, where user can enter any text. Returns text field's overlay_id. Text contents of the field can be retrieved from s0 trigger in ti_on_presentation_event_state_change event for the text field.
+                                                          # Creates a text field overlay, where user can enter any text. Returns text field's overlay_id.
+                                                          # Text contents of the field can be retrieved from s0 trigger in ti_on_presentation_event_state_change event for the text field.
                                                           # <overlay_set_size> uses: (size_X, scale_Y) where: size_X - absolute coordinates and scale_Y - relative coordinates
 create_check_box_overlay                          =  918  # (create_check_box_overlay, <destination>, <checkbox_off_mesh>, <checkbox_on_mesh>),
                                                           # Creates a checkbox overlay. Returns checkbox overlay_id.
-create_listbox_overlay                            =  943  # (create_list_box_overlay, <destination>, <string>, <value>),
-                                                          # Creates a listbox overlay. Individual items can be added with (overlay_add_item) and index of currently selected item can be set with (overlay_set_val). Returns listbox overlay_id. Importance of later two parameters unclear (default text&value?). 4research.
-                                                          # Resizing during presentation run is bugged. Repositioning during presentation load uses left-bottom point, during presentation run - middle-bottom.
+create_listbox_overlay                            =  943  # (create_listbox_overlay, <destination>),
+                                                          # Creates a listbox overlay. Individual items can be added with (overlay_add_item) and index of currently selected item can be set with (overlay_set_val).
+                                                          # Returns listbox overlay_id.
+                                                          # Old syntax (historic/incorrect docs): (create_listbox_overlay, <destination>, <string>, <value>).
+                                                          # Resizing during presentation run is bugged.
+                                                          # Repositioning during presentation load uses left‑bottom point, during presentation run ‑ middle‑bottom.
 create_combo_label_overlay                        =  948  # (create_combo_label_overlay, <destination>),
-                                                          # Creates a combo label overlay. Looks like plain text label. Individual items can be added with (overlay_add_item) and currently selected item can be set with (overlay_set_val). Returns combo block's overlay_id.
+                                                          # Creates a combo label overlay.
+                                                          # Individual items can be added with (overlay_add_item) and currently selected item can be set with (overlay_set_val).
+                                                          # Returns combo block's overlay_id.
 create_combo_button_overlay                       =  916  # (create_combo_button_overlay, <destination>),
-                                                          # Creates a combo button overlay. For example see "Screen Resolution" dropdown in Settings menu. Individual items can be added with (overlay_add_item) and currently selected item can be set with (overlay_set_val). Returns combo block's overlay_id.
+                                                          # Creates a combo button overlay.
+                                                          # For example see "Screen Resolution" dropdown in Settings menu.
+                                                          # Individual items can be added with (overlay_add_item) and currently selected item can be set with (overlay_set_val).
+                                                          # Returns combo block's overlay_id.
+                                                          # When click, the list always opens down, so make sure to put it high enough, or the bottom of the list will be off screen and unclickable because of that.
 overlay_add_item                                  =  931  # (overlay_add_item, <overlay_id>, <string_id>),
-                                                          # Adds an item to the listbox or combobox. Items are indexed from 0. Note the order in which items appear in the dropdown is reverse to the order in which they're added.
+                                                          # Adds an item to the listbox, combo label or combo button.
+                                                          # Items are indexed from 0.
+                                                          # Note the order in which items appear in the dropdown is reverse to the order in which they're added.
 
 # Overlays hierarchy manipulation
 
 set_container_overlay                             =  945  # (set_container_overlay, <overlay_id>),
-                                                          # Defines the specified overlay as the container. All subsequently created overlays will be placed inside the container, and their coordinates will be based on container's position. All containers with their contents will be displayed *above* any non-container overlays. Use -1 to stop placing overlays to current container and resume normal behavior.
+                                                          # Defines the specified overlay as the container.
+                                                          # All subsequently created overlays will be placed inside the container, and their coordinates will be based on container's position.
+                                                          # All containers with their contents will be displayed *above* any non-container overlays.
+                                                          # Use -1 to stop placing overlays to current container and resume normal behavior.
 overlay_set_container_overlay                     =  951  # (overlay_set_container_overlay, <overlay_id>, <container_overlay_id>),
-                                                          # Allows you to put one overlay into a container, or remove it from container (if container_overlay_id = -1) without setting current overlay. May be unreliable.
+                                                          # Allows you to put one overlay into a container, or remove it from container (if container_overlay_id = -1) without setting current overlay.
+                                                          # May be unreliable.
 
 # Overlay manipulation
 
 overlay_get_position                              =  946  # (overlay_get_position, <position>, <overlay_id>),
-                                                          # Retrieves overlay current position to specified position trigger, using position's X and Y coordinates. Note that the screen size in Warband is (1.00,0.75), further modified by fixed point multiplier.
+                                                          # Retrieves overlay current position to specified position trigger, using position's X and Y coordinates.
+                                                          # Note that the screen size in Warband is (1.00,0.75), further modified by fixed point multiplier.
 overlay_set_val                                   =  927  # (overlay_set_val, <overlay_id>, <value>),
-                                                          # Sets the value of the overlays which have numeric values (sliders, combo buttons and check boxes).
+                                                          # Sets the value of the overlays which have numeric values.
                                                           # Official: can be used for sliders, combo buttons and check boxes
 overlay_set_text                                  =  920  # (overlay_set_text, <overlay_id>, <string_id>),
                                                           # Changes the overlay text (if it has any). Works for labels, text fields, buttons with text labels...
@@ -3998,9 +4061,16 @@ overlay_set_position                              =  926  # (overlay_set_positio
                                                           # If overlay inside container position will be relative to left-bottom corner (0,0) of container. But when you get overlay position
                                                           # it will be in absolute coordinates - lef-bottom (0,0) of screen corner and can change depending on slider.
 overlay_set_size                                  =  925  # (overlay_set_size, <overlay_id>, <position>),
-                                                          # Sets the overlay size, using position's X and Y coordinates. For meshes, button overlays, etc. the operation will modify the actual size of the overlay, whereas for text overlays it will dictate the font size the overlay will use. The default font size is X = 1000, Y = 1000 (with a fixed_point_multiplier of 1000). Note that the screen size in Warband is (1.00,0.75), further modified by fixed point multiplier. Also see (overlay_set_area_size).
+                                                          # Sets the overlay size, using position's X and Y coordinates.
+                                                          # Note that the screen size in Warband is (1.00,0.75), further modified by fixed point multiplier.
+                                                          # Also see (overlay_set_area_size).
+                                                          # For meshes, button overlays, etc. the operation will modify the actual size of the overlay,
+                                                          # whereas for text overlays it will dictate the font size the overlay will use.
+                                                          # The default font size is X = 1000, Y = 1000 (with a fixed_point_multiplier of 1000).
 overlay_set_area_size                             =  929  # (overlay_set_area_size, <overlay_id>, <position>),
-                                                          # Defines the actual area on the screen used to display the overlay. If its size is greater than area size, it will create a scrollable area with appropriate scrollbars. Can be used to create scrollable areas for large text, or scrollable containers with many children elements (see Host Game screen for a typical example).
+                                                          # Defines the actual area on the screen used to display the overlay.
+                                                          # If its size is greater than area size, it will create a scrollable area with appropriate scrollbars.
+                                                          # Can be used to create scrollable areas for large text, or scrollable containers with many children elements (see Host Game screen for a typical example).
 overlay_set_additional_render_height              =  952  # (overlay_set_additional_render_height, <overlay_id>, <height_adder>),
                                                           # Version 1.153+. Will show overlay above others if height_adder greater than 0. Max 296 for text.
 overlay_animate_to_position                       =  937  # (overlay_animate_to_position, <overlay_id>, <duration-in-1/1000-seconds>, <position>),
@@ -4008,11 +4078,15 @@ overlay_animate_to_position                       =  937  # (overlay_animate_to_
 overlay_animate_to_size                           =  936  # (overlay_animate_to_size, <overlay_id>, <duration-in-1/1000-seconds>, <position>),
                                                           # Changes overlay size to specified value during a specified timeframe, specified in 1/1000th of second.
 overlay_set_mesh_rotation                         =  930  # (overlay_set_mesh_rotation, <overlay_id>, <position>),
-                                                          # Despite the name, works with any overlay, allowing you to put it on the screen in rotated position. To determine the angles, position's rotation values are used (not coordinates!). Usually you will want to only use rotation around Z axis (which results in clockwise or anti-clockwise rotation as seen by user). Note that rotating overlays which are placed inside a container may cause strange results, so some trial and error will be necessary in such situation.
+                                                          # Despite the name, works with any overlay, allowing you to put it on the screen in rotated position.
+                                                          # To determine the angles, position's rotation values are used (not coordinates!).
+                                                          # Usually you will want to only use rotation around Z axis (which results in clockwise or anti-clockwise rotation as seen by user).
+                                                          # Note that rotating overlays which are placed inside a container may cause strange results, so some trial and error will be necessary in such situation.
 overlay_set_material                              =  956  # (overlay_set_material, <overlay_id>, <string_no>),
                                                           # Version 1.161+. Replaces the material used for rendering specified overlay.
 overlay_set_color                                 =  921  # (overlay_set_color, <overlay_id>, <color>),
                                                           # Changes the overlay color (hexadecimal value 0xRRGGBB). May not work with some overlay types.
+                                                          # For some overlay types that react to overlay_set_alpha using 0xAARRGGBB with overlay_set_color may affect/reset alpha.
 overlay_set_alpha                                 =  922  # (overlay_set_alpha, <overlay_id>, <alpha>),
                                                           # Changes the overlay alpha (hexadecimal value in 0x00..0xFF range). May not work with some overlay types.
 overlay_set_hilight_color                         =  923  # (overlay_set_hilight_color, <overlay_id>, <color>),
@@ -4021,12 +4095,12 @@ overlay_set_hilight_alpha                         =  924  # (overlay_set_hilight
                                                           # Highlights the overlay with specified alpha. May not work with some overlay types.
 overlay_animate_to_color                          =  932  # (overlay_animate_to_color, <overlay_id>, <duration-in-1/1000-seconds>, <color>),
                                                           # Changes overlay's color during a specified timeframe, specified in 1/000th of second.
-overlay_animate_to_alpha                          =  933  # (overlay_animate_to_alpha, <overlay_id>, <duration-in-1/1000-seconds>, <color>),
+overlay_animate_to_alpha                          =  933  # (overlay_animate_to_alpha, <overlay_id>, <duration-in-1/1000-seconds>, <alpha>),
                                                           # Changes overlay's alpha during a specified timeframe, specified in 1/000th of second. Doesn't work with text overlays with <tf_with_outline>.
                                                           # overlay_set_alpha doesn't work when animating is processed. Use overlay_animate_to_alpha with 0 msec.
 overlay_animate_to_highlight_color                =  934  # (overlay_animate_to_highlight_color, <overlay_id>, <duration-in-1/1000-seconds>, <color>),
                                                           # Highlights overlay to specified color during a specified timeframe, specified in 1/000th of second.
-overlay_animate_to_highlight_alpha                =  935  # (overlay_animate_to_highlight_alpha, <overlay_id>, <duration-in-1/1000-seconds>, <color>),
+overlay_animate_to_highlight_alpha                =  935  # (overlay_animate_to_highlight_alpha, <overlay_id>, <duration-in-1/1000-seconds>, <alpha>),
                                                           # Highlights overlay to specified alpha during a specified timeframe, specified in 1/000th of second.
 overlay_set_display                               =  947  # (overlay_set_display, <overlay_id>, <value>),
                                                           # Shows (value = 1) or hides (value = 0) the specified overlay.
@@ -4034,20 +4108,34 @@ overlay_obtain_focus                              =  949  # (overlay_obtain_focu
                                                           # Makes the specified overlay obtain input focus. Only works for text fields.
 
 overlay_set_tooltip                               =  950  # (overlay_set_tooltip, <overlay_id>, <string_id>),
-                                                          # Defines a text which will be displayed as a tooltip when mouse pointer will hover over the specified overlay. Unreliable, always test how it works.
+                                                          # Defines a text which will be displayed as a tooltip when mouse pointer will hover over the specified overlay.
+                                                          # Unreliable, always test how it works.
 
 # Popups and some esoteric stuff
 
 show_item_details                                 =  970  # (show_item_details, <item_id>, <position>, <price_multiplier_percentile>),
-                                                          # Shows a popup box at the specified position, containing standard game information for the specified item.
-                                                          # Last parameter determines price percentile multiplier, usually returned by script_game_get_item_[buy/sell]_price_factor.
+                                                          # Shows a popup label at the specified position, containing standard game information for the specified item, same as when hovering over an item in inventory.
+                                                          # Specified <position> will point at the bottom-center point of the 1st line of text of the label.
+                                                          # Last parameter determines price percentile multiplier.
                                                           # Multiplier value of 100 will display item standard price, value of 0 will display "Default Item" instead of price (used in multiplayer equipment selection presentation).
+                                                          # Only one such label can be displayed at a time, so calling this operation again will make the previous label disappear. 
+                                                          # This label limit is shared by 3 operations - show_item_details, show_item_details_with_modifier and show_troop_details.
+                                                          # Turn off the label with close_item_details.
+                                                          # Official: price_multiplier is percent, usually returned by script_game_get_item_[buy/sell]_price_factor
 show_item_details_with_modifier                   =  972  # (show_item_details_with_modifier, <item_id>, <item_modifier>, <position>, <price_multiplier_percentile>),
                                                           # Same as above, but displays stats and price information for an item with a modifier.
-close_item_details                                =  971  # (close_item_details),
-                                                          # Closes the item details popup box.
 show_troop_details                                = 2388  # (show_troop_details, <troop_id>, <position>, <troop_price>),
-                                                          # Version 1.153+. Supposedly displays a popup with troop information at specified place. 4research.
+                                                          # Version 1.153+. Works and looks the same as show_item_details but displays information of a troop rather than an item.
+                                                          # Displayed data is:
+                                                          # Line 1: troop's name
+                                                          # Line 2: "Buying price: <troop_price>" (most likely the ui_buying_price entry from ui.csv, same as is used for item labels)
+                                                          # Only one such label can be displayed at a time, so calling this operation again will make the previous label disappear.
+                                                          # This label limit is shared by 3 operations - show_item_details, show_item_details and show_item_details.
+                                                          # Unintuitively, to turn off the label you should use close_item_details.
+close_item_details                                =  971  # (close_item_details),
+                                                          # Closes the troop or item details popups created with show_item_details, show_item_details_with_modifier and show_troop_details.
+                                                          # This operation could use a different, less misleading name.
+
 
 ################################################################################
 # [ Z24 ] MULTIPLAYER AND NETWORKING (LEFT FOR SOMEONE MORE FAMILIAR WITH THIS)
@@ -4064,21 +4152,27 @@ show_troop_details                                = 2388  # (show_troop_details,
 
 player_is_active                             =  401  # (player_is_active, <player_id>),
                                                      # Checks that the specified player is active (i.e. connected to server).
+                                                     # Players are assigned a free ID after connection and on disconnection it becomes free/invalid until taken by another connecting player.
 multiplayer_is_server                        =  417  # (multiplayer_is_server),
-                                                     # Checks that the code is running on multiplayer server. Operation will fail on client machines or in singleplayer mode. This will succeed for listen and dedicated servers and will only fail on clients.
+                                                     # Checks that the code is running on multiplayer server.
+                                                     # Operation will fail on client machines or in singleplayer mode.
+                                                     # This will succeed for listen and dedicated servers and will only fail on clients.
 multiplayer_is_dedicated_server              =  418  # (multiplayer_is_dedicated_server),
-                                                     # Checks that the code is running on dedicated multiplayer server machine. This will only succeed for dedicated servers and will fail on listen servers and clients.
+                                                     # Checks that the code is running on dedicated multiplayer server machine.
+                                                     # This will only succeed for dedicated servers and will fail on listen servers and clients.
 game_in_multiplayer_mode                     =  419  # (game_in_multiplayer_mode),
                                                      # Checks that the game is running in multiplayer mode.
 player_is_admin                              =  430  # (player_is_admin, <player_id>),
                                                      # Checks that the specified player used the admin password to join the server and therefore has administrative rights.
 player_is_busy_with_menus                    =  438  # (player_is_busy_with_menus, <player_id>),
-                                                     # This one is used when a player presses a hotkey like TAB or ESC to check if he doesn't have any kind of presentation open, however, it works strangely and is almost always acompannied by some sort of (neg|is_presentation_active, "prst"), in native
-                                                     # Research: Is actually not getting used together with (neg|is_presentation_active, "prst"). It is getting called on the server and isn't synched with clients. Used in multiplayer to prevent the spawning of a player agent if the player is still busy with the menus (and might still change the loadout of the agent).
-                                                     # Undocumented. Educated guess is it's true when player is running a presentation without prsntf_read_only flag.
+                                                     # This one is used when a player presses a hotkey like TAB or ESC to check if he doesn't have any kind of presentation open, however,
+                                                     # it works strangely and is almost always acompannied by some sort of (neg|is_presentation_active, "prst"), in native
+                                                     # Research: Is actually not getting used together with (neg|is_presentation_active, "prst").
+                                                     # It is getting called on the server and isn't synched with clients.
+                                                     # Used in multiplayer to prevent the spawning of a player agent if the player is still busy with the menus (and might still change the loadout of the agent).
 
 player_item_slot_is_picked_up                =  461  # (player_item_slot_is_picked_up, <player_id>, <item_slot_no>),
-                                                     # Checks that the specified player's equipment slot contains an item that the player has picked up from ground instead of buying.
+                                                     # Checks that the provided item slot for the referenced player was picked up from the battlefield instead of bought.
 
 # Player slot operations
 
@@ -4090,7 +4184,9 @@ player_slot_ge                               =  568  # (player_slot_ge, <player_
 # Network communication operations
 
 send_message_to_url                          =  380  # (send_message_to_url, <string_id>, <encode_url>),
-                                                     # Accesses the the URL in the provided string and sends an HTTP request. The result will be returned to "script_game_receive_url_response". Parameter <encode_url> is optional and effects are unclear. Supposedly its equivalent of calling (str_encode_url) on the first parameter which doesn't make sense for me.
+                                                     # Sends an HTTP request. The response from that URL will be returned to the script_game_receive_url_response callback.
+                                                     # Parameter <encode_url> is optional and effects are unclear.
+                                                     # Supposedly it's equivalent to using (str_encode_url) on the first parameter, which doesn't make sense for me. (4research)
 
 multiplayer_send_message_to_server           =  388  # (multiplayer_send_message_to_server, <message_type>),
                                                      # Multiplayer client operation. Send a simple message (only message code, no data) to game server.
@@ -4104,10 +4200,11 @@ multiplayer_send_4_int_to_server             =  392  # (multiplayer_send_4_int_t
                                                      # Same as (multiplayer_send_int_to_server), but four integer values are sent.
 multiplayer_send_string_to_server            =  393  # (multiplayer_send_string_to_server, <message_type>, <string_id>),
                                                      # Multiplayer client operation. Send a message with a string value to game server.
-
-# <message_type> parameter must be between 0 and 127 or it will be truncated. In the case of Native they can be found on header_common.py as client and server events.
-# These are handled in script_game_receive_network_message and are used for server events. As for strings, the input is s0 (in the script).
-# The other 6 operations (multiplayer_send_*_to_player) have the same functionality but are called on the server and send the message to the player referenced by <player_id>. Also handled by script_game_receive_network_message.
+                                                     # <message_type> parameter must be between 0 and 127 or it will be truncated.
+                                                     # In the case of Native they can be found on header_common.py as client and server events.
+                                                     # These are handled in the script_game_receive_network_message callback and are used for server events. As for strings, the input is s0 (in the script).
+                                                     # The other 6 operations (multiplayer_send_*_to_player) have the same functionality but are called on the server and send the message to the player referenced by <player_id>.
+                                                     # They are also handled by the script_game_receive_network_message callback.
 
 multiplayer_send_message_to_player           =  394  # (multiplayer_send_message_to_player, <player_id>, <message_type>),
                                                      # Multiplayer server operation. Send a simple message (only message code, no data) to one of connected players.
@@ -4125,7 +4222,8 @@ multiplayer_send_string_to_player            =  399  # (multiplayer_send_string_
 # Player handling operations
 
 get_max_players                              =  400  # (get_max_players, <destination>),
-                                                     # Returns maximum possible number of connected players. Apparently always returns a constant value, however its return value can change as maximum increases with new patches.
+                                                     # Returns maximum possible number of connected players.
+                                                     # Apparently always returns a constant value, however its return value can change as maximum increases with new patches.
 player_get_team_no                           =  402  # (player_get_team_no, <destination>, <player_id>),
                                                      # Retrieves the team that the player belongs to.
 player_set_team_no                           =  403  # (player_set_team_no, <player_id>, <team_id>),
@@ -4145,7 +4243,10 @@ player_set_gold                              =  408  # (player_set_gold, <player
 player_spawn_new_agent                       =  409  # (player_spawn_new_agent, <player_id>, <entry_point>),
                                                      # Spawns a new agent for the specified player. Essentially a combination of (spawn_agent) and (player_control_agent) operations.
 player_add_spawn_item                        =  410  # (player_add_spawn_item, <player_id>, <item_slot_no>, <item_id>),
-                                                     # Adds the specified item to the specified player. Will take effect after the next player_spawn_new_agent. Available item slots are: ek_item_0, ek_item_1, ek_item_2, ek_item_3, ek_head, ek_body, ek_foot, ek_gloves, ek_horse. Unsure if ek_food is used in multiplayer; Taken from header_items.py
+                                                     # Adds the specified item to the specified player.
+                                                     # Will take effect after the next player_spawn_new_agent.
+                                                     # Available item slots are: ek_item_0, ek_item_1, ek_item_2, ek_item_3, ek_head, ek_body, ek_foot, ek_gloves, ek_horse.
+                                                     # Unsure if ek_food is used in multiplayer; Taken from header_items.py
 multiplayer_get_my_team                      =  411  # (multiplayer_get_my_team, <destination>),
                                                      # Client operation. Retrieves player's currently selected team.
 multiplayer_get_my_troop                     =  412  # (multiplayer_get_my_troop, <destination>),
@@ -4160,11 +4261,13 @@ multiplayer_get_my_player                    =  415  # (multiplayer_get_my_playe
 multiplayer_make_everyone_enemy              =  420  # (multiplayer_make_everyone_enemy),
                                                      # Used in deathmatch mode to make everyone hostile to all other agents.
 player_control_agent                         =  421  # (player_control_agent, <player_id>, <agent_id>),
-                                                     # Server operation. Puts the agent under specified player's control. Operation will change agent's face code and banner to those of player.
+                                                     # Server operation. Puts the agent under specified player's control.
+                                                     # Operation will change agent's face code and banner to those of player.
 player_get_item_id                           =  422  # (player_get_item_id, <destination>, <player_id>, <item_slot_no>),
                                                      # Server operation. Retrieves item that's currently equipped by specified player in <item_slot_no> equipment slot.
 player_get_banner_id                         =  423  # (player_get_banner_id, <destination>, <player_id>),
-                                                     # Server operation. Retrieves banner_id reference used by the specified player. Note that in MP banners are enumerated starting from 0 (unlike single-player where they're enumeration depends on scene prop banners' reference range).
+                                                     # Server operation. Retrieves banner_id reference used by the specified player.
+                                                     # Note that in MP banners are enumerated starting from 0 (unlike single-player where they're enumeration depends on scene prop banners' reference range).
 
 player_set_is_admin                          =  429  # (player_set_is_admin, <player_id>, <value>),
                                                      # Server operation. Set the current player as admin (value = 1) or not (value = 0).
@@ -4183,13 +4286,16 @@ player_set_death_count                       =  436  # (player_set_death_count, 
 player_get_ping                              =  437  # (player_get_ping, <destination>, <player_id>),
                                                      # Gets the current ping of the player.
 player_get_is_muted                          =  439  # (player_get_is_muted, <destination>, <player_id>),
-                                                     # Sets if a player gets muted (1) or unmuted (0). mute_for_everyone is an optional parameter and should be set to 1 if player is muted for everyone (this works only on server).
+                                                     # Sets if a player gets muted (1) or unmuted (0). Works only on server? (4research)
 player_set_is_muted                          =  440  # (player_set_is_muted, <player_id>, <value>, [mute_for_everyone]),
-                                                     # Sets if a player gets muted (1) or unmuted (0). mute_for_everyone is an optional parameter and should be set to 1 if player is muted for everyone (this works only on server).
+                                                     # Sets if a player gets muted (1) or unmuted (0).
+                                                     # mute_for_everyone is an optional parameter and should be set to 1 if player is muted for everyone (this works only on server).
 player_get_unique_id                         =  441  # (player_get_unique_id, <destination>, <player_id>), #can only bew used on server side
-                                                     # Server operation. Retrieves player's unique identifier which is determined by player's game license code. This number is supposed to be unique for each license, allowing reliable player identification across servers.
+                                                     # Server operation. Retrieves player's unique identifier which is determined by player's game license code.
+                                                     # This number is supposed to be unique for each license, allowing reliable player identification across servers.
 player_get_gender                            =  442  # (player_get_gender, <destination>, <player_id>),
-                                                     # Gets the current player gender/skin, in Native 0 for the male and 1 for the female skin. Take note that Native can only process two genders/skins in multiplayer.
+                                                     # Gets the current player gender/skin, in Native 0 for the male and 1 for the female skin.
+                                                     # Take note that Native can only process two genders/skins in multiplayer.
 
 player_save_picked_up_items_for_next_spawn   =  459  # (player_save_picked_up_items_for_next_spawn, <player_id>),
                                                      # Allows the player to keep the stuff he/she picked up during current round.
@@ -4197,9 +4303,11 @@ player_get_value_of_original_items           =  460  # (player_get_value_of_orig
                                                      # Undocumented. Official docs: this operation returns values of the items, but default troop items will be counted as zero (except horse)
 
 profile_get_banner_id                        =  350  # (profile_get_banner_id, <destination>),
-                                                     # Client operation. Retrieves banner_id reference used by the game for multiplayer. Note that in MP banners are enumerated starting from 0 (unlike single-player where they're enumeration depends on scene prop banners' reference range).
+                                                     # Client operation. Retrieves banner_id reference used by the game for multiplayer.
+                                                     # Note that in MP banners are enumerated starting from 0 (unlike single-player where they're enumeration depends on scene prop banners' reference range).
 profile_set_banner_id                        =  351  # (profile_set_banner_id, <value>),
-                                                     # Client operation. Assigns a new banner_id to be used for multiplayer. Note that in MP banners are enumerated starting from 0 (unlike single-player where they're enumeration depends on scene prop banners' reference range).
+                                                     # Client operation. Assigns a new banner_id to be used for multiplayer.
+                                                     # Note that in MP banners are enumerated starting from 0 (unlike single-player where they're enumeration depends on scene prop banners' reference range).
 
 # Team handling operations
 
@@ -4227,29 +4335,33 @@ team_get_faction                             =  458  # (team_get_faction, <desti
 multiplayer_clear_scene                      =  416  # (multiplayer_clear_scene),
                                                      # Restarts the game mode from the beginning (respawns all players and the 3...2...1... countdown), removing all items on the ground.
 multiplayer_find_spawn_point                 =  425  # (multiplayer_find_spawn_point, <destination>, <team_no>, <examine_all_spawn_points>, <is_horseman>), 
-                                                     # set_spawn_effector_scene_prop_kind, set_spawn_effector_scene_prop_id - These two are used in capture the flag and similar game modes to make players of a certain team tend to spawn nearer to those scene props                                                     
+
+# set_spawn_effector_scene_prop_kind / set_spawn_effector_scene_prop_id 
+# These two are used in capture the flag and similar game modes to make players of a certain team tend to spawn nearer to those scene props     
+                                                
 set_spawn_effector_scene_prop_kind           =  426  # (set_spawn_effector_scene_prop_kind, <team_no>, <scene_prop_kind_no>),
-                                                     # Specifies some scene prop kind as one of the teams' spawn effector, making players of that team more likely to spawn closer to the specified effector prop instances. Use -1 to disable spawn effector for a team.
+                                                     # Specifies some scene prop kind as one of the teams' spawn effector,
+                                                     # making players of that team more likely to spawn closer to the specified effector prop instances.
+                                                     # Use -1 to disable spawn effector for a team.
 set_spawn_effector_scene_prop_id             =  427  # (set_spawn_effector_scene_prop_id, <team_no>, <scene_prop_id>),
-                                                     # Specifies a single prop instance as a team's spawn effector. Different from (set_spawn_effector_scene_prop_kind) as other instances of the same scene prop will not affect player spawning.
+                                                     # Specifies a single prop instance as a team's spawn effector.
+                                                     # Different from (set_spawn_effector_scene_prop_kind) as other instances of the same scene prop will not affect player spawning.
 
 start_multiplayer_mission                    =  470  # (start_multiplayer_mission, <mission_template_id>, <scene_id>, <started_manually>),
-                                                     #
 
 # Administrative operations and settings
 
 kick_player                                  =  465  # (kick_player, <player_id>),
-                                                     #
 ban_player                                   =  466  # (ban_player, <player_id>, <value>, <player_id>),
-                                                     # Official docs: set value = 1 for banning temporarily, assign 2nd player id as the administrator player id if banning is permanent. Values are saved into a text file.
+                                                     # Official docs: set value = 1 for banning temporarily, assign 2nd player id as the administrator player id if banning is permanent.
+                                                     # Values are saved into a text file.
 save_ban_info_of_player                      =  467  # (save_ban_info_of_player, <player_id>),
-                                                     #
 ban_player_using_saved_ban_info              =  468  # (ban_player_using_saved_ban_info),
-                                                     #
-
 server_add_message_to_log                    =  473  # (server_add_message_to_log, <string_id>),
 
-                                                     # server_get_renaming_server_allowed, server_get_changing_game_type_allowed - Both of these get the values for dedicated servers which have commands to run on the console to (dis)allowing them																																																
+# server_get_renaming_server_allowed / server_get_changing_game_type_allowed
+# Both of these get the values for dedicated servers which have commands to run on the console to (dis)allowing them		
+																																														
 server_get_renaming_server_allowed           =  475  # (server_get_renaming_server_allowed, <destination>),
                                                      # Official docs: 0-1
 server_get_changing_game_type_allowed        =  476  # (server_get_changing_game_type_allowed, <destination>),
@@ -4302,10 +4414,9 @@ server_set_friendly_fire_damage_friend_ratio =  498  # (server_set_friendly_fire
                                                      # Sets the percentage of damage received by friend when player hits a friend (0-100).
                                                      # Official docs: 0-100
 server_get_anti_cheat                        =  499  # (server_get_anti_cheat, <destination>),
-                                                     # Gets if valve anti cheat is enabled (1) or not (0).
+                                                     # Gets if Valve anti-cheat (VAC) is enabled (1) or not (0).
 server_set_anti_cheat                        =  477  # (server_set_anti_cheat, <value>),
-                                                     # Sets if valve anti cheat is enabled (1) or not (0).
-                                                     # Official docs: 0 = off, 1 = on
+                                                     # Sets if Valve anti-cheat (VAC) is enabled (1) or not (0).
 
 ################################################################################
 # [ Z25 ] REMAINING ESOTERIC STUFF (NO IDEA WHAT IT DOES)
@@ -4316,12 +4427,15 @@ server_set_anti_cheat                        =  477  # (server_set_anti_cheat, <
 
 set_physics_delta_time                       =  58   # (set_physics_delta_time, <fixed_value>), 
                                                      # Default is 0.025 (40 fps).
+                                                     # Additional info: [https://mbcommands.fandom.com/wiki/Operations#set_physics_delta_time]
 set_tooltip_text                             = 1130  # (set_tooltip_text, <string_id>),
-                                                     # Assigns the output text for the selected item?
+                                                     # AAssigns the output text for the selected item? (4research)
 ai_mesh_face_group_show_hide                 = 1805  # (ai_mesh_face_group_show_hide, <group_no>, <value>), 
-                                                     # Debug -- Draws the selected index of triangles/quads from the navigation graph on-screen. 1 for enable, 0 for disable.
+                                                     # Debug -- Draws the selected index of triangles/quads from the navigation graph on-screen.
+                                                     # Use value 1 to (re)enable the tagged navigation mesh with the matching ID, use 0 to disable them.
+                                                     # Additional info: [https://mbcommands.fandom.com/wiki/Operations#ai_mesh_face_group_show_hide]
 auto_set_meta_mission_at_end_commited        = 1305  # (auto_set_meta_mission_at_end_commited),
-                                                     # Returns the mission as successful by the game. Used in campaign.
+                                                     # Returns the mission as successful by the game. Used in campaign. (4research)
 													 
 ################################################################################
 # [ Z26 ] WRECK macro operators.
