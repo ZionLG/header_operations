@@ -4575,7 +4575,8 @@ break_loop                   =    8  # (break_loop),
 continue_loop                =    9  # (continue_loop),
                                      # Continue to the next iteration of a loop, no matter how deeply nested in try_begin blocks
 try_for_agents               =   12  # (try_for_agents, <cur_agent_no>, [<position_no>], [<radius_fixed_point>], [<use_mission_grid>]),
-                                     # Loops through agents in the scene. If [<position_no>] and [<radius_fixed_point>] are defined, it will only loop through agents in the chosen area.
+                                     # Loops through agents in the scene.
+                                     # If [<position_no>] and [<radius_fixed_point>] are defined, it will only loop through agents in the chosen area.
                                      # If [<use_mission_grid>] is non-zero, it will use mission grid iterator instead of searching through all agents.
                                      # This is better in performance, but does not take into account the height of positions
 try_for_dict_keys            =   18  # (try_for_dict_keys, <cur_key_string_register>, <dict>),
@@ -4654,11 +4655,14 @@ player_set_username           = 2903  # (player_set_username, <player_no>, <stri
 player_temp_ban               = 2904  # (player_temp_ban, <player_no>, <ban_time>),
                                       # Bans <player_no> temporarily for <ban_time> seconds
 player_get_wse2_version       = 2905  # (player_get_wse2_version, <destination>, <player_no>),
-                                      # Stores <player_no>'s WSE2 version into <destination>. Works only on servers. 0 - vanilla Warband engine (requires WSE2)
+                                      # Stores <player_no>'s WSE2 version into <destination>.
+                                      # Works only on servers. 0 - vanilla Warband engine (requires WSE2)
 player_get_party_id           = 2906  # (player_get_party_id, <destination>, <player_no>),
-                                      # Stores <player_no>'s party reference into <destination>. For multiplayer campaign mode (requires WSE2)
+                                      # Stores <player_no>'s party reference into <destination>.
+                                      # For multiplayer campaign mode (requires WSE2)
 player_set_party_id           = 2907  # (player_set_party_id, <player_no>, <party_no>),
-                                      # Sets <player_no>'s party to <party_no>. For multiplayer campaign mode (requires WSE2)
+                                      # Sets <player_no>'s party to <party_no>.
+                                      # For multiplayer campaign mode (requires WSE2)
 
 register_get                           = 3000  # (register_get, <destination>, <index>),
                                                # Stores the value of register <index> into <destination>
@@ -4699,7 +4703,11 @@ store_return_value                     = 3017  # (store_return_value, <destinati
 set_forced_lod                         = 3018  # (set_forced_lod, <lod_level>),
                                                # Forces the current trigger entity's LOD level to <lod_level> (0 = auto)
 send_message_to_url_advanced           = 3019  # (send_message_to_url_advanced, <url_string>, <user_agent_string>, [<success_callback_script_no>], [<failure_callback_script_no>], [<skip_parsing>], [<timeout>]),
-                                               # Sends a HTTP request to <url_string> with <user_agent_string>. If the request succeeds, [<success_callback_script_no>] will be called. The script will behave like game_receive_url_response, unless [<skip_parsing>] is non-zero, in which case the script will receive no arguments and s0 will contain the full response. If the request fails, [<failure_callback_script_no>] will be called.
+                                               # Sends a HTTP request to <url_string> with <user_agent_string>.
+                                               # If the request succeeds, [<success_callback_script_no>] will be called.
+                                               # The script will behave like game_receive_url_response, unless [<skip_parsing>] is non-zero,
+                                               # in which case the script will receive no arguments and s0 will contain the full response.
+                                               # If the request fails, [<failure_callback_script_no>] will be called.
 mtsrand                                = 3020  # (mtsrand, <value>),
                                                # Seeds the MT19937 random generator with <value>
 mtrand                                 = 3021  # (mtrand, <destination>, <min>, <max>),
@@ -4725,9 +4733,14 @@ set_main_party                         = 3030  # (set_main_party, <party_no>),
 get_main_party                         = 3031  # (get_main_party, <destination>),
                                                # Stores player's main party to <destination>
 make_screenshot                        = 3032  # (make_screenshot, <format>, <file>),
-                                               # Make game screenshot. For security reasons, <file> will be saved into a Screenshots directory. Supported <format>s: BMP - 0, JPG - 1, TGA - 2, PNG - 3.
+                                               # Make game screenshot. For security reasons, <file> will be saved into a Screenshots directory.
+                                               # Supported <format>s: BMP - 0, JPG - 1, TGA - 2, PNG - 3.
 send_post_message_to_url_advanced      = 3033  # (send_post_message_to_url_advanced, <url_string>, <user_agent_string>, <post_data>, [<success_callback_script_no>], [<failure_callback_script_no>], [<skip_parsing>], [<timeout>]),
-                                               # Sends a HTTP POST (application/x-www-form-urlencoded) request to <url_string> with <user_agent_string> and <post_data>. If the request succeeds, [<success_callback_script_no>] will be called. The script will behave like game_receive_url_response, unless [<skip_parsing>] is non-zero, in which case the script will receive no arguments and s0 will contain the full response. If the request fails, [<failure_callback_script_no>] will be called.
+                                               # Sends a HTTP POST (application/x-www-form-urlencoded) request to <url_string> with <user_agent_string> and <post_data>.
+                                               # If the request succeeds, [<success_callback_script_no>] will be called.
+                                               # The script will behave like game_receive_url_response, unless [<skip_parsing>] is non-zero,
+                                               # in which case the script will receive no arguments and s0 will contain the full response.
+                                               # If the request fails, [<failure_callback_script_no>] will be called.
 set_random_seed                        = 3034  # (set_random_seed, <value>),
                                                # Seeds the random generator with <value>
 store_application_time                 = 3035  # (store_application_time, <destination>),
@@ -4749,7 +4762,8 @@ profiler_is_recording                  = 3042  # (profiler_is_recording),
 profiler_mark                          = 3043  # (profiler_mark, <string_1>),
                                                # Add a marker at this point in time with name <string_1>. Good for analyzing individual parts of a script.
 conversation_screen_auto_update_choice = 3044  # (conversation_screen_auto_update_choice),
-                                               # Auto update single conversation choice without mouse click. Useful if you need to get text from external scripts. (requires WSE2)
+                                               # Auto update single conversation choice without mouse click.
+                                               # Useful if you need to get text from external scripts. (requires WSE2)
 
 game_key_get_key  = 3100  # (game_key_get_key, <destination>, <game_key_no>),
                           # Stores the key mapped to <game_key_no> into <destination>
@@ -4763,11 +4777,15 @@ dict_create                = 3200  # (dict_create, <destination>),
 dict_free                  = 3201  # (dict_free, <dict>),
                                    # Frees the dictionary object <dict>. A dictionary can't be used after freeing it
 dict_load_file             = 3202  # (dict_load_file, <dict>, <file>, [<mode>], [<ini>]),
-                                   # Loads a dictionary file into <dict>. Setting [<mode>] to 0 (default) clears <dict> and then loads the file, setting [<mode>] to 1 doesn't clear <dict> but overrides any key that's already present, [<mode>] to 2 doesn't clear <dict> and doesn't overwrite keys that are already present. Set [<ini>] to 1 to use ini file instead of binary
+                                   # Loads a dictionary file into <dict>. Setting [<mode>] to 0 (default) clears <dict> and then loads the file,
+                                   # setting [<mode>] to 1 doesn't clear <dict> but overrides any key that's already present,
+                                   # [<mode>] to 2 doesn't clear <dict> and doesn't overwrite keys that are already present.
+                                   # Set [<ini>] to 1 to use ini file instead of binary
 dict_load_dict             = 3203  # (dict_load_dict, <dict_1>, <dict_2>, [<mode>]),
                                    # Loads <dict_2> into <dict_1>. [<mode>]: see above
 dict_save                  = 3204  # (dict_save, <dict>, <file>, [<ini>]),
-                                   # Saves <dict> into a file. For security reasons, <file> is just a name, not a full path, and will be stored into a WSE managed directory. Set [<ini>] to 1 to use ini file instead of binary
+                                   # Saves <dict> into a file. For security reasons, <file> is just a name, not a full path, and will be stored into a WSE managed directory.
+                                   # Set [<ini>] to 1 to use ini file instead of binary
 dict_clear                 = 3205  # (dict_clear, <dict>),
                                    # Clears all key-value pairs from <dict>
 dict_is_empty              = 3206  # (dict_is_empty, <dict>),
@@ -4779,9 +4797,13 @@ dict_get_size              = 3208  # (dict_get_size, <destination>, <dict>),
 dict_delete_file           = 3209  # (dict_delete_file, <file>, [<ini>]),
                                    # Deletes dictionary file <file> from disk. Set [<ini>] to 1 to use ini file instead of binary
 dict_get_str               = 3210  # (dict_get_str, <string_register>, <dict>, <key>, [<default>]),
-                                   # Stores the string value paired to <key> into <string_register>. If the key is not found and [<default>] is set, [<default>] will be stored instead. If [<default>] is not set, an empty string will be stored
+                                   # Stores the string value paired to <key> into <string_register>.
+                                   # If the key is not found and [<default>] is set, [<default>] will be stored instead.
+                                   # If [<default>] is not set, an empty string will be stored
 dict_get_int               = 3211  # (dict_get_int, <destination>, <dict>, <key>, [<default>]),
-                                   # Stores the numeric value paired to <key> into <destination>. If the key is not found and [<default>] is set, [<default>] will be stored instead. If [<default>] is not set, 0 will be stored
+                                   # Stores the numeric value paired to <key> into <destination>.
+                                   # If the key is not found and [<default>] is set, [<default>] will be stored instead.
+                                   # If [<default>] is not set, 0 will be stored
 dict_set_str               = 3212  # (dict_set_str, <dict>, <key>, <string_no>),
                                    # Adds (or changes) <string_no> as the string value paired to <key>
 dict_set_int               = 3213  # (dict_set_int, <dict>, <key>, <value>),
@@ -4789,7 +4811,9 @@ dict_set_int               = 3213  # (dict_set_int, <dict>, <key>, <value>),
 dict_get_key_by_iterator   = 3214  # (dict_get_key_by_iterator, <string_register>, <dict>, <iterator>),
                                    # Stores the key <string_register> by iterator <iterator>
 dict_get_pos               = 3215  # (dict_get_pos, <position_register>, <dict>, <key>, [<default_position_register>]),
-                                   # Stores the position paired to <key> into <position_register>. If the key is not found and [<default_position_register>] is set, [<default_position_register>] will be stored instead. If [<default_position_register>] is not set, (x:0,y:0,z:0,rotX:0,rotY:0,rotZ:0) will be stored
+                                   # Stores the position paired to <key> into <position_register>.
+                                   # If the key is not found and [<default_position_register>] is set, [<default_position_register>] will be stored instead.
+                                   # If [<default_position_register>] is not set, (x:0,y:0,z:0,rotX:0,rotY:0,rotZ:0) will be stored
 dict_set_pos               = 3216  # (dict_set_pos, <dict>, <key>, <position_register>),
                                    # Adds (or changes) <position_register> as the position value paired to <key>
 dict_load_file_json        = 3217  # (dict_load_file_json, <dict>, <file>, [<mode>]),
@@ -4834,9 +4858,11 @@ agent_ai_get_move_target_position                = 3312  # (agent_ai_get_move_ta
 agent_set_horse                                  = 3313  # (agent_set_horse, <agent_no>, <horse_agent_no>),
                                                          # Sets <agent_no>'s horse to <horse_agent_no> (-1 for no horse)
 agent_ai_set_simple_behavior                     = 3314  # (agent_ai_set_simple_behavior, <agent_no>, <simple_behavior>, [<guaranteed_time>]),
-                                                         # Sets <agent_no>'s behavior to <simple_behavior> and guarantees it won't be changed for [<guaranteed_time>] seconds. If [<guaranteed_time>] is not specified or <= 0, it won't be changed until agent_force_rethink is called
+                                                         # Sets <agent_no>'s behavior to <simple_behavior> and guarantees it won't be changed for [<guaranteed_time>] seconds.
+                                                         # If [<guaranteed_time>] is not specified or <= 0, it won't be changed until agent_force_rethink is called
 agent_accelerate                                 = 3315  # (agent_accelerate, <agent_no>, <position_register_no>, [<movement_timer_fixed_point>]),
-                                                         # Uses x, y, z components of <position_register_no> to apply acceleration to <agent_no>. Specify [<movement_timer_fixed_point>] for ghosting time
+                                                         # Uses x, y, z components of <position_register_no> to apply acceleration to <agent_no>.
+                                                         # Specify [<movement_timer_fixed_point>] for ghosting time
 agent_set_item_slot_modifier                     = 3316  # (agent_set_item_slot_modifier, <agent_no>, <item_slot_no>, <item_modifier_no>),
                                                          # Sets <agent_no>'s <item_slot_no> modifier to <item_modifier_no>
 agent_body_meta_mesh_set_vertex_keys_time_point  = 3317  # (agent_body_meta_mesh_set_vertex_keys_time_point, <agent_no>, <body_meta_mesh>, <time_point>),
@@ -4860,11 +4886,15 @@ agent_body_meta_mesh_deform_in_range             = 3325  # (agent_body_meta_mesh
 agent_body_meta_mesh_deform_in_cycle_loop        = 3326  # (agent_body_meta_mesh_deform_in_cycle_loop, <agent_no>, <body_meta_mesh>, <start_frame>, <end_frame>, <time_period>),
                                                          # Performs looping animation of  <agent_no>'s <body_meta_mesh> from <start_frame> to <end_frame> and within the specified <time_period> (in milliseconds)
 agent_body_meta_mesh_get_current_deform_progress = 3327  # (agent_body_meta_mesh_get_current_deform_progress, <destination>, <agent_no>, <body_meta_mesh>),
-                                                         # Stores <agent_no>'s <body_meta_mesh> deform progress percentage value between 0 and 100 if animation is still in progress into <destination>. Returns 100 otherwise
+                                                         # Stores <agent_no>'s <body_meta_mesh> deform progress percentage value between 0 and 100 if animation is still in progress into <destination>.
+                                                         # Returns 100 otherwise
 agent_body_meta_mesh_get_current_deform_frame    = 3328  # (agent_body_meta_mesh_get_current_deform_frame, <destination>, <agent_no>, <body_meta_mesh>),
                                                          # Stores <agent_no>'s <body_meta_mesh> current deform frame, rounded to nearest integer value, into <destination>
 agent_set_footstep_sound                         = 3329  # (agent_set_footstep_sound, <agent_no>, <type>, <sound_no>),
-                                                         # Sets <agent_no>'s footstep <sound_no> for <type>. For human type: 0 - water, 1 - indoors, 2 - outdoors. For horse type: 0 - water, 1 - walk, 2 - trot, 3 - canter, 4 - gallop. For mute use sound_no = -1
+                                                         # Sets <agent_no>'s footstep <sound_no> for <type>.
+                                                         # For human type: 0 - water, 1 - indoors, 2 - outdoors.
+                                                         # For horse type: 0 - water, 1 - walk, 2 - trot, 3 - canter, 4 - gallop.
+                                                         # For mute use sound_no = -1
 agent_get_horse_rotation_velocity                = 3330  # (agent_get_horse_rotation_velocity, <destination_fixed_point>, <agent_no>),
                                                          # Stores <agent_no>'s horse rotation velocity into <destination_fixed_point>
 agent_get_current_vertical_speed                 = 3331  # (agent_get_current_vertical_speed, <destination>, <agent_no>),
@@ -4896,7 +4926,8 @@ agent_ai_set_can_weapon_switch                   = 3343  # (agent_ai_set_can_wea
 agent_ai_set_can_fight                           = 3344  # (agent_ai_set_can_fight, <agent_no>, <value>),
                                                          # Enables or disables <agent_no>'s engaging enemy for ai (requires WSE2)
 agent_fade_out_advanced                          = 3345  # (agent_fade_out_advanced, <agent_no>, <value_fixed_point>),
-                                                         # Makes the <agent_no> disappear within specified time <value_fixed_point>. The agent is not deleted, but made invisible. (requires WSE2)
+                                                         # Makes the <agent_no> disappear within specified time <value_fixed_point>.
+                                                         # The agent is not deleted, but made invisible. (requires WSE2)
 agent_fade_in_advanced                           = 3346  # (agent_fade_in_advanced, <agent_no>, <value_fixed_point>),
                                                          # Makes the <agent_no> reappear within specified time <value_fixed_point>. (requires WSE2)
 
@@ -4917,21 +4948,27 @@ multiplayer_message_put_string               = 3406  # (multiplayer_message_put_
 multiplayer_message_put_int                  = 3407  # (multiplayer_message_put_int, <message_register>, <value>, [<num_bits>]),
                                                      # Puts [<num_bits>] of <value> into <message_register> (requires, for WSE: network_compatible = 0 in wse_settings.ini, for WSE2: bBreakWarbandCompatibility=true in rgl_config.ini)
 multiplayer_message_put_position             = 3408  # (multiplayer_message_put_position, <message_register>, <position_register>, [<local>]),
-                                                     # Puts <position_register> into <9>. Set [<local>] to non-zero for small, relative positions (default: scene positions) (requires, for WSE: network_compatible = 0 in wse_settings.ini, for WSE2: bBreakWarbandCompatibility=true in rgl_config.ini)
+                                                     # Puts <position_register> into <9>.
+                                                     # Set [<local>] to non-zero for small, relative positions (default: scene positions) (requires, for WSE: network_compatible = 0 in wse_settings.ini, for WSE2: bBreakWarbandCompatibility=true in rgl_config.ini)
 multiplayer_message_put_coordinate           = 3409  # (multiplayer_message_put_coordinate, <message_register>, <position_register>, [<local>]),
-                                                     # Puts x, y, z coordinates from <position_register> into <message_register>. Set [<local>] to non-zero for small, relative positions (default: scene positions) (requires, for WSE: network_compatible = 0 in wse_settings.ini, for WSE2: bBreakWarbandCompatibility=true in rgl_config.ini)
+                                                     # Puts x, y, z coordinates from <position_register> into <message_register>.
+                                                     # Set [<local>] to non-zero for small, relative positions (default: scene positions) (requires, for WSE: network_compatible = 0 in wse_settings.ini, for WSE2: bBreakWarbandCompatibility=true in rgl_config.ini)
 multiplayer_cur_message_get_string           = 3410  # (multiplayer_cur_message_get_string, <string_register>),
                                                      # Stores a string from the current message register into <string_register> (requires, for WSE: network_compatible = 0 in wse_settings.ini, for WSE2: bBreakWarbandCompatibility=true in rgl_config.ini)
 multiplayer_cur_message_get_int              = 3411  # (multiplayer_cur_message_get_int, <destination>, [<num_bits>]),
-                                                     # Stores [<num_bits>] of an int from the current message register into <destination>. [<num_bits>] MUST match the number of bits sent (requires, for WSE: network_compatible = 0 in wse_settings.ini, for WSE2: bBreakWarbandCompatibility=true in rgl_config.ini)
+                                                     # Stores [<num_bits>] of an int from the current message register into <destination>.
+                                                     # [<num_bits>] MUST match the number of bits sent (requires, for WSE: network_compatible = 0 in wse_settings.ini, for WSE2: bBreakWarbandCompatibility=true in rgl_config.ini)
 multiplayer_cur_message_get_position         = 3412  # (multiplayer_cur_message_get_position, <position_register>, [<local>]),
-                                                     # Stores a position from the current message register into <position_register>. [<local>] MUST match the type sent (requires, for WSE: network_compatible = 0 in wse_settings.ini, for WSE2: bBreakWarbandCompatibility=true in rgl_config.ini)
+                                                     # Stores a position from the current message register into <position_register>.
+                                                     # [<local>] MUST match the type sent (requires, for WSE: network_compatible = 0 in wse_settings.ini, for WSE2: bBreakWarbandCompatibility=true in rgl_config.ini)
 multiplayer_cur_message_get_coordinate       = 3413  # (multiplayer_cur_message_get_coordinate, <position_register>, [<local>]),
-                                                     # Stores x, y, z coordinates from the current message register into <position_register>. [<local>] MUST match the type sent (requires, for WSE: network_compatible = 0 in wse_settings.ini, for WSE2: bBreakWarbandCompatibility=true in rgl_config.ini)
+                                                     # Stores x, y, z coordinates from the current message register into <position_register>.
+                                                     # [<local>] MUST match the type sent (requires, for WSE: network_compatible = 0 in wse_settings.ini, for WSE2: bBreakWarbandCompatibility=true in rgl_config.ini)
 multiplayer_cur_profile_get_skin             = 3414  # (multiplayer_cur_profile_get_skin, <destination>),
                                                      # Stores current profile's skin into <destination>
 multiplayer_connect_to_server                = 3415  # (multiplayer_connect_to_server, <address>, <password>, [<campaign>]),
-                                                     # Connect to server with <address> and <password>. Set [<campaign>] to non-zero for connect to multiplayer campaign server. (requires WSE2)
+                                                     # Connect to server with <address> and <password>.
+                                                     # Set [<campaign>] to non-zero for connect to multiplayer campaign server. (requires WSE2)
 multiplayer_is_campaign                      = 3416  # (multiplayer_is_campaign),
                                                      # Checks that the code is running on multiplayer campaign mode. (requires WSE2)
 
@@ -4972,7 +5009,8 @@ remove_anonymous_player        = 3516  # (remove_anonymous_player, <unique_id>),
 clear_anonymous_players        = 3517  # (clear_anonymous_players),
                                        # Clears pseudonyms for multiplayer players (requires WSE2)
 server_set_ghost_mode_advanced = 3518  # (server_set_ghost_mode_advanced, <value>, <can't_be_free>, <team>, <lock_to_view>, <only_players>),
-                                       # Sets settings for advanced ghost mode. Works only for WSE2 clients. <value>: 0 - disable, 1 - enable, <can't_be_free>: 0 - camera can move, 1 - camera can't move, <team>: 0 - any team, 1 - player's team only, <lock_to_view>: 0 - freely rotate camera, 1 - lock to agent's view, <only_players>: 0 - any agents, 1 - only players (requires WSE2)
+                                       # Sets settings for advanced ghost mode. Works only for WSE2 clients.
+                                       # <value>: 0 - disable, 1 - enable, <can't_be_free>: 0 - camera can move, 1 - camera can't move, <team>: 0 - any team, 1 - player's team only, <lock_to_view>: 0 - freely rotate camera, 1 - lock to agent's view, <only_players>: 0 - any agents, 1 - only players (requires WSE2)
 
 store_cur_mission_template_no        = 3600  # (store_cur_mission_template_no, <destination>),
                                              # Stores the current mission template into <destination>
@@ -5070,9 +5108,11 @@ item_set_horse_blood_color      = 3810  # (item_set_horse_blood_color, <item_kin
 cur_item_mesh_set_color         = 3811  # (cur_item_mesh_set_color, <mesh_no>, <color>),
                                         # Sets item <mesh_no> color to <color>. Only call inside ti_on_init_item in module_items.
 cur_item_add_mesh_with_material = 3812  # (cur_item_add_mesh_with_material, <mesh_name_string_no>, <material_name_string_no>, [<lod_begin>], [<lod_end>], [<color>]),
-                                        # Adds another <mesh_name_string_no> to item. Replaces item material to <material_name_string_no>. Sets item color to [<color>]. Only call inside ti_on_init_item in module_items.
+                                        # Adds another <mesh_name_string_no> to item. Replaces item material to <material_name_string_no>.
+                                        # Sets item color to [<color>]. Only call inside ti_on_init_item in module_items.
 item_set_horse_skeleton_model   = 3813  # (item_set_horse_skeleton_model, <item_kind_no>, <skeleton_model_name>),
-                                        # Sets <item_kind_no>'s horse <skeleton_model_name>. Use skeleton_model_clean_body_sections and skeleton_model_set_bone_body_section operations to configure sections for new horses skeleton models (requires WSE2)
+                                        # Sets <item_kind_no>'s horse <skeleton_model_name>.
+                                        # Use skeleton_model_clean_body_sections and skeleton_model_set_bone_body_section operations to configure sections for new horses skeleton models (requires WSE2)
 
 party_stack_get_experience      = 3900  # (party_stack_get_experience, <destination>, <party_no>, <party_stack_no>),
                                         # Stores the experience of <party_no>'s <party_stack_no> into <destination>
@@ -5125,17 +5165,22 @@ str_is_whitespace                         = 4206  # (str_is_whitespace, <string_
 str_length                                = 4207  # (str_length, <destination>, <string_1>),
                                                   # Stores the length of <string_1> into <destination>
 str_index_of                              = 4208  # (str_index_of, <destination>, <string_1>, <string_2>, [<start>], [<end>]),
-                                                  # Stores the index of the first occurrence of <string_2> in <string_1> into <destination>. Search bounds can be specified with [<start>] and [<end>]
+                                                  # Stores the index of the first occurrence of <string_2> in <string_1> into <destination>.
+                                                  # Search bounds can be specified with [<start>] and [<end>]
 str_last_index_of                         = 4209  # (str_last_index_of, <destination>, <string_1>, <string_2>, [<start>], [<end>]),
-                                                  # Stores the index of the last occurrence of <string_2> in <string_1> into <destination>. Search bounds can be specified with [<start>] and [<end>]
+                                                  # Stores the index of the last occurrence of <string_2> in <string_1> into <destination>.
+                                                  # Search bounds can be specified with [<start>] and [<end>]
 str_get_char                              = 4210  # (str_get_char, <destination>, <string_1>, [<index>]),
                                                   # Stores the numeric value of the [<index>]th character in <string_1> into <destination>
 str_to_num                                = 4211  # (str_to_num, <destination_fixed_point>, <string_1>, [<use_fixed_point_multiplier>]),
-                                                  # Stores the numeric value of <string_1> into <destination_fixed_point>. Decimal values will be rounded to integers, for more precision set [<use_fixed_point_multiplier>] to non-zero
+                                                  # Stores the numeric value of <string_1> into <destination_fixed_point>.
+                                                  # Decimal values will be rounded to integers, for more precision set [<use_fixed_point_multiplier>] to non-zero
 str_compare                               = 4212  # (str_compare, <destination>, <string_1>, <string_2>, [<case_insensitive>]),
                                                   # Stores the relationship between <string_1> and <string_2> into <destination> (-1: s1 < s2, 0: s1 = s2, 1: s1 > s2)
 str_split                                 = 4213  # (str_split, <destination>, <string_register>, <string_1>, <delimiter>, [<skip_empty>], [<max>]),
-                                                  # Splits <string_1> using <delimiter> into a range of string registers, starting from <string_register>, storing [<max>] substrings at most (default = unlimited), ignoring empty (zero length) substrings if [<skip_empty>] (default = false). Stores the amount of substrings split into <destination>
+                                                  # Splits <string_1> using <delimiter> into a range of string registers, starting from <string_register>,
+                                                  # storing [<max>] substrings at most (default = unlimited), ignoring empty (zero length) substrings if [<skip_empty>] (default = false).
+                                                  # Stores the amount of substrings split into <destination>
 str_sort                                  = 4214  # (str_sort, <string_register>, [<count>], [<case_insensitive>], [<descending>]),
                                                   # Sorts a range of [<count>] string registers starting from <string_register>
 str_store_lower                           = 4215  # (str_store_lower, <string_register>, <string_1>),
@@ -5143,17 +5188,20 @@ str_store_lower                           = 4215  # (str_store_lower, <string_re
 str_store_upper                           = 4216  # (str_store_upper, <string_register>, <string_1>),
                                                   # Stores the uppercase version of <string_1> into <string_register>
 str_store_trim                            = 4217  # (str_store_trim, <string_register>, <string_1>, [<trim_mode>]),
-                                                  # Stores the whitespace trimmed version of <string_1> into <string_register>. [<trim_mode>]: 0 (default) = trim leading and trailing, 1 = trim leading, 2 = trim trailing
+                                                  # Stores the whitespace trimmed version of <string_1> into <string_register>.
+                                                  # [<trim_mode>]: 0 (default) = trim leading and trailing, 1 = trim leading, 2 = trim trailing
 str_store_replace                         = 4218  # (str_store_replace, <string_register>, <string_1>, <string_2>, <string_3>),
                                                   # Stores <string_1> into <string_register>, replacing occurrences of <string_2> with <string_3>
 str_store_md5                             = 4219  # (str_store_md5, <string_register>, <string_1>),
                                                   # MD5 encrypts <string_1> and stores it into <string_register>
 str_store_substring                       = 4220  # (str_store_substring, <string_register>, <string_1>, [<start>], [<length>]),
-                                                  # Stores a substring of <string_1> into <string_register>, starting from [<start>]. If [<length>] is not specified, everything on the right of <start> will be used
+                                                  # Stores a substring of <string_1> into <string_register>, starting from [<start>].
+                                                  # If [<length>] is not specified, everything on the right of <start> will be used
 str_store_reverse                         = 4221  # (str_store_reverse, <string_register>, <string_1>),
                                                   # Stores the reverse of <string_register> into <string_1>
 str_store_join                            = 4222  # (str_store_join, <string_register>, <start_string_register>, <count>, [<delimiter>]),
-                                                  # Joins <count> string registers starting from string register <start_string_register>, using [<delimiter>] (default = empty string) and stores them into <string_register>
+                                                  # Joins <count> string registers starting from string register <start_string_register>,
+                                                  # using [<delimiter>] (default = empty string) and stores them into <string_register>
 str_store_replace_spaces_with_underscores = 4223  # (str_store_replace_spaces_with_underscores, <string_register>, <string_1>),
                                                   # Stores <string_1> into <string_register>, replacing all spaces with underscores
 str_store_replace_underscores_with_spaces = 4224  # (str_store_replace_underscores_with_spaces, <string_register>, <string_1>),
@@ -5193,11 +5241,14 @@ str_regex_match                           = 4240  # (str_regex_match, <string_1>
 str_regex_search                          = 4241  # (str_regex_search, <string_1>, <string_regex>),
                                                   # Fails if <string_1> does not contain <string_regex>
 str_regex_get_matches                     = 4242  # (str_regex_get_matches, <destination>, <string_register>, <string_1>, <string_regex>, [<max>]),
-                                                  # Stores all matches of <string_regex> that occur in <string_1> into a range of string registers, starting from <string_register>, storing [[<max>]] substrings at most (default = unlimited). Stores the amount of matches into <destination>
+                                                  # Stores all matches of <string_regex> that occur in <string_1> into a range of string registers,
+                                                  # starting from <string_register>, storing [[<max>]] substrings at most (default = unlimited).
+                                                  # Stores the amount of matches into <destination>
 str_store_regex_replace                   = 4243  # (str_store_regex_replace, <string_register>, <string_1>, <string_regex>, <string_2>),
                                                   # Stores <string_1> into <string_register>, replacing occurrences of <string_regex> with <string_2>
 str_decode_url                            = 4244  # (str_decode_url, <string_register>, <string_1>),
-                                                  # Decode url encoded <string_1> and stores it into <string_register>. Note that it doesn't convert +'s to spaces(as per the spec)
+                                                  # Decode url encoded <string_1> and stores it into <string_register>.
+                                                  # Note that it doesn't convert +'s to spaces(as per the spec)
 str_store_skill_desc                      = 4245  # (str_store_skill_desc, <string_register>, <skill_no>),
                                                   # Stores the description of <skill_no> into <string_register>
 
@@ -5355,9 +5406,11 @@ reload_parties    = 4703  # (reload_parties, [<change_file>], [<file_name>]),
                           # Reload parties. If [<change_file>] sets, then [<file_name>] loaded instead default file (requires WSE2)
 
 menu_create_new      = 4800  # (menu_create_new, <destination>, <text>, [<mesh_name>], [<flags>], [<script_no>], [<script_param>]),
-                             # Creates a dynamic menu and stores its id into <destination>. [<script_no>] (-1 for no script) will be called with params 1 = menu_no, 2 = [<script_param>] when the operations block is executed
+                             # Creates a dynamic menu and stores its id into <destination>.
+                             # [<script_no>] (-1 for no script) will be called with params 1 = menu_no, 2 = [<script_param>] when the operations block is executed
 menu_add_item        = 4801  # (menu_add_item, <menu_no>, <text>, [<conditions_script_no>], [<consequences_script_no>], [<script_param>]),
-                             # Adds a new menu item to <menu_no>. [<conditions_script_no>] and [<consequences_script_no>] (-1 for no script) will be called with params 1 = <menu_no>, 2 = [<script_param>] when the conditions/consequences blocks are executed
+                             # Adds a new menu item to <menu_no>.
+                             # [<conditions_script_no>] and [<consequences_script_no>] (-1 for no script) will be called with params 1 = <menu_no>, 2 = [<script_param>] when the conditions/consequences blocks are executed
 menu_clear_items     = 4802  # (menu_clear_items, <menu_no>),
                              # Removes all menu items from <menu_no>
 menu_clear_generated = 4803  # (menu_clear_generated),
@@ -5379,7 +5432,9 @@ overlay_item_set_text   = 4906  # (overlay_item_set_text, <overlay_no>, <item_no
                                 # Changes the <overlay_no>'s <item_no>'s <text>. Items are indexed from 0 (requires WSE2)
 
 array_create        = 5000  # (array_create, <destination>, <type_id>, <Dim 0>, [<Dim 1>], [<Dim 2>], [<Dim 3>], [<Dim 4>], [<Dim 5>], [<Dim 6>], [<Dim 7>], [<Dim 8>], [<Dim 9>], [<Dim 10>], [<Dim 11>], [<Dim 12>], [<Dim 13>]),
-                            # Creates an array object of <type_id> (0: Integer, 1: String, 2: Position) and stores its ID into <destination>. You can specify up to 14 dimensions, from <Dim 0> to [<Dim 13>]. The array will be initialized by default with 0 / empty string / 0-position.
+                            # Creates an array object of <type_id> (0: Integer, 1: String, 2: Position) and stores its ID into <destination>.
+                            # You can specify up to 14 dimensions, from <Dim 0> to [<Dim 13>].
+                            # The array will be initialized by default with 0 / empty string / 0-position.
 array_free          = 5001  # (array_free, <arrayID>),
                             # Frees array with <arrayID>.
 array_copy          = 5002  # (array_copy, <destination>, <source arrayID>),
@@ -5391,15 +5446,20 @@ array_load_file     = 5004  # (array_load_file, <destination>, <file>),
 array_delete_file   = 5005  # (array_delete_file, <file>),
                             # Deletes array <file>.
 array_set_val       = 5006  # (array_set_val, <arrayID>, <value>, <Index 0>, [<Index 1>], [<Index 2>], [<Index 3>], [<Index 4>], [<Index 5>], [<Index 6>], [<Index 7>], [<Index 8>], [<Index 9>], [<Index 10>], [<Index 11>], [<Index 12>], [<Index 13>]),
-                            # Writes <value> to the array with <arrayID> at the specified index. <value> can be an integer, a position register or a string register and must match the type of the array.
+                            # Writes <value> to the array with <arrayID> at the specified index.
+                            # <value> can be an integer, a position register or a string register and must match the type of the array.
 array_set_val_all   = 5007  # (array_set_val_all, <arrayID>, <value>),
                             # Writes <value> to all indices of the array with <arrayID>. <value> can be an integer, a position register or a string register and must match the type of the array.
 array_get_val       = 5008  # (array_get_val, <destination>, <arrayID>, <Index 0>, [<Index 1>], [<Index 2>], [<Index 3>], [<Index 4>], [<Index 5>], [<Index 6>], [<Index 7>], [<Index 8>], [<Index 9>], [<Index 10>], [<Index 11>], [<Index 12>], [<Index 13>]),
-                            # Gets a value from the array with <arrayID> at the specified index and writes it to <destination>. <destination> can be a variable, a position register or a string register and must match the type of the array.
+                            # Gets a value from the array with <arrayID> at the specified index and writes it to <destination>.
+                            # <destination> can be a variable, a position register or a string register and must match the type of the array.
 array_push          = 5009  # (array_push, <destination arrayID>, <source>),
-                            # Pushes <source> on the array with <destination arrayID>. If <destination arrayID> is a 1D array, <source> can be an int, string, or position register and must match the type of <destination arrayID>. If <destination arrayID> is multidimensional, <source> must be the id of an array with matching type, src dimension count = dest dimension count - 1, and dimension sizes src_dim_0_size = dest_dim_1_size ... src_dim_n_size = dest_dim_n+1_size.
+                            # Pushes <source> on the array with <destination arrayID>.
+                            # If <destination arrayID> is a 1D array, <source> can be an int, string, or position register and must match the type of <destination arrayID>.
+                            # If <destination arrayID> is multidimensional, <source> must be the id of an array with matching type, src dimension count = dest dimension count - 1, and dimension sizes src_dim_0_size = dest_dim_1_size ... src_dim_n_size = dest_dim_n+1_size.
 array_pop           = 5010  # (array_pop, <destination>, <arrayID>),
-                            # Pops the last value  from the array with <arrayID>. If <arrayID> is a 1D array, <destination> must be a variable, string, or position register and must match the type of <arrayID>. If <arrayID> is multidimensional, a new array with dimension count = src dimension count - 1, dimensions dim_0 = src_dim_1 ... dim_n = src_dim_n+1 will be created and its ID will be stored in <destination>
+                            # Pops the last value  from the array with <arrayID>. If <arrayID> is a 1D array, <destination> must be a variable, string, or position register and must match the type of <arrayID>.
+                            # If <arrayID> is multidimensional, a new array with dimension count = src dimension count - 1, dimensions dim_0 = src_dim_1 ... dim_n = src_dim_n+1 will be created and its ID will be stored in <destination>
 array_resize_dim    = 5011  # (array_resize_dim, <arrayID>, <dimIndex>, <size>),
                             # Changes the size of the dimension with <dimIndex> of the array with <arrayID> to <size>.
 array_get_dim_size  = 5012  # (array_get_dim_size, <destination>, <arrayID>, <dimIndex>),
@@ -5409,24 +5469,40 @@ array_get_dim_count = 5013  # (array_get_dim_count, <destination>, <arrayID>),
 array_get_type_id   = 5014  # (array_get_type_id, <destination>, <arrayID>),
                             # Gets the the type id of the array with <arrayID> and stores it into <destination>.
 array_sort          = 5015  # (array_sort, <arrayID>, <sortMode>, [<Index 1>], [<Index 2>], [<Index 3>], [<Index 4>], [<Index 5>], [<Index 6>], [<Index 7>], [<Index 8>], [<Index 9>], [<Index 10>], [<Index 11>], [<Index 12>], [<Index 13>]),
-                            # Sorts the array with <arrayID> using a stable natural-mergesort algorithm. <sortMode> can be: [sort_m_int_asc or sort_m_int_desc] for int, [sort_m_str_cs_asc, sort_m_str_cs_desc, sort_m_str_ci_asc, sort_m_str_ci_desc] for str (asc=ascending, desc=descending, cs=case sensitive, ci=case insensitive, strings are compared alphabetically, upper before lower case). If the array is multidimensional, only the first dimension will be sorted and you must specify (dim_count - 1) fixed indices that will be used for access.
+                            # Sorts the array with <arrayID> using a stable natural-mergesort algorithm.
+                            # <sortMode> can be: [sort_m_int_asc or sort_m_int_desc] for int, [sort_m_str_cs_asc, sort_m_str_cs_desc, sort_m_str_ci_asc, sort_m_str_ci_desc] for str (asc=ascending, desc=descending, cs=case sensitive, ci=case insensitive, strings are compared alphabetically, upper before lower case).
+                            # If the array is multidimensional, only the first dimension will be sorted and you must specify (dim_count - 1) fixed indices that will be used for access.
 array_sort_custom   = 5016  # (array_sort_custom, <arrayID>, <cmpScript>, [<Index 1>], [<Index 2>], [<Index 3>], [<Index 4>], [<Index 5>], [<Index 6>], [<Index 7>], [<Index 8>], [<Index 9>], [<Index 10>], [<Index 11>], [<Index 12>], [<Index 13>]),
-                            # Sorts the array with <arrayID> using a stable natural-mergesort algorithm. <cmpScript> must compare its two input values (reg0 and reg1 / s0 and s1 / pos0 and pos1) and use (return_values, x) where x is nonzero if the first value goes before or is equal to the second, and zero otherwise. If the array is multidimensional, only the first dimension will be sorted and you must specify (dim_count - 1) fixed indices that will be used for access. The sorting won't be successful if the compare script does not work properly. The algorithm will abort at some point and not go into an infinite loop, it may however take extremely long to finish on big arrays.
+                            # Sorts the array with <arrayID> using a stable natural-mergesort algorithm.
+                            # <cmpScript> must compare its two input values (reg0 and reg1 / s0 and s1 / pos0 and pos1) and use (return_values, x) where x is nonzero if the first value goes before or is equal to the second, and zero otherwise.
+                            # If the array is multidimensional, only the first dimension will be sorted and you must specify (dim_count - 1) fixed indices that will be used for access.
+                            # The sorting won't be successful if the compare script does not work properly.
+                            # The algorithm will abort at some point and not go into an infinite loop, it may however take extremely long to finish on big arrays.
 array_eq            = 5017  # (array_eq, <arrayID>, <value_1>, <Index 0>, [<Index 1>], [<Index 2>], [<Index 3>], [<Index 4>], [<Index 5>], [<Index 6>], [<Index 7>], [<Index 8>], [<Index 9>], [<Index 10>], [<Index 11>], [<Index 12>], [<Index 13>]),
                             # Fails if the specified value in the array with <arrayID> is not equal to <value_1>. Works for int, str and pos.
 array_neq           = 5018  # (array_neq, <arrayID>, <value_1>, <Index 0>, [<Index 1>], [<Index 2>], [<Index 3>], [<Index 4>], [<Index 5>], [<Index 6>], [<Index 7>], [<Index 8>], [<Index 9>], [<Index 10>], [<Index 11>], [<Index 12>], [<Index 13>]),
-                            # Fails if the specified value in the array with <arrayID> is equal to <value_1>. Works for int, str and pos.
+                            # Fails if the specified value in the array with <arrayID> is equal to <value_1>.
+                            # Works for int, str and pos.
 array_gt            = 5019  # (array_gt, <arrayID>, <value_1>, <Index 0>, [<Index 1>], [<Index 2>], [<Index 3>], [<Index 4>], [<Index 5>], [<Index 6>], [<Index 7>], [<Index 8>], [<Index 9>], [<Index 10>], [<Index 11>], [<Index 12>], [<Index 13>]),
-                            # Fails if the specified value in the array with <arrayID> is not greater than <value_1>. Works for int and str. Strings are compared alphabetically, upper before lower case.
+                            # Fails if the specified value in the array with <arrayID> is not greater than <value_1>.
+                            # Works for int and str.
+                            # Strings are compared alphabetically, upper before lower case.
 array_ge            = 5020  # (array_ge, <arrayID>, <value_1>, <Index 0>, [<Index 1>], [<Index 2>], [<Index 3>], [<Index 4>], [<Index 5>], [<Index 6>], [<Index 7>], [<Index 8>], [<Index 9>], [<Index 10>], [<Index 11>], [<Index 12>], [<Index 13>]),
-                            # Fails if the specified value in the array with <arrayID> is not greater or equal to <value_1>. Works for int and str. Strings are compared alphabetically, upper before lower case.
+                            # Fails if the specified value in the array with <arrayID> is not greater or equal to <value_1>.
+                            # Works for int and str.
+                            # Strings are compared alphabetically, upper before lower case.
 array_lt            = 5021  # (array_lt, <arrayID>, <value_1>, <Index 0>, [<Index 1>], [<Index 2>], [<Index 3>], [<Index 4>], [<Index 5>], [<Index 6>], [<Index 7>], [<Index 8>], [<Index 9>], [<Index 10>], [<Index 11>], [<Index 12>], [<Index 13>]),
-                            # Fails if the specified value in the array with <arrayID> is not lower than <value_1>. Works for int and str. Strings are compared alphabetically, upper before lower case.
+                            # Fails if the specified value in the array with <arrayID> is not lower than <value_1>.
+                            # Works for int and str.
+                            # Strings are compared alphabetically, upper before lower case.
 array_le            = 5022  # (array_le, <arrayID>, <value_1>, <Index 0>, [<Index 1>], [<Index 2>], [<Index 3>], [<Index 4>], [<Index 5>], [<Index 6>], [<Index 7>], [<Index 8>], [<Index 9>], [<Index 10>], [<Index 11>], [<Index 12>], [<Index 13>]),
-                            # Fails if the specified value in the array with <arrayID> is not lower or equal to <value_1>. Works for int and str. Strings are compared alphabetically, upper before lower case.
+                            # Fails if the specified value in the array with <arrayID> is not lower or equal to <value_1>.
+                            # Works for int and str.
+                            # Strings are compared alphabetically, upper before lower case.
 
 lua_get_top         = 5100  # (lua_get_top, <destination>),
-                            # Stores the index of the top element in the lua stack into <destination>. The result also is equal to the number of elements in the stack.
+                            # Stores the index of the top element in the lua stack into <destination>.
+                            # The result also is equal to the number of elements in the stack.
 lua_set_top         = 5101  # (lua_set_top, <index>),
                             # Sets the top of the stack to <index>. Setting it to 0 just clears the entire stack.
 lua_insert          = 5102  # (lua_insert, <index>),
@@ -5448,42 +5524,62 @@ lua_push_str        = 5109  # (lua_push_str, <string_1>),
 lua_push_pos        = 5110  # (lua_push_pos, <pos_register>),
                             # Pushes the position in <pos_register> onto the lua stack.
 lua_get_type        = 5111  # (lua_get_type, <destination>, <index>),
-                            # Stores the type of the value at <index> in the stack into <destination>. Return types can be found in header_common(_addon).py (LUA_T*)
+                            # Stores the type of the value at <index> in the stack into <destination>.
+                            # Return types can be found in header_common(_addon).py (LUA_T*)
 lua_call            = 5112  # (lua_call, <func_name>, <num_args>),
-                            # Calls the lua function with name <func_name>, using the lua stack to pass <num_args> arguments and to return values. The first argument is pushed first. All arguments get removed from the stack automatically. The last return value will be at the top of the stack.
-                            # You can use underscores and 't1.t2.func()'-syntax in func_name. Warning: leaves a traceback function on the stack. This won't be fixed in order to not break existing code.
+                            # Calls the lua function with name <func_name>, using the lua stack to pass <num_args> arguments and to return values.
+                            # The first argument is pushed first. All arguments get removed from the stack automatically.
+                            # The last return value will be at the top of the stack.
+                            # You can use underscores and 't1.t2.func()'-syntax in func_name.
+                            # Warning: leaves a traceback function on the stack. This won't be fixed in order to not break existing code.
 lua_triggerCallback = 5113  # (lua_triggerCallback, <reference>, <triggerPart>, [<context>]),
-                            # Calls the lua trigger callback with <reference>. This operation is utilized internally and should not be used, unless you know what you are doing.
+                            # Calls the lua trigger callback with <reference>.
+                            # This operation is utilized internally and should not be used, unless you know what you are doing.
 lua_test            = 5114  # (lua_test, <index>),
-                            # Checks if the lua stack at <index> evaluates to true (any value different from false and nil). If you want to test only actual boolean values, check the type too.
+                            # Checks if the lua stack at <index> evaluates to true (any value different from false and nil).
+                            # If you want to test only actual boolean values, check the type too.
 
 skin_set_blood_color                 = 5200  # (skin_set_blood_color, <skin_no>, <color>),
                                              # Sets <skin_no>'s blood <color> (requires WSE2)
 skeleton_model_set_bone_body_section = 5201  # (skeleton_model_set_bone_body_section, <skeleton_model_name>, <bone_no>, <body_section>),
-                                             # Sets <skeleton_model_name>'s <bone_no> <body_section>. 0 - none, 1 - lowerbody, 2 - rightside (included lowerbody), 3 - all (included lowerbody and rightside). Check acf_enforce animations flags (requires WSE2)
+                                             # Sets <skeleton_model_name>'s <bone_no> <body_section>. 0 - none, 1 - lowerbody, 2 - rightside (included lowerbody), 3 - all (included lowerbody and rightside).
+                                             # Check acf_enforce animations flags (requires WSE2)
 skeleton_model_clean_body_sections   = 5202  # (skeleton_model_clean_body_sections, <skeleton_model_name>),
-                                             # Cleans <skeleton_model_name>'s body sections. Use to clean default body sections before set new (requires WSE2)
+                                             # Cleans <skeleton_model_name>'s body sections.
+                                             # Use to clean default body sections before set new (requires WSE2)
 
 #WSE2 extended operations
 
 game_key_get_mapped_key_name                =   65  # (game_key_get_mapped_key_name, <string_register>, <game_key_no>, [<alternative>]),
                                                     # Stores human-readable key name that's currently assigned to the provided <game_key_no> into <string_register> (requires WSE2)
 options_get_damage_to_player                =  260  # (options_get_damage_to_player, <destination>, [<percentage>]),
-                                                    # Stores damage to player for singleplayer into <destination>. If set [<percentage>], uses 0-100% range instead default values (0 = 1/4, 1 = 1/2, 2 = 1/1) (requires WSE2)
+                                                    # Stores damage to player for singleplayer into <destination>.
+                                                    # If set [<percentage>], uses 0-100% range instead default values (0 = 1/4, 1 = 1/2, 2 = 1/1) (requires WSE2)
 options_set_damage_to_player                =  261  # (options_set_damage_to_player, <value>, [<percentage>]),
-                                                    # Sets damage to player for singleplayer. If set [<percentage>], uses 0-100% range instead default values (0 = 1/4, 1 = 1/2, 2 = 1/1) (requires WSE2)
+                                                    # Sets damage to player for singleplayer.
+                                                    # If set [<percentage>], uses 0-100% range instead default values (0 = 1/4, 1 = 1/2, 2 = 1/1) (requires WSE2)
 options_get_damage_to_friends               =  262  # (options_get_damage_to_friends, <destination>, [<percentage>]),
-                                                    # Stores damage to friends for singleplayer into <destination>. If set [<percentage>], uses 0-100% range instead default values (0 = 1/2, 1 = 3/4, 2 = 1/1) (requires WSE2)
+                                                    # Stores damage to friends for singleplayer into <destination>.
+                                                    # If set [<percentage>], uses 0-100% range instead default values (0 = 1/2, 1 = 3/4, 2 = 1/1) (requires WSE2)
 options_set_damage_to_friends               =  263  # (options_set_damage_to_friends, <value>, [<percentage>]),
-                                                    # Sets damage to friends for singleplayer. If set [<percentage>], uses 0-100% range instead default values (0 = 1/2, 1 = 3/4, 2 = 1/1) (requires WSE2)
+                                                    # Sets damage to friends for singleplayer.
+                                                    # If set [<percentage>], uses 0-100% range instead default values (0 = 1/2, 1 = 3/4, 2 = 1/1) (requires WSE2)
 set_camera_follow_party                     = 1021  # (set_camera_follow_party, <party_no>, [<instant>]),
-                                                    # Global map camera follows <party_no>. If [<instant>] sets, camera position sets to party position instatly (requires WSE2)
+                                                    # Global map camera follows <party_no>.
+                                                    # If [<instant>] sets, camera position sets to party position instatly (requires WSE2)
 start_map_conversation                      = 1025  # (start_map_conversation, <troop_id>, [<troop_dna>], [<set_dialog_state>], [<dialog_state>], [<from_presentation>]),
-                                                    # Starts a conversation with the selected <troop_id>. Can be called directly from global map or game menus. [<troop_dna>] parameter allows you to randomize non-hero troop appearances. If [<set_dialog_state>] sets, then [<dialog_state>] used instead dlg_event_triggered. If [<from_presentation>] sets, then conversation called directly from the presentation. (requires WSE2)
+                                                    # Starts a conversation with the selected <troop_id>.
+                                                    # Can be called directly from global map or game menus.
+                                                    # [<troop_dna>] parameter allows you to randomize non-hero troop appearances.
+                                                    # If [<set_dialog_state>] sets, then [<dialog_state>] used instead dlg_event_triggered.
+                                                    # If [<from_presentation>] sets, then conversation called directly from the presentation. (requires WSE2)
 start_encounter                             = 1300  # (start_encounter, <encountered_party_no>, [<party_no>]),
-                                                    # Forces the [<party_no>] to initiate encounter with the <encountered_party_no>. If [<party_no>] not specified, main party used. (requires WSE2)
+                                                    # Forces the [<party_no>] to initiate encounter with the <encountered_party_no>.
+                                                    # If [<party_no>] not specified, main party used. (requires WSE2)
 party_get_battle_opponent                   = 1680  # (party_get_battle_opponent, <destination>, <party_no>),
-                                                    # When a <party_no> is engaged in battle with another party, stores its opponent party into <destination>. If the <party_no> is not in the encounter stores -1. For multiplayer campaign mode - stores -2, if <party_no> is observer player. (requires WSE2)
+                                                    # When a <party_no> is engaged in battle with another party, stores its opponent party into <destination>.
+                                                    # If the <party_no> is not in the encounter stores -1.
+                                                    # For multiplayer campaign mode - stores -2, if <party_no> is observer player. (requires WSE2)
 agent_get_attached_scene_prop               = 1756  # (agent_get_attached_scene_prop, <destination>, <agent_no>, [<attached_prop_index>]),
                                                     # Stores scene prop instance which is attached to the <agent_no>, or -1 if there isn't any into <destination>. ([<attached_prop_index>]: 0-3) (requires WSE2)
 agent_set_attached_scene_prop               = 1757  # (agent_set_attached_scene_prop, <agent_no>, <prop_instance_no>, [<attached_prop_index>], [<bone_no>], [<use_bone_rotation>]),
@@ -5497,9 +5593,14 @@ entry_point_get_position                    = 1780  # (entry_point_get_position,
 agent_set_attached_scene_prop_y             = 1809  # (agent_set_attached_scene_prop_y, <agent_no>, <value>, [<attached_prop_index>]),
                                                     # Offsets the position of the attached scene prop in relation to <agent_no>, in centimeters, along the Y axis (backwards/forward). ([<attached_prop_index>]: 0-3) (requires WSE2)
 prop_instance_intersects_with_prop_instance = 1880  # (prop_instance_intersects_with_prop_instance, <checked_scene_prop_no>, <prop_instance_no>, [<check_polygon_to_polygon>]),
-                                                    # Checks if two scene props are intersecting (i.e. collided). Useful when animating scene props movement. Pass -1 for <prop_instance_no> to check the prop against all other props on the scene. Scene props must have active collision meshes. If [<check_polygon_to_polygon>] is non-zero also checks polygon-to-polygon physics models, this is may reduce performance. (requires WSE2)
+                                                    # Checks if two scene props are intersecting (i.e. collided).
+                                                    # Useful when animating scene props movement.
+                                                    # Pass -1 for <prop_instance_no> to check the prop against all other props on the scene.
+                                                    # Scene props must have active collision meshes.
+                                                    # If [<check_polygon_to_polygon>] is non-zero also checks polygon-to-polygon physics models, this is may reduce performance. (requires WSE2)
 str_store_player_username                   = 2350  # (str_store_player_username, <string_register>, <player_no>, [<force_real>]),
-                                                    # Stores <player_no>'s multiplayer username into <string_register>. [<force_real>] uses for real name instead anonymous pseudonym (requires WSE2)
+                                                    # Stores <player_no>'s multiplayer username into <string_register>.
+                                                    # [<force_real>] uses for real name instead anonymous pseudonym (requires WSE2)
 
 game_key_get_key = 3100  # (game_key_get_key, <destination>, <game_key_no>, [<alternative>], [<modifier>]),
                          # Stores the key mapped to <game_key_no> into <destination> (requires WSE2)
